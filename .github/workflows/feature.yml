@@ -47,6 +47,7 @@ jobs:
         uses: './.github/workflows/utils/json-to-env'
         with:
           json: ${{ toJSON(matrix.config) }}
+      - uses: ./.github/workflows/utils/setup-base-libs
       - name: Tidy
         run: |
           wm run cmake-build -t editor -bt Debug
