@@ -87,7 +87,8 @@ void AddNewTab(const std::string &filename) {
 int main(int, char **) {
   IGFD::FileDialogConfig chlen = {};
 
-  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0) {
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) !=
+      0) {
     printf("Error: %s\n", SDL_GetError());
     return -1;
   }
@@ -196,12 +197,18 @@ int main(int, char **) {
     Menu(
       "Cells",
       {
-        MenuItem("Auto", []() { showGridPopup = true; }),
+        MenuItem(
+          "Auto",
+          [&]() {
+            std::cout << "Here";
+            showGridPopup = true;
+          }
+        ),
       }
     ),
   });
 
-  auto popup = Popup("autoCellConfig", []() {
+  auto popup = Popup("autoCellConfig", [&]() {
     static int cellWidth = 50;
     static int cellHeight = 50;
 
@@ -227,6 +234,42 @@ int main(int, char **) {
 
   auto tabBar = TabBar({
     Tab({"Files", {TabItem({"Example", []() {}, true})}}),
+  });
+
+  auto spriteSheet = Window("Sprite sheet", [&]() {
+    menuBar.render();
+
+    if (showGridPopup) {
+      popup.open();
+    }
+    popup.render();
+
+    tabBar.render();
+
+    // if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+    //   if (ImGuiFileDialog::Instance()->IsOk()) {
+    //     std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
+    //     std::string fileName =
+    //       ImGuiFileDialog::Instance()->GetCurrentFileName();
+
+    //     // Load the image and create a new tab
+    //     int width, height;
+    //     GLuint texture = LoadTextureFromFile(filePath.c_str(), &width,
+    //     &height); if (texture) {
+    //       openTabs.push_back({fileName, texture, width, height, true});
+    //     }
+    //   }
+    //   ImGuiFileDialog::Instance()->Close();
+    // }
+
+    // openTabs.erase(
+    //   std::remove_if(
+    //     openTabs.begin(),
+    //     openTabs.end(),
+    //     [](const ImageTab &tab) { return !tab.isOpen; }
+    //   ),
+    //   openTabs.end()
+    // );
   });
 
 #ifdef __EMSCRIPTEN__
@@ -255,70 +298,7 @@ int main(int, char **) {
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("Sprite sheet", NULL, ImGuiWindowFlags_MenuBar);
-
-    menuBar.render();
-
-    if (showGridPopup) {
-      popup.open();
-    }
-
-    popup.render();
-
-    tabBar.render();
-
-    if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
-      if (ImGuiFileDialog::Instance()->IsOk()) {
-        std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
-        std::string fileName =
-          ImGuiFileDialog::Instance()->GetCurrentFileName();
-
-        // Load the image and create a new tab
-        int width, height;
-        GLuint texture = LoadTextureFromFile(filePath.c_str(), &width, &height);
-        if (texture) {
-          openTabs.push_back({fileName, texture, width, height, true});
-        }
-      }
-      ImGuiFileDialog::Instance()->Close();
-    }
-
-    // if (ImGui::BeginTabBar("File Tabs", ImGuiTabBarFlags_Reorderable)) {
-    //   // Iterate over open tabs and create a tab for each
-    //   for (size_t i = 0; i < openTabs.size(); ++i) {
-    //     ImageTab &tab = openTabs[i];
-    //     bool isOpen = tab.isOpen;
-
-    //     if (ImGui::BeginTabItem(tab.name.c_str(), &isOpen)) {
-    //       // Render the image as a texture
-    //       ImGui::Image(
-    //         (void *)(intptr_t)tab.texture, ImVec2(tab.width, tab.height)
-    //       );
-    //       if (tab.drawGrid) {
-    //         DrawGridLines(tab);
-    //       }
-    //       ImGui::EndTabItem();
-    //     }
-
-    //     // Handle closing tabs
-    //     if (!isOpen) {
-    //       tab.isOpen = false;
-    //     }
-    //   }
-
-    //   ImGui::EndTabBar();
-    // }
-
-    openTabs.erase(
-      std::remove_if(
-        openTabs.begin(),
-        openTabs.end(),
-        [](const ImageTab &tab) { return !tab.isOpen; }
-      ),
-      openTabs.end()
-    );
-
-    ImGui::End();
+    spriteSheet.render();
 
     ImGui::Render();
 

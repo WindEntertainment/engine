@@ -8,8 +8,10 @@ namespace editor {
     void Popup::render() {
       if (ImGui::BeginPopupModal(
             id.c_str(), &isOpen, ImGuiWindowFlags_AlwaysAutoResize
-          ))
+          )) {
+        callback();
         ImGui::EndPopup();
+      }
     }
 
     void Popup::open() { isOpen = true; };
