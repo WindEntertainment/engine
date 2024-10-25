@@ -1,4 +1,4 @@
-Checks: "-*,bugprone-*,portability-*,readability-*,performance-*,llvm-*"
+Checks: "-*,bugprone-*,portability-*,readability-*,performance-*,llvm-*,modernize-*,-modernize-use-trailing-return-type,-readability-identifier-length,-llvm-header-guard"
 CheckOptions:
   - key: bugprone-argument-comment.StrictMode
     value: 1
@@ -17,3 +17,4 @@ CheckOptions:
   - key: modernize-use-auto
     value: "auto"
 FormatStyle: "file"
+WarningsAsErrors: "*"

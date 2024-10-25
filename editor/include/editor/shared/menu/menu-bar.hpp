@@ -1,19 +1,17 @@
 #pragma once
+#include "menu.hpp"
 #include <editor/editor.hpp>
 #include <utils/utils.hpp>
-#include "menu.hpp"
 
-namespace editor {
-  namespace components {
-    class MenuBar {
-    public:
-      const std::string id;
+namespace editor::components {
+  class MenuBar {
+  public:
+    const std::string id;
 
-      MenuBar(const std::string id, Menus menus);
-      void render();
+    MenuBar(std::string id, Menus menus);
+    static void render();
 
-    private:
-      Menus menus = {};
-    };
-  } // namespace components
-} // namespace editor
+  private:
+    Menus menus;
+  };
+} // namespace editor::components

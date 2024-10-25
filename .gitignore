@@ -2,6 +2,7 @@
 Thumbs.db
 
 CMakeUserPresets.json
+compile_commands.json
 
 *.log
 *.app

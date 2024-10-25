@@ -2,8 +2,8 @@
 #include <utility>
 
 namespace editor::components {
-  Tab::Tab(const std::string &id, TabItems tabItems)
-      : id(id), tabItems(std::move(tabItems)) {}
+  Tab::Tab(std::string id, TabItems tabItems)
+      : id(std::move(id)), tabItems(std::move(tabItems)) {}
 
   void Tab::render() {
     if (ImGui::BeginTabBar(id.c_str())) {

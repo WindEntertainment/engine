@@ -1,7 +1,7 @@
 #pragma once
 #include <editor/editor.hpp>
-#include <utils/utils.hpp>
 #include <editor/shared/tab-bar/tab.hpp>
+#include <utils/utils.hpp>
 
 namespace editor {
   namespace components {
@@ -11,7 +11,7 @@ namespace editor {
       void render();
 
     private:
-      Tabs tabs = {};
+      Tabs tabs;
     };
   } // namespace components
 } // namespace editor
