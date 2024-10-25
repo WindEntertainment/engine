@@ -1,18 +1,14 @@
 #include <editor/shared/menu/menu-item.hpp>
+#include <utility>
 
-namespace editor {
-  namespace components {
-    MenuItem::MenuItem(
-      const std::string id,
-      Callback callback,
-      const std::string shortcut
-    )
-        : id(id), shortcut(shortcut), callback(callback) {}
+namespace editor::components {
+  MenuItem::MenuItem(std::string id, Callback callback, std::string shortcut)
+      : id(std::move(id)), shortcut(std::move(shortcut)),
+        callback(std::move(std::move(callback))) {}
 
-    void MenuItem::render() {
-      if (ImGui::MenuItem(id.c_str(), shortcut.c_str())) {
-        callback();
-      }
+  void MenuItem::render() {
+    if (ImGui::MenuItem(id.c_str(), shortcut.c_str())) {
+      callback();
     }
-  } // namespace components
-} // namespace editor
+  }
+} // namespace editor::components

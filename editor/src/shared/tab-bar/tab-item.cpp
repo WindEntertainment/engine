@@ -1,15 +1,14 @@
 #include <editor/shared/tab-bar/tab-item.hpp>
+#include <utility>
 
-namespace editor {
-  namespace components {
-    TabItem::TabItem(const std::string id, Callback callback, bool isOpen)
-        : id(id), callback(callback), isOpen(isOpen) {}
+namespace editor::components {
+  TabItem::TabItem(std::string id, Callback callback)
+      : id(std::move(id)), callback(std::move(std::move(callback))) {}
 
-    void TabItem::render() {
-      if (ImGui::BeginTabItem(id.c_str(), &isOpen)) {
-        callback();
-        ImGui::EndTabItem();
-      }
+  void TabItem::render() {
+    if (ImGui::BeginTabItem(id.c_str())) {
+      callback();
+      ImGui::EndTabItem();
     }
-  } // namespace components
-} // namespace editor
+  }
+} // namespace editor::components

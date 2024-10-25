@@ -7,7 +7,9 @@ namespace editor {
   namespace components {
     class MenuBar {
     public:
-      MenuBar(Menus menus);
+      const std::string id;
+
+      MenuBar(const std::string id, Menus menus);
       void render();
 
     private:

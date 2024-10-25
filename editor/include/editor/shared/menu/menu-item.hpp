@@ -7,11 +7,7 @@ namespace editor {
     class MenuItem {
     public:
       const std::string id;
-      MenuItem(
-        const std::string id,
-        Callback callback,
-        const std::string shortcut = ""
-      );
+      MenuItem(std::string id, Callback callback, std::string shortcut = "");
       void render();
 
       bool operator==(const MenuItem &menuItem) const {

@@ -4,18 +4,18 @@
 
 namespace editor {
   namespace components {
+    using PopupCallback = std::function<void(const std::function<void()> &)>;
+
     class Popup {
     public:
       const std::string id;
-      Popup(const std::string id, Callback callback, bool isOpen = false);
+      Popup(std::string id, PopupCallback callback);
       void render();
       void open();
       void close();
-      void toggle();
 
     private:
-      bool isOpen = false;
-      Callback callback;
+      PopupCallback callback;
     };
   } // namespace components
 } // namespace editor

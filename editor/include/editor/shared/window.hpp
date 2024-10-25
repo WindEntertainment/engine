@@ -7,11 +7,10 @@ namespace editor {
     class Window {
     public:
       const std::string id;
-      Window(const std::string id, Callback callback, bool isOpen = false);
+      Window(const std::string id, Callback callback);
       void render();
 
     private:
-      bool isOpen = false;
       Callback callback;
     };
   } // namespace components

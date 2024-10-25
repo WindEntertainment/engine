@@ -7,13 +7,12 @@ namespace editor {
     class TabItem {
     public:
       const std::string id;
-      TabItem(const std::string id, Callback callback, bool isOpen = false);
+      TabItem(std::string id, Callback callback);
       void render();
 
       bool operator==(const TabItem &tabItem) const { return id == tabItem.id; }
 
     private:
-      bool isOpen = false;
       Callback callback;
     };
 

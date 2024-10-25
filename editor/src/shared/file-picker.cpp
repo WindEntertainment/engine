@@ -1,5 +1,3 @@
 #include <editor/shared/file-picker.hpp>
 
-namespace editor {
-  namespace components {} // namespace components
-} // namespace editor
+namespace editor::components {} // namespace editor::components
