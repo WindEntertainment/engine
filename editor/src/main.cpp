@@ -353,4 +353,4 @@
 //   return 0;
 // }
 
-auto main(int /*unused*/, char ** /*unused*/) -> int { return 1; }
+int main() { return 1; }

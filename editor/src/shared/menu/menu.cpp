@@ -3,7 +3,7 @@
 
 namespace editor::components {
   Menu::Menu(std::string id, MenuItems menuItems)
-      : id(std::move(id)), menuItems(menuItems) {}
+      : id(std::move(id)), menuItems(std::move(menuItems)) {}
 
   void Menu::render() {
     if (ImGui::BeginMenu(id.c_str())) {

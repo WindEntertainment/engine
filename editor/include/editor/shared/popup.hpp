@@ -12,7 +12,7 @@ namespace editor {
       Popup(std::string id, PopupCallback callback);
       void render();
       void open();
-      void close();
+      static void close();
 
     private:
       PopupCallback callback;

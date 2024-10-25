@@ -9,7 +9,7 @@ namespace editor {
     public:
       const std::string id;
 
-      Tab(const std::string id, TabItems tabItems);
+      Tab(const std::string &id, TabItems tabItems);
       void render();
 
       bool operator==(const Tab &tab) const { return id == tab.id; }

@@ -3,7 +3,7 @@
 
 namespace editor::components {
   MenuBar::MenuBar(std::string id, Menus menus)
-      : id(std::move(id)), menus(menus) {}
+      : id(std::move(id)), menus(std::move(menus)) {}
 
   void MenuBar::render() {
     if (ImGui::BeginMenuBar()) {

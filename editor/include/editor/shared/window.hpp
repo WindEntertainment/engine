@@ -7,7 +7,7 @@ namespace editor {
     class Window {
     public:
       const std::string id;
-      Window(const std::string id, Callback callback);
+      Window(const std::string &id, Callback callback);
       void render();
 
     private:
