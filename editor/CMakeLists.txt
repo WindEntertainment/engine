@@ -40,20 +40,20 @@ add_executable(
 )
 
 #
-# find_package(imgui REQUIRED)
-
-# target_link_libraries(${PROJECT_NAME} PUBLIC imgui::imgui)
-# target_link_libraries(${PROJECT_NAME} PUBLIC wind-window wind-asset-manager ImGuiFileDialog wind-utils)
-
 find_package(imgui REQUIRED)
-find_package(sdl2 REQUIRED)
-find_package(OpenGL REQUIRED)
-find_package(stb REQUIRED)
-find_package(glad CONFIG REQUIRED)
-find_package(portable-file-dialogs REQUIRED)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC glad::glad portable-file-dialogs::portable-file-dialogs stb::stb imgui::imgui SDL2::SDL2 OpenGL::GL)
+target_link_libraries(${PROJECT_NAME} PUBLIC imgui::imgui)
 target_link_libraries(${PROJECT_NAME} PUBLIC wind-window wind-asset-manager ImGuiFileDialog wind-utils)
+
+# find_package(imgui REQUIRED)
+# find_package(sdl2 REQUIRED)
+# find_package(OpenGL REQUIRED)
+# find_package(stb REQUIRED)
+# find_package(glad CONFIG REQUIRED)
+# find_package(portable-file-dialogs REQUIRED)
+
+# target_link_libraries(${PROJECT_NAME} PUBLIC glad::glad portable-file-dialogs::portable-file-dialogs stb::stb imgui::imgui SDL2::SDL2 OpenGL::GL)
+# target_link_libraries(${PROJECT_NAME} PUBLIC wind-window wind-asset-manager ImGuiFileDialog wind-utils)
 
 #
 
