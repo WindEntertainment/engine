@@ -12,7 +12,7 @@ static timepoint m_perSecond;
 //===========================================//
 // Lifecycle
 bool Window::create(Config config) {
-  m_window = SDL_CreateWindow(
+  _window = SDL_CreateWindow(
     config.title.c_str(),
     config.position.x,
     config.position.y,
@@ -20,14 +20,16 @@ bool Window::create(Config config) {
     config.size.y,
     SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
-  if (!m_window) {
+  if (!_window) {
     spdlog::error("Failed create window: {}", SDL_GetError());
     return false;
   }
 
-  m_alive = true;
-  m_title = config.title.c_str();
+  _alive = true;
+  _title = config.title.c_str();
   setVisibleCursor(config.visibleCursor);
+
+  return true;
 }
 
 Window::~Window() {
@@ -46,11 +48,11 @@ std::shared_ptr<Window> Window::create(void (*buildConfig)(Config*)) {
 }
 
 void Window::close() {
-  if (!m_window)
+  if (!_window)
     return;
 
-  m_alive = false;
-  SDL_DestroyWindow(m_window);
+  _alive = false;
+  SDL_DestroyWindow(_window);
 }
 
 void Window::show() {
@@ -61,7 +63,7 @@ void Window::show() {
 
   numFrames += 1;
   if (chrono::high_resolution_clock::now() > m_perSecond) {
-    m_fps = numFrames;
+    _fps = numFrames;
     numFrames = 0;
 
     m_perSecond = chrono::high_resolution_clock::now() + oneSecond;
@@ -69,27 +71,27 @@ void Window::show() {
 }
 
 bool Window::update() {
-  return m_alive;
+  return _alive;
 }
 
 //===========================================//
 // Setters
 
 void Window::setTitle(const char* _title) {
-  SDL_SetWindowTitle(m_window, _title);
-  m_title = _title;
+  SDL_SetWindowTitle(_window, _title);
+  _title = _title;
 }
 
 void Window::setSize(glm::ivec2 _size) {
-  SDL_SetWindowSize(m_window, _size.x, _size.y);
+  SDL_SetWindowSize(_window, _size.x, _size.y);
 }
 
 void Window::setPosition(glm::ivec2 _position) {
-  SDL_SetWindowPosition(m_window, _position.x, _position.y);
+  SDL_SetWindowPosition(_window, _position.x, _position.y);
 }
 
 void Window::setResizable(bool _resizable) {
-  SDL_SetWindowResizable(m_window, (SDL_bool)_resizable);
+  SDL_SetWindowResizable(_window, (SDL_bool)_resizable);
 }
 
 void Window::setVisibleCursor(bool _visible) {
@@ -100,30 +102,30 @@ void Window::setVisibleCursor(bool _visible) {
 // Getters
 
 const char* Window::title() {
-  return m_title;
+  return _title;
 }
 
 glm::ivec2 Window::size() {
   int w, h;
-  SDL_GetWindowSize(m_window, &w, &h);
+  SDL_GetWindowSize(_window, &w, &h);
   return {w, h};
 }
 
 glm::ivec2 Window::position() {
   int x, y;
-  SDL_GetWindowPosition(m_window, &x, &y);
+  SDL_GetWindowPosition(_window, &x, &y);
   return {x, y};
 }
 
 bool Window::isFullScreen() {
-  auto flag = SDL_GetWindowFlags(m_window);
+  auto flag = SDL_GetWindowFlags(_window);
   auto is_fullscreen = flag & SDL_WINDOW_FULLSCREEN;
 
   return is_fullscreen == SDL_WINDOW_FULLSCREEN;
 }
 
 bool Window::isResizable() {
-  auto flag = SDL_GetWindowFlags(m_window);
+  auto flag = SDL_GetWindowFlags(_window);
   auto is_fullscreen = flag & SDL_WINDOW_RESIZABLE;
 
   return is_fullscreen == SDL_WINDOW_RESIZABLE;
@@ -134,7 +136,7 @@ bool Window::isVisibleCursor() {
 }
 
 int Window::getFPS() {
-  return m_fps;
+  return _fps;
 }
 
 } // namespace wind

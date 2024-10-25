@@ -12,13 +12,16 @@ int Engine::run() {
 
   _mainWindow = Window::create([](Window::Config* self) {
     self->title = "Hello, World!";
+    self->position = {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED};
   });
 
   SDL_Event event;
+  bool alive = true;
 
-  while (true) {
-
+  while (alive) {
     while (SDL_PollEvent(&event)) {
+      if (event.type == SDL_QUIT)
+        alive = false;
     }
 
     _mainWindow->update();
