@@ -8,15 +8,87 @@
 #include <editor/editor.hpp>
 #include <editor/main.hpp>
 
-using namespace editor;
+using namespace editor::components;
 
 #ifndef __gl_h_
 #include <glad/glad.h> // IWYU pragma: export
 #endif
 
+#if defined(IMGUI_IMPL_OPENGL_ES2)
+#include <SDL_opengles2.h>
+#else
 #include <SDL_opengl.h>
+#endif
+
+#ifdef __EMSCRIPTEN__
+#include "../libs/emscripten/emscripten_mainloop_stub.h"
+#endif
+
+auto loadTextureFromFile(const char *filename, int *width, int *height)
+  -> GLuint {
+  int channels = 0;
+  unsigned char *data = stbi_load(filename, width, height, &channels, 0);
+  if (data == nullptr) {
+    std::cerr << "Failed to load image: " << filename << std::endl;
+    return 0;
+  }
+
+  GLuint texture = 0;
+  glGenTextures(1, &texture);
+  glBindTexture(GL_TEXTURE_2D, texture);
+
+  // Set texture parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  // Load image data into OpenGL texture
+  GLenum const format = (channels == 4) ? GL_RGBA : GL_RGB;
+  glTexImage2D(
+    GL_TEXTURE_2D, 0, format, *width, *height, 0, format, GL_UNSIGNED_BYTE, data
+  );
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  stbi_image_free(data);
+  return texture;
+}
+
+struct ImageTab {
+  std::string name{};
+  GLuint texture{};
+  int width{};
+  int height{};
+  bool isOpen{};
+  int cellWidth = 50;  // Default cell width
+  int cellHeight = 50; // Default cell height
+  bool drawGrid = false;
+};
+
+void drawGridLines(const ImageTab &tab) {
+  for (int x = 0; x <= tab.width; x += tab.cellWidth) {
+    ImGui::GetWindowDrawList()->AddLine(
+      ImVec2(x, 0), ImVec2(x, tab.height), IM_COL32(255, 255, 255, 255)
+    );
+  }
+  for (int y = 0; y <= tab.height; y += tab.cellHeight) {
+    ImGui::GetWindowDrawList()->AddLine(
+      ImVec2(0, y), ImVec2(tab.width, y), IM_COL32(255, 255, 255, 255)
+    );
+  }
+}
+
+std::vector<ImageTab> openTabs = {};
+bool showGridPopup = false;
+
+// Test function to add new tabs (e.g., from the File menu)
+void addNewTab(const std::string &filename) {
+  openTabs.push_back({filename, true});
+}
 
 auto main(int /*unused*/, char ** /*unused*/) -> int {
+  IGFD::FileDialogConfig chlen = {};
+
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) !=
       0) {
     std::printf("Error: {}", SDL_GetError());
@@ -98,13 +170,118 @@ auto main(int /*unused*/, char ** /*unused*/) -> int {
   ImGui_ImplSDL2_InitForOpenGL(window, glContext);
   ImGui_ImplOpenGL3_Init(glslVersion);
 
+  bool const showDemoWindow = true;
+  bool const showAnotherWindow = false;
   ImVec4 const clearColor = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 
   bool done = false;
 
-  auto project = projectManager::ProjectManager();
+  auto menuBar = MenuBar(
+    "Spread sheet menu bar",
+    {
+      Menu(
+        "File",
+        {
+          MenuItem("Create", []() {}),
+          MenuItem(
+            "Open",
+            []() {
+              ImGuiFileDialog::Instance()->OpenDialog(
+                "ChooseFileDlgKey", "Choose Image", ".png,.jpg,.jpeg,.bmp", {}
+              );
+            },
+            "Ctrl+O"
+          ),
+          MenuItem(
+            "Save", []() {}, "Ctrl+S"
+          ),
+          MenuItem("Save as..", []() {}),
+        }
+      ),
+      Menu(
+        "Cells",
+        {
+          MenuItem(
+            "Auto",
+            [&]() {
+              std::cout << "Here";
+              showGridPopup = true;
+            }
+          ),
+        }
+      ),
+    }
+  );
 
-  while (!done) {
+  auto filePicker = FilePicker([]() {
+    std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
+    std::string fileName = ImGuiFileDialog::Instance()->GetCurrentFileName();
+
+    // Load the image and create a new tab
+    int width, height;
+    GLuint texture = loadTextureFromFile(filePath.c_str(), &width, &height);
+    if (texture) {
+      openTabs.push_back({fileName, texture, width, height, true});
+    }
+  });
+
+  auto popup = Popup("autoCellConfig", [&](auto close) {
+    static int cellWidth = 50;
+    static int cellHeight = 50;
+
+    ImGui::InputInt("Cell Width", &cellWidth);
+    ImGui::InputInt("Cell Height", &cellHeight);
+
+    if (ImGui::Button("Apply")) {
+      for (auto &tab : openTabs) {
+        tab.cellWidth = cellWidth;
+        tab.cellHeight = cellHeight;
+        tab.drawGrid = true;
+      }
+      showGridPopup = false;
+      close();
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Button("Cancel")) {
+      showGridPopup = false;
+      close();
+    }
+  });
+
+  auto tabBar = TabBar({
+    Tab({"Files", {TabItem({"Example", []() {}})}}),
+  });
+
+  auto spriteSheetWindow = Window("Sprite sheet", [&]() {
+    menuBar.render();
+
+    if (showGridPopup) {
+      popup.open();
+    }
+    popup.render();
+
+    tabBar.render();
+
+    filePicker.render();
+
+    openTabs.erase(
+      std::remove_if(
+        openTabs.begin(),
+        openTabs.end(),
+        [](const ImageTab &tab) { return !tab.isOpen; }
+      ),
+      openTabs.end()
+    );
+  });
+
+#ifdef __EMSCRIPTEN__
+  io.IniFilename = nullptr;
+  EMSCRIPTEN_MAINLOOP_BEGIN
+#else
+  while (!done)
+#endif
+  {
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0) {
       ImGui_ImplSDL2_ProcessEvent(&event);
@@ -125,6 +302,8 @@ auto main(int /*unused*/, char ** /*unused*/) -> int {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
+
+    spriteSheetWindow.render();
 
     ImGui::Render();
 
@@ -152,6 +331,9 @@ auto main(int /*unused*/, char ** /*unused*/) -> int {
     }
     SDL_GL_SwapWindow(window);
   }
+#ifdef __EMSCRIPTEN__
+  EMSCRIPTEN_MAINLOOP_END;
+#endif
 
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplSDL2_Shutdown();

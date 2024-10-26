@@ -12,6 +12,9 @@ set(HEADERS
   ./include/editor/shared/tab-bar/tab-bar.hpp
   ./include/editor/shared/tab-bar/tab-item.hpp
   ./include/editor/shared/window.hpp
+  ./include/editor/sprite-sheet-manager/sprite-sheet-manager.hpp
+  ./include/editor/project-manager/project-manager.hpp
+  ./include/editor/bundle-manager/bundle-manager.hpp
 )
 
 set(SOURCES
@@ -25,6 +28,9 @@ set(SOURCES
   ./src/shared/tab-bar/tab-bar.cpp
   ./src/shared/tab-bar/tab-item.cpp
   ./src/shared/window.cpp
+  ./src/sprite-sheet-manager/sprite-sheet-manager.cpp
+  ./src/project-manager/project-manager.cpp
+  ./src/bundle-manager/bundle-manager.cpp
 )
 
 set(BINDINGS
@@ -40,20 +46,19 @@ add_executable(
 )
 
 #
-find_package(imgui REQUIRED)
-
-target_link_libraries(${PROJECT_NAME} PUBLIC imgui::imgui)
-target_link_libraries(${PROJECT_NAME} PUBLIC wind-utils wind-window wind-entry wind-input-system wind-asset-manager ImGuiFileDialog)
-
 # find_package(imgui REQUIRED)
-# find_package(sdl2 REQUIRED)
-# find_package(OpenGL REQUIRED)
-# find_package(stb REQUIRED)
-# find_package(glad CONFIG REQUIRED)
-# find_package(portable-file-dialogs REQUIRED)
-
-# target_link_libraries(${PROJECT_NAME} PUBLIC glad::glad portable-file-dialogs::portable-file-dialogs stb::stb imgui::imgui SDL2::SDL2 OpenGL::GL)
+# target_link_libraries(${PROJECT_NAME} PUBLIC imgui::imgui)
 # target_link_libraries(${PROJECT_NAME} PUBLIC wind-utils wind-window wind-entry wind-input-system wind-asset-manager ImGuiFileDialog)
+
+find_package(imgui REQUIRED)
+find_package(sdl2 REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(stb REQUIRED)
+find_package(glad CONFIG REQUIRED)
+find_package(portable-file-dialogs REQUIRED)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC glad::glad portable-file-dialogs::portable-file-dialogs stb::stb imgui::imgui SDL2::SDL2 OpenGL::GL)
+target_link_libraries(${PROJECT_NAME} PUBLIC wind-utils wind-window wind-entry wind-input-system wind-asset-manager ImGuiFileDialog)
 
 #
 
