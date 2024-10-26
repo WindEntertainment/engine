@@ -25,8 +25,8 @@ void RenderContext::use() {
 }
 
 void RenderContext::flush() {
-  glFlush();
-  // SDL_GL_SwapWindow(window->getRawPtr());
+  // glFlush();
+  SDL_GL_SwapWindow(window->getRawPtr());
 }
 
 } // namespace wind

@@ -10,18 +10,18 @@ namespace game {
 class Game : public wind::Game {
 public:
   void start() override {
-    //======================= create mesh //
-    std::vector<wind::Mesh::Vertex> vertices = {
-      {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}},
-      {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
-      {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
-      {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}};
-    std::vector<uint> indices = {0, 1, 3, 1, 2, 3};
+    // //======================= create mesh //
+    // std::vector<wind::Mesh::Vertex> vertices = {
+    //   {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}},
+    //   {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
+    //   {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
+    //   {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}};
+    // std::vector<uint> indices = {0, 1, 3, 1, 2, 3};
 
-    mesh = new wind::Mesh(vertices, indices);
-    //====================================//
+    // mesh = new wind::Mesh(vertices, indices);
+    // //====================================//
 
-    //===================== create shader //
+    // //===================== create shader //
     // shader = new wind::Shader(R"(
     //         #version 330 core
 
@@ -46,27 +46,47 @@ public:
     //             FragColor = vec4(1, 1, 1, 1);
     //         }
     // )");
-    //====================================//
+    // //====================================//
 
-    //=================== create material //
+    // //=================== create material //
 
     // material = new wind::Material(shader);
 
-    //====================================//
+    // //====================================//
 
-    //=================== create transform //
-    transform = glm::mat4(1);
-    transform = glm::translate(transform, {0, 0, -5});
-    //====================================//
+    // //=================== create transform //
+    // transform = glm::mat4(1);
+    // transform = glm::translate(transform, {0, 0, -5});
+    // //====================================//
   }
 
   void update() override {
-    wind::CommandBuffer render;
+    // wind::CommandBuffer render;
 
-    render.clear({0.2f, 0.2f, 0.5f, 1.f});
+    // render.clear({0.2f, 0.2f, 0.5f, 1.f});
     // render.drawMesh(mesh, transform, material);
+    glClearColor(0.2f, 0.2f, 0.5f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    render.submit();
+    glBegin(GL_QUADS);
+    // Bottom-left vertex (x, y, z)
+    glColor3f(1.0f, 0.0f, 0.0f); // Set color (red)
+    glVertex3f(-0.5f, -0.5f, 0.0f);
+
+    // Bottom-right vertex (x, y, z)
+    glColor3f(0.0f, 1.0f, 0.0f); // Set color (green)
+    glVertex3f(0.5f, -0.5f, 0.0f);
+
+    // Top-right vertex (x, y, z)
+    glColor3f(0.0f, 0.0f, 1.0f); // Set color (blue)
+    glVertex3f(0.5f, 0.5f, 0.0f);
+
+    // Top-left vertex (x, y, z)
+    glColor3f(1.0f, 1.0f, 0.0f); // Set color (yellow)
+    glVertex3f(-0.5f, 0.5f, 0.0f);
+    glEnd();
+
+    // render.submit();
   }
 
   void quit() override {
