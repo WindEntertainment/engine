@@ -27,6 +27,6 @@ function(add_wind_game TARGET_NAME BUNDLE_LIST)
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/res" "$<TARGET_FILE_DIR:${TARGET_NAME}>/res"
     )
 
-    target_link_libraries(${TARGET_NAME} PRIVATE wind-core)
+    target_link_libraries(${TARGET_NAME} PRIVATE wind)
     add_dependencies(${TARGET_NAME} ${TARGET_NAME}_bundles)
 endfunction()

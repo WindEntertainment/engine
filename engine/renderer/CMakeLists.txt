@@ -7,6 +7,8 @@ set(HEADERS
     ./include/wind/renderer/object.hpp
     ./include/wind/renderer/shader.hpp
     ./include/wind/renderer/render_context.hpp
+    ./include/wind/renderer/texture.hpp
+    ./include/wind/renderer/assets.hpp
 )
 
 set(SOURCES
@@ -15,6 +17,8 @@ set(SOURCES
     ./src/material.cpp
     ./src/mesh.cpp
     ./src/render_context.cpp
+    ./src/texture.cpp
+    ./src/assets.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC
@@ -23,6 +27,7 @@ add_library(${PROJECT_NAME} STATIC
 
 target_include_directories(${PROJECT_NAME} PUBLIC ./include/)
 target_link_libraries(${PROJECT_NAME} PUBLIC wind-window)
+target_link_libraries(${PROJECT_NAME} PUBLIC wind-asset-manager)
 
 find_package(glad CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC glad::glad)

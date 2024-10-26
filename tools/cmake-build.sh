@@ -46,7 +46,7 @@ if [[ $run == true && "$target" != "all" ]]; then
   else
     if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
       cd "$root/build/app/build/$build_type/$target/Release"
-      "$target.exe"
+      "./$target.exe"
     else
       cd "$root/build/app/build/$build_type/$target"
       "$target"

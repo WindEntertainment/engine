@@ -7,7 +7,7 @@ add_subdirectory(./asset-pipeline/)
 add_subdirectory(./input-system/)
 add_subdirectory(./utils/)
 
-add_library(${PROJECT_NAME} SHARED engine.cpp)
+add_library(${PROJECT_NAME} STATIC engine.cpp)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC wind-utils)
 target_link_libraries(${PROJECT_NAME} PUBLIC wind-window)

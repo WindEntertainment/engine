@@ -1,6 +1,9 @@
 #include "wind/renderer/command-buffer.hpp"
 #include "wind/wind.hpp"
 
+#include "wind/asset-manager/asset-manager.hpp"
+#include "wind/renderer/assets.hpp"
+
 #include <glm/ext/matrix_transform.hpp>
 
 using uint = unsigned int;
@@ -10,6 +13,8 @@ namespace game {
   class Game : public wind::Game {
   public:
     void start() override {
+      wind::AssetManager::loadBundle("res/main.bundle");
+
       //======================= create mesh //
       std::vector<wind::Mesh::Vertex> vertices = {
         {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}},
@@ -44,8 +49,10 @@ namespace game {
             out vec4 FragColor;
             in vec2 TexCoord;
 
+            uniform sampler2D tex0;
+
             void main() {
-                FragColor = vec4(0.5, 1, 0.5, 1);
+                FragColor = texture(tex0, TexCoord);
             }
     )"
       );
@@ -53,7 +60,11 @@ namespace game {
 
       //=================== create material //
 
+      texture =
+        wind::AssetManager::getAsset<wind::Texture>("main/art/ship.png");
+
       material = new wind::Material(shader);
+      // material->setTexture(texture);
 
       //====================================//
 
@@ -66,9 +77,19 @@ namespace game {
       wind::CommandBuffer render;
 
       render.clear({0.2f, 0.2f, 0.5f, 1.f});
-      render.drawMesh(mesh, transform, material);
+      // render.drawMesh(mesh, transform, material);
 
       render.submit();
+
+      glActiveTexture(GL_TEXTURE0);
+      glBindTexture(GL_TEXTURE_2D, texture->id());
+
+      glBindVertexArray(mesh->id());
+      material->setMat4("model", transform);
+      material->apply();
+      glDrawElements(
+        GL_TRIANGLES, (GLsizei)mesh->length(), GL_UNSIGNED_INT, nullptr
+      );
 
       transform = glm::rotate(transform, 0.01f, {1, 1, 1});
     }
@@ -80,12 +101,13 @@ namespace game {
     }
 
   private:
-    wind::Mesh *mesh;
-    wind::Shader *shader;
-    wind::Material *material;
+    wind::Texture* texture;
+    wind::Mesh* mesh;
+    wind::Shader* shader;
+    wind::Material* material;
     glm::mat4 transform;
   };
 
 } // namespace game
 
-int main(int argc, char **argv) { return wind::Engine::run(new game::Game()); }
+int main(int argc, char** argv) { return wind::Engine::run(new game::Game()); }
