@@ -14,7 +14,7 @@ add_library(${PROJECT_NAME} STATIC
     ${HEADERS} ${SOURCES}
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC ./include/)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ./include/)
 
 # external
 find_package(spdlog REQUIRED)

@@ -1,4 +1,7 @@
 Checks: "-*,bugprone-*,portability-*,readability-*,performance-*,llvm-*,modernize-*,-modernize-use-trailing-return-type,-readability-identifier-length,-llvm-header-guard"
+# HeaderFilterRegex: '^./.*\.(cpp|h|hpp|c|cc)$'
+# ExcludeHeaderFilterRegex: '(tools|wm|ImGuiFileDialog|\.git|tests|build|\.github|editor/include/bindings).*'
+# ExcludeHeaderFilterRegex: "!/Users/stasangoliuk/Desktop/cosmo/editor/src/shared/file-picker.cpp"
 CheckOptions:
   - key: bugprone-argument-comment.StrictMode
     value: 1
@@ -7,11 +10,11 @@ CheckOptions:
   - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
     value: 1
   - key: readability-identifier-naming.NamespaceCase
-    value: snake_case
+    value: camelBack
   - key: readability-identifier-naming.FunctionCase
     value: camelBack
   - key: readability-identifier-naming.VariableCase
-    value: snake_case
+    value: camelBack
   - key: readability-identifier-naming.ClassCase
     value: CamelCase
   - key: modernize-use-auto

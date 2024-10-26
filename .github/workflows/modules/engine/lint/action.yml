@@ -9,11 +9,5 @@ runs:
       with:
         source: '.'
         extensions: 'c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx'
-        clangFormatVersion: 17
+        clangFormatVersion: 18
         inplace: true
-
-    # - name: Lint
-    #   uses: HorstBaerbel/action-clang-tidy@1.2
-    #   with:
-    #     scandir: './game'
-    #     extensions: 'c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx'

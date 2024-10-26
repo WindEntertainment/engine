@@ -57,4 +57,4 @@ target_link_libraries(${PROJECT_NAME} PUBLIC wind-window wind-asset-manager ImGu
 
 #
 
-target_include_directories(${PROJECT_NAME} PUBLIC ./include/)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ./include/)

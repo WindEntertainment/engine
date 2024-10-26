@@ -16,7 +16,6 @@ cd "$root" || exit
 
 COMPILATION_DB=$(find ./build -name "compile_commands.json" -print -quit)
 
-# Check if the compile_commands.json file was found
 if [ ! -f "$COMPILATION_DB" ]; then
   echo "Error: compile_commands.json not found in ./build!"
   exit 1
@@ -24,7 +23,7 @@ fi
 
 cp "$COMPILATION_DB" compile_commands.json
 
-SOURCE_FILES=$(find . -type f \( -name '*.cpp' -o -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cc' \) \
+SOURCE_FILES=$(find "$(pwd)" -type f \( -name '*.cpp' -o -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cc' \) \
   -not -path './tools/*' \
   -not -path './wm/*' \
   -not -path './ImGuiFileDialog/*' \
@@ -32,9 +31,9 @@ SOURCE_FILES=$(find . -type f \( -name '*.cpp' -o -name '*.h' -o -name '*.hpp' -
   -not -path './tests/*' \
   -not -path './build/*' \
   -not -path './.github/*' \
-  -not -path './editor/include/bindings/*')
+  -not -path './editor/include/bindings/*' | xargs)
 
-echo "$SOURCE_FILES" | xargs clang-tidy --fix
-echo "$SOURCE_FILES" | xargs clang-format -i
+# shellcheck disable=SC2086
+python3 "clang-tidy.py" -p "build" -fix -format -style=file -exclude-header-filter="(tools|wm|ImGuiFileDialog|\.git|tests|build|\.github|editor/include/bindings).*" $SOURCE_FILES
 
 cd "$root" || exit

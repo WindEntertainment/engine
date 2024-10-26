@@ -17,7 +17,7 @@ set(SOURCES
 )
 
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PUBLIC ./include/)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ./include/)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION /usr/local/bin)
 
