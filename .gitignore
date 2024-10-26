@@ -4,6 +4,12 @@ Thumbs.db
 CMakeUserPresets.json
 compile_commands.json
 
+.vscode/c_cpp_properties.json
+.vscode/settings.json
+
+c_cpp_properties.json
+settings.json
+
 *.log
 *.app
 *.exe
