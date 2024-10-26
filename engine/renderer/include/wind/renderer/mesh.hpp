@@ -17,7 +17,7 @@ public:
 
 private:
   uint VAO, VBO, EBO;
-  std::vector<int> indices;
+  std::vector<uint> indices;
   std::vector<Vertex> vertices;
 };
 

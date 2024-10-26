@@ -4,6 +4,10 @@
 
 namespace wind {
 
+SDL_GLContext& RenderContext::getRawContext() {
+  return glContext;
+}
+
 RenderContext::RenderContext(std::shared_ptr<Window> window)
     : window(window) {
   glContext = SDL_GL_CreateContext(window->getRawPtr());

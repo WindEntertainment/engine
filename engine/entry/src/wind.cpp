@@ -5,16 +5,24 @@ namespace wind {
 std::shared_ptr<Window> Engine::mainWindow = nullptr;
 std::shared_ptr<RenderContext> Engine::mainRenderContext = nullptr;
 
+std::shared_ptr<Window> Engine::getMainWindow() {
+  return mainWindow;
+}
+
+std::shared_ptr<RenderContext> Engine::getMainRenderContext() {
+  return mainRenderContext;
+}
+
 int Engine::run(Game* game) {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
     spdlog::error("Failed initialization SDL: {}", SDL_GetError());
     return EXIT_FAILURE;
   }
 
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+  // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, SDL_TRUE);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
   mainWindow = Window::create([](Window::Config* self) {
     self->title = "Hello, World!";
