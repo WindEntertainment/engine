@@ -7,8 +7,6 @@ compile_commands.json
 .vscode/c_cpp_properties.json
 .vscode/settings.json
 
-c_cpp_properties.json
-settings.json
 
 *.log
 *.app
@@ -30,7 +28,6 @@ conan-deploy
 emcc-cache
 /.cache/
 !/.github/**
-!/.vscode/**
 
 coverage
 imgui.ini
