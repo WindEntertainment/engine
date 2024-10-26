@@ -1,7 +1,7 @@
 project(wind-asset-bundler)
 
 set(HEADERS
-    ./include/asset-bundler/asset-bundler.hpp
+    ./include/wind/asset-bundler/asset-bundler.hpp
 )
 
 set(SOURCES

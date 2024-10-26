@@ -1,5 +1,5 @@
-#include "input-system/keys.hpp"
-#include "utils/includes.hpp"
+#include "wind/input-system/keys.hpp"
+#include "wind/utils/includes.hpp"
 
 namespace wind {
 

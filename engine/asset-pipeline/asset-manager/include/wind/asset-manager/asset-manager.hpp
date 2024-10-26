@@ -1,10 +1,10 @@
 #pragma once
-#include <pipes/pipes-register.hpp>
+#include <wind/pipes/pipes-register.hpp>
 
 #include <any>
 #include <fstream>
 #include <spdlog/spdlog.h>
-#include <utils/utils.hpp>
+#include <wind/utils/utils.hpp>
 
 namespace wind {
 

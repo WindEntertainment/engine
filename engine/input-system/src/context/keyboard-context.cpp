@@ -1,5 +1,5 @@
-#include "input-system/keyboard-context.hpp"
-#include "input-system/keys.hpp"
+#include "wind/input-system/keyboard-context.hpp"
+#include "wind/input-system/keys.hpp"
 
 namespace wind {
   void KeyboardContext::setCodepoint(unsigned int codepoint) {

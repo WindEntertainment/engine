@@ -1,7 +1,7 @@
 project(wind-window)
 
 set(HEADERS
-    ./include/window/window.hpp
+    ./include/wind/window/window.hpp
 )
 
 set(SOURCES

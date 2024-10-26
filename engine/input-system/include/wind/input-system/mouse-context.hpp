@@ -1,7 +1,7 @@
 #pragma once
-#include "input-system/keys.hpp"
+#include "wind/input-system/keys.hpp"
 #include <set>
-#include "utils/includes.hpp"
+#include "wind/utils/includes.hpp"
 
 namespace wind {
   struct MouseContext {

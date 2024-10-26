@@ -1,9 +1,8 @@
 project(wind-utils)
 
 set(HEADERS
-    ./include/utils/includes.hpp
-    ./include/utils/utils.hpp
-    ./include/utils/yaml-utils.hpp
+    ./include/wind/utils/includes.hpp
+    ./include/wind/utils/utils.hpp
 )
 
 set(SOURCES

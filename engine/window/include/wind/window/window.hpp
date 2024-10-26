@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils/utils.hpp"
+#include "wind/utils/utils.hpp"
 #include <SDL2/SDL.h>
 
 namespace wind {
@@ -10,6 +10,8 @@ namespace wind {
     struct Config;
 
   public:
+    ~Window();
+
     // setters
     void setTitle(const char *title);
     void setSize(glm::ivec2 size);
@@ -32,14 +34,16 @@ namespace wind {
     bool update();
     void show();
 
+    SDL_Window *getRawPtr();
+
   private:
     Window() = default;
     bool create(Config config);
 
-    bool m_alive;
-    const char *m_title;
-    SDL_Window *m_window;
-    int m_fps;
+    bool _alive;
+    const char *_title;
+    SDL_Window *_window;
+    int _fps;
   };
 
   struct Window::Config {

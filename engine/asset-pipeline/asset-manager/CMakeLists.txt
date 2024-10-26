@@ -1,7 +1,7 @@
 project(wind-asset-manager)
 
 set(HEADERS
-    ./include/asset-manager/asset-manager.hpp
+    ./include/wind/asset-manager/asset-manager.hpp
 )
 set(SOURCES
     ./src/asset-manager.cpp

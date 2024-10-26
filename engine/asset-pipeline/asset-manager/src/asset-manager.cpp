@@ -1,4 +1,4 @@
-#include "asset-manager/asset-manager.hpp"
+#include "wind/asset-manager/asset-manager.hpp"
 
 namespace wind {
   std::vector<assets::AssetPipe *> assets::PipeRegister::m_pipes;

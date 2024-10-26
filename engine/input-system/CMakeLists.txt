@@ -1,13 +1,13 @@
 project(wind-input-system)
 
 set(HEADERS
-    ./include/input-system/input-system.hpp
-    ./include/input-system/mouse-context.hpp
-    ./include/input-system/keyboard-context.hpp
-    ./include/input-system/context.hpp
-    ./include/input-system/keys.hpp
-    ./include/input-system/trigger.hpp
-    ./include/input-system/error.hpp
+    ./include/wind/input-system/input-system.hpp
+    ./include/wind/input-system/mouse-context.hpp
+    ./include/wind/input-system/keyboard-context.hpp
+    ./include/wind/input-system/context.hpp
+    ./include/wind/input-system/keys.hpp
+    ./include/wind/input-system/trigger.hpp
+    ./include/wind/input-system/error.hpp
 
 )
 

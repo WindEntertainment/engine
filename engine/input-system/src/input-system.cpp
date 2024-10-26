@@ -1,15 +1,15 @@
-#include "input-system/input-system.hpp"
+#include "wind/input-system/input-system.hpp"
+#include "wind/input-system/context.hpp"
+#include "wind/input-system/error.hpp"
+#include "wind/input-system/keys.hpp"
+#include "wind/input-system/trigger.hpp"
+#include "wind/utils/includes.hpp"
+#include "wind/utils/utils.hpp"
 
-#include "input-system/context.hpp"
-#include "input-system/error.hpp"
-#include "input-system/keys.hpp"
-#include "input-system/trigger.hpp"
-#include "utils/includes.hpp"
-#include "utils/utils.hpp"
 #include <fstream>
 #include <yaml-cpp/yaml.h>
 
-#include <asset-manager/asset-manager.hpp>
+#include <wind/asset-manager/asset-manager.hpp>
 
 namespace wind {
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "input-system/context.hpp"
-#include "input-system/keys.hpp"
+#include "wind/input-system/context.hpp"
+#include "wind/input-system/keys.hpp"
 #include <functional>
 #include <iostream>
 #include <map>
