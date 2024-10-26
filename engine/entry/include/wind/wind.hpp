@@ -1,11 +1,22 @@
-#include <wind/window/window.hpp>
+#include "wind/renderer/render_context.hpp"
+#include "wind/window/window.hpp"
 
 namespace wind {
-    class Engine {
-    public:
-        static int run();
-        static std::shared_ptr<Window> getMainWindow();
-    private:
-        static std::shared_ptr<Window> _mainWindow;
-    };
-}
+
+class Game {
+public:
+  virtual void start() = 0;
+  virtual void update() = 0;
+  virtual void quit() = 0;
+};
+
+class Engine {
+public:
+  static int run(Game*);
+  static std::shared_ptr<Window> getMainWindow();
+
+private:
+  static std::shared_ptr<Window> mainWindow;
+  static std::shared_ptr<RenderContext> mainRenderContext;
+};
+} // namespace wind

@@ -34,6 +34,8 @@ public:
   bool update();
   void show();
 
+  SDL_Window* getRawPtr();
+
 private:
   Window() = default;
   bool create(Config config);

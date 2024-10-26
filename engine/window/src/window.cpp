@@ -47,6 +47,10 @@ std::shared_ptr<Window> Window::create(void (*buildConfig)(Config*)) {
   return nullptr;
 }
 
+SDL_Window* Window::getRawPtr() {
+  return _window;
+}
+
 void Window::close() {
   if (!_window)
     return;

@@ -15,6 +15,7 @@
 #include <sstream>         // IWYU pragma: export
 #include <codecvt>         // IWYU pragma: export
 #include <locale>          // IWYU pragma: export
+#include <array>          // IWYU pragma: export
 
 // #ifndef __APPLE__
 // #include <bits/ranges_algo.h> // IWYU pragma: export
