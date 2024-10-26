@@ -1,4 +1,4 @@
-#include "asset-bundler/asset-bundler.hpp"
+#include "wind/asset-bundler/asset-bundler.hpp"
 
 namespace wind {
 

@@ -1,8 +1,8 @@
 #pragma once
 #define WIND_PIPE_WRITE
 
-#include <utils/utils.hpp>
-#include <utils/yaml-utils.hpp>
+#include <wind/utils/utils.hpp>
+#include <wind/utils/yaml-utils.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -12,11 +12,11 @@
 #include <yaml-cpp/node/node.h>
 #include <yaml-cpp/yaml.h>
 
-#include "pipes/pipe.hpp"
-#include "pipes/pipes-register.hpp"
+#include "wind/pipes/pipe.hpp"
+#include "wind/pipes/pipes-register.hpp"
 
-#include "asset-bundler/asset-bundler-error.hpp"
-#include "asset-bundler/consts.hpp"
+#include "wind/asset-bundler/asset-bundler-error.hpp"
+#include "wind/asset-bundler/consts.hpp"
 
 namespace wind {
   namespace assets {

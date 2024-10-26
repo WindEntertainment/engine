@@ -1,7 +1,7 @@
 #pragma once
 #include "menu-item.hpp"
 #include <editor/editor.hpp>
-#include <utils/utils.hpp>
+#include <wind/utils/utils.hpp>
 
 namespace editor::components {
   class Menu {

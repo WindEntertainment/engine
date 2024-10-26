@@ -5,7 +5,7 @@
 #include <cxxopts.hpp>
 #include <spdlog/spdlog.h>
 
-#include "asset-bundler/asset-bundler.hpp"
+#include "wind/asset-bundler/asset-bundler.hpp"
 
 int main(int argc, char **argv) {
   cxxopts::Options conf_options(

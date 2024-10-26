@@ -1,5 +1,5 @@
-#include "asset-bundler/asset-bundler.hpp"
-#include "pipes/pipe.hpp"
+#include "wind/asset-bundler/asset-bundler.hpp"
+#include "wind/pipes/pipe.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -31,7 +31,9 @@ namespace wind {
         spdlog::info("Run compiling process...");
         if (auto options = config["exports"])
           for (const auto &entry : it) {
-            if (entry.is_directory() || entry.path().filename() == ".export-config" || entry.path().filename().extension() == ".export-config")
+            if (entry.is_directory() ||
+                entry.path().filename() == ".export-config" ||
+                entry.path().filename().extension() == ".export-config")
               continue;
 
             YAML::Node exportNode;

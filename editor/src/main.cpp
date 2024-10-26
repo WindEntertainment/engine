@@ -7,7 +7,6 @@
 #include <SDL.h>
 #include <editor/editor.hpp>
 #include <editor/main.hpp>
-#include <print>
 
 using namespace editor::components;
 
@@ -25,11 +24,8 @@ using namespace editor::components;
 #include "../libs/emscripten/emscripten_mainloop_stub.h"
 #endif
 
-auto loadTextureFromFile(
-  const char *filename,
-  const int *width,
-  const int *height
-) -> GLuint {
+auto loadTextureFromFile(const char *filename, int *width, int *height)
+  -> GLuint {
   int channels = 0;
   unsigned char *data = stbi_load(filename, width, height, &channels, 0);
   if (data == nullptr) {
@@ -94,7 +90,7 @@ auto main(int /*unused*/, char ** /*unused*/) -> int {
 
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) !=
       0) {
-    std::println("Error: {}", SDL_GetError());
+    std::printf("Error: {}", SDL_GetError());
     return -1;
   }
 

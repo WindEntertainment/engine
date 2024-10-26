@@ -1,7 +1,7 @@
 #pragma once
 #include <editor/editor.hpp>
 #include <editor/shared/tab-bar/tab-item.hpp>
-#include <utils/utils.hpp>
+#include <wind/utils/utils.hpp>
 
 namespace editor::components {
   class Tab {

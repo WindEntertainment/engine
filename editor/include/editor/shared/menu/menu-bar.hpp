@@ -1,7 +1,7 @@
 #pragma once
 #include "menu.hpp"
 #include <editor/editor.hpp>
-#include <utils/utils.hpp>
+#include <wind/utils/utils.hpp>
 
 namespace editor::components {
   class MenuBar {
@@ -9,7 +9,7 @@ namespace editor::components {
     const std::string id;
 
     MenuBar(std::string id, Menus menus);
-    static void render();
+    void render();
 
   private:
     Menus menus;

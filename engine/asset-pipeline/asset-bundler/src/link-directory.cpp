@@ -1,5 +1,5 @@
-#include "asset-bundler/asset-bundler.hpp"
-#include "pipes/pipe.hpp"
+#include "wind/asset-bundler/asset-bundler.hpp"
+#include "wind/pipes/pipe.hpp"
 
 #include <filesystem>
 #include <fstream>

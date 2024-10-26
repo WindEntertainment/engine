@@ -1,5 +1,5 @@
-#include "asset-bundler/asset-bundler.hpp"
-#include "pipes/pipe.hpp"
+#include "wind/asset-bundler/asset-bundler.hpp"
+#include "wind/pipes/pipe.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -42,7 +42,8 @@ namespace wind {
         if (!fs::exists(parent_path))
           fs::create_directories(parent_path);
 
-        if (fs::exists(destination) && fs::last_write_time(_source) <= fs::last_write_time(destination))
+        if (fs::exists(destination) &&
+            fs::last_write_time(_source) <= fs::last_write_time(destination))
           return;
 
         _pipe->compile(_source, destination);
