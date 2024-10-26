@@ -24,8 +24,8 @@ namespace wind {
 
   void Material::setTexture(Texture* texture) {
     setters.emplace_back([=]() {
-      // glActiveTexture(GL_TEXTURE0);
-      // glBindTexture(GL_TEXTURE_2D, texture->id());
+      glActiveTexture(GL_TEXTURE0);
+      glBindTexture(GL_TEXTURE_2D, texture->id());
     });
   }
 

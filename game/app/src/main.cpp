@@ -64,7 +64,7 @@ namespace game {
         wind::AssetManager::getAsset<wind::Texture>("main/art/ship.png");
 
       material = new wind::Material(shader);
-      // material->setTexture(texture);
+      material->setTexture(texture);
 
       //====================================//
 
@@ -77,19 +77,9 @@ namespace game {
       wind::CommandBuffer render;
 
       render.clear({0.2f, 0.2f, 0.5f, 1.f});
-      // render.drawMesh(mesh, transform, material);
+      render.drawMesh(mesh, transform, material);
 
       render.submit();
-
-      glActiveTexture(GL_TEXTURE0);
-      glBindTexture(GL_TEXTURE_2D, texture->id());
-
-      glBindVertexArray(mesh->id());
-      material->setMat4("model", transform);
-      material->apply();
-      glDrawElements(
-        GL_TRIANGLES, (GLsizei)mesh->length(), GL_UNSIGNED_INT, nullptr
-      );
 
       transform = glm::rotate(transform, 0.01f, {1, 1, 1});
     }
