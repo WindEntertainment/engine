@@ -60,9 +60,6 @@ namespace game {
       //=================== create transform //
       transform = glm::mat4(1);
       //====================================//
-
-      wind::Engine::getMainRenderContext()->getRawContext();
-      wind::Engine::getMainWindow()->getRawPtr();
     }
 
     void update() override {

@@ -3,21 +3,22 @@
 
 namespace wind {
 
-class Game {
-public:
-  virtual void start() = 0;
-  virtual void update() = 0;
-  virtual void quit() = 0;
-};
+  class Game {
+  public:
+    virtual void start() = 0;
+    virtual void update() = 0;
+    virtual void quit() = 0;
+  };
 
-class Engine {
-public:
-  static int run(Game*);
-  static std::shared_ptr<Window> getMainWindow();
-  static std::shared_ptr<RenderContext> getMainRenderContext();
+  class Engine {
+  public:
+    static int run(Game *);
+    static std::shared_ptr<Window> getMainWindow();
+    static std::shared_ptr<RenderContext> getMainRenderContext();
 
-private:
-  static std::shared_ptr<Window> mainWindow;
-  static std::shared_ptr<RenderContext> mainRenderContext;
-};
+  private:
+    static std::shared_ptr<Window> mainWindow;
+    static std::shared_ptr<RenderContext> mainRenderContext;
+  };
+
 } // namespace wind
