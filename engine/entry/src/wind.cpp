@@ -1,6 +1,12 @@
 #include "wind/wind.hpp"
 
+#include "wind/utils/utils.hpp"
+
 namespace wind {
+
+  namespace {
+    float deltaTime;
+  } // namespace
 
   std::shared_ptr<Window> Engine::mainWindow = nullptr;
   std::shared_ptr<RenderContext> Engine::mainRenderContext = nullptr;
@@ -11,7 +17,9 @@ namespace wind {
     return mainRenderContext;
   }
 
-  int Engine::run(Game *game) {
+  float Engine::getDeltaTime() { return deltaTime; }
+
+  int Engine::run(Game* game) {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
       spdlog::error("Failed initialization SDL: {}", SDL_GetError());
       return EXIT_FAILURE;
@@ -25,7 +33,7 @@ namespace wind {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
-    mainWindow = Window::create([](Window::Config *self) {
+    mainWindow = Window::create([](Window::Config* self) {
       self->title = "Hello, World!";
       self->position = {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED};
     });
@@ -38,7 +46,17 @@ namespace wind {
 
     game->start();
 
+    chrono::time_point previousFrame = chrono::high_resolution_clock::now();
+
     while (alive) {
+      // clang-format off
+      deltaTime = std::chrono::duration<float>(
+        chrono::high_resolution_clock::now() - previousFrame
+      ).count();
+      // clang-format on
+
+      previousFrame = chrono::high_resolution_clock::now();
+
       while (SDL_PollEvent(&event) != 0) {
         if (event.type == SDL_QUIT) {
           alive = false;

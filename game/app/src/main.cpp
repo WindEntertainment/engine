@@ -96,7 +96,9 @@ namespace game {
 
       render.submit();
 
-      transform = glm::translate(transform, {0.f, -0.003f, 0.f});
+      transform = glm::translate(
+        transform, {0.f, -0.3f * wind::Engine::getDeltaTime(), 0.f}
+      );
     }
 
     void quit() override {

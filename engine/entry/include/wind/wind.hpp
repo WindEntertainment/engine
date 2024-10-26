@@ -12,9 +12,10 @@ namespace wind {
 
   class Engine {
   public:
-    static int run(Game *);
+    static int run(Game*);
     static std::shared_ptr<Window> getMainWindow();
     static std::shared_ptr<RenderContext> getMainRenderContext();
+    static float getDeltaTime();
 
   private:
     static std::shared_ptr<Window> mainWindow;
