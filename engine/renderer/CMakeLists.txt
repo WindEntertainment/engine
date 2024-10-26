@@ -9,6 +9,7 @@ set(HEADERS
     ./include/wind/renderer/render_context.hpp
     ./include/wind/renderer/texture.hpp
     ./include/wind/renderer/assets.hpp
+    ./include/wind/renderer/camera.hpp
 )
 
 set(SOURCES
@@ -19,6 +20,7 @@ set(SOURCES
     ./src/render_context.cpp
     ./src/texture.cpp
     ./src/assets.cpp
+    ./src/camera.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC

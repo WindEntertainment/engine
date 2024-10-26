@@ -26,7 +26,7 @@ namespace wind {
       size.x,
       size.y,
       0,
-      GL_BGRA,
+      GL_RGBA,
       GL_UNSIGNED_BYTE,
       pixels
     );
