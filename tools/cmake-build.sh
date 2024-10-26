@@ -45,9 +45,11 @@ if [[ $run == true && "$target" != "all" ]]; then
     echo emscripten
   else
     if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
-      "$root/build/app/build/$build_type/$target/Release/$target.exe"
+      cd "$root/build/app/build/$build_type/$target/Release"
+      "$target.exe"
     else
-      "$root/build/app/build/$build_type/$target/$target"
+      cd "$root/build/app/build/$build_type/$target"
+      "$target"
     fi
   fi
 fi
