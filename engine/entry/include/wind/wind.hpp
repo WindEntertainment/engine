@@ -14,6 +14,7 @@ class Engine {
 public:
   static int run(Game*);
   static std::shared_ptr<Window> getMainWindow();
+  static std::shared_ptr<RenderContext> getMainRenderContext();
 
 private:
   static std::shared_ptr<Window> mainWindow;

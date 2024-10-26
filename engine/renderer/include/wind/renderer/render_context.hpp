@@ -13,6 +13,8 @@ public:
   void flush();
   void use();
 
+  SDL_GLContext& getRawContext();
+
 private:
   SDL_GLContext glContext;
   std::shared_ptr<Window> window;
