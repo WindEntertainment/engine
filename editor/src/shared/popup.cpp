@@ -3,7 +3,7 @@
 
 namespace editor::components {
   Popup::Popup(std::string id, PopupCallback callback)
-      : id(std::move(id)), callback(std::move(std::move(callback))) {}
+      : id(std::move(id)), callback(std::move(callback)) {}
 
   void Popup::render() {
     if (ImGui::BeginPopupModal(

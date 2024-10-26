@@ -3,7 +3,7 @@
 
 namespace editor::components {
   TabItem::TabItem(std::string id, Callback callback)
-      : id(std::move(id)), callback(std::move(std::move(callback))) {}
+      : id(std::move(id)), callback(std::move(callback)) {}
 
   void TabItem::render() {
     if (ImGui::BeginTabItem(id.c_str())) {

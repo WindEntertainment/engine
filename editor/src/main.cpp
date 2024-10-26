@@ -212,6 +212,18 @@ auto main(int /*unused*/, char ** /*unused*/) -> int {
     }
   );
 
+  auto filePicker = FilePicker([]() {
+    std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
+    std::string fileName = ImGuiFileDialog::Instance()->GetCurrentFileName();
+
+    // Load the image and create a new tab
+    int width, height;
+    GLuint texture = loadTextureFromFile(filePath.c_str(), &width, &height);
+    if (texture) {
+      openTabs.push_back({fileName, texture, width, height, true});
+    }
+  });
+
   auto popup = Popup("autoCellConfig", [&](auto close) {
     static int cellWidth = 50;
     static int cellHeight = 50;
@@ -240,7 +252,7 @@ auto main(int /*unused*/, char ** /*unused*/) -> int {
     Tab({"Files", {TabItem({"Example", []() {}})}}),
   });
 
-  auto spriteSheet = Window("Sprite sheet", [&]() {
+  auto spriteSheetWindow = Window("Sprite sheet", [&]() {
     menuBar.render();
 
     if (showGridPopup) {
@@ -250,31 +262,16 @@ auto main(int /*unused*/, char ** /*unused*/) -> int {
 
     tabBar.render();
 
-    // if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
-    //   if (ImGuiFileDialog::Instance()->IsOk()) {
-    //     std::string filePath =
-    ImGuiFileDialog::Instance()->GetFilePathName();
-    //     std::string fileName =
-    //       ImGuiFileDialog::Instance()->GetCurrentFileName();
+    filePicker.render();
 
-    //     // Load the image and create a new tab
-    //     int width, height;
-    //     GLuint texture = LoadTextureFromFile(filePath.c_str(), &width,
-    //     &height); if (texture) {
-    //       openTabs.push_back({fileName, texture, width, height, true});
-    //     }
-    //   }
-    //   ImGuiFileDialog::Instance()->Close();
-    // }
-
-    // openTabs.erase(
-    //   std::remove_if(
-    //     openTabs.begin(),
-    //     openTabs.end(),
-    //     [](const ImageTab &tab) { return !tab.isOpen; }
-    //   ),
-    //   openTabs.end()
-    // );
+    openTabs.erase(
+      std::remove_if(
+        openTabs.begin(),
+        openTabs.end(),
+        [](const ImageTab &tab) { return !tab.isOpen; }
+      ),
+      openTabs.end()
+    );
   });
 
 #ifdef __EMSCRIPTEN__
@@ -305,7 +302,7 @@ auto main(int /*unused*/, char ** /*unused*/) -> int {
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    spriteSheet.render();
+    spriteSheetWindow.render();
 
     ImGui::Render();
 
