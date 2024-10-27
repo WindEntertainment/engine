@@ -7,6 +7,8 @@
 
 #include "wind/asset-bundler/asset-bundler.hpp"
 
+#undef main
+
 int main(int argc, char **argv) {
   cxxopts::Options conf_options(
     "wind-asset-bundler",

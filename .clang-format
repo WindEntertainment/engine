@@ -7,6 +7,7 @@ AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: All
 AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
+AlwaysBreakTemplateDeclarations: true
 BreakBeforeBraces: Attach
 BraceWrapping:
   AfterClass: true
@@ -29,7 +30,7 @@ MaxEmptyLinesToKeep: 1
 NamespaceIndentation: All
 PenaltyExcessCharacter: 100
 PenaltyReturnTypeOnItsOwnLine: 1
-PointerAlignment: Right
+PointerAlignment: Left
 SortIncludes: false
 SpacesInContainerLiterals: false
 AllowShortIfStatementsOnASingleLine: false

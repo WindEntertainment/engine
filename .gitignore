@@ -24,6 +24,8 @@ conan-deploy
 [Tt]mp/
 [Ll]ogs/
 [Rr]eleases/
+[Rr]es/
+.cache
 
 emcc-cache
 /.cache/

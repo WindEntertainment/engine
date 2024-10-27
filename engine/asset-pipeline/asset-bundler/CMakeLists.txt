@@ -2,6 +2,8 @@ project(wind-asset-bundler)
 
 set(HEADERS
     ./include/wind/asset-bundler/asset-bundler.hpp
+    ./include/wind/asset-bundler/asset-bundler-error.hpp
+    ./include/wind/asset-bundler/consts.hpp
 )
 
 set(SOURCES
