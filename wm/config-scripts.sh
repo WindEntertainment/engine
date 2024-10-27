@@ -8,7 +8,6 @@ name=script
 
 while [[ "$#" -gt 0 ]]; do
   case $1 in
-    -n|--name) name="$2"; shift ;;
     --root) root="$2"; shift ;;
     *) echo "Unknown parameter passed: $1" ;;
   esac
@@ -17,20 +16,13 @@ done
 
 cd "$root" || exit
 
-file="$(get_scripts_folder "$root")/$name.sh"
+scripts_folder="$(get_scripts_folder "$root")"
 
-[ -f "$file" ] && throw 1 "File $file already exists"
-
-cp "$(dirname "$0")/health.sh" "$file"
-
-[ ! -f "$file" ] && throw 1 "File $file not created"
-
-
-if echo "$OS" | grep -qi "Windows"; then
+for file in "$scripts_folder"/*.sh; do
   if [ -f "$file" ]; then
     sudo chmod +x "$file"
     echo "Added execute permission to: $file"
   fi
-fi
+done
 
 cd "$call_dir" || exit
