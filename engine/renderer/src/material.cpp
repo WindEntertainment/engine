@@ -6,7 +6,8 @@
 
 namespace wind {
 
-  Material::Material(Shader* shader, int textureCount) : shader(shader) {
+  Material::Material(std::shared_ptr<Shader> shader, int textureCount)
+      : shader(shader) {
     textures.resize(textureCount);
     std::fill(textures.begin(), textures.end(), nullptr);
   };
@@ -28,7 +29,7 @@ namespace wind {
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(transform));
   }
 
-  void Material::setTexture(Texture* texture, int ind) {
+  void Material::setTexture(std::shared_ptr<Texture> texture, int ind) {
     if (textures.size() < ind) {
       spdlog::error(
         "Texture index {} is out of bounds. Valid indices are 0 to {}.",

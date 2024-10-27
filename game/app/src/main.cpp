@@ -17,20 +17,9 @@ namespace game {
 
       wind::AssetManager::loadBundle("res/main.bundle");
 
-      //======================= create mesh //
-      std::vector<wind::Mesh::Vertex> vertices = {
-        {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}},
-        {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
-        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
-        {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}
-      };
-      std::vector<uint> indices = {0, 1, 3, 1, 2, 3};
+      //===================== create sprite //
 
-      mesh = new wind::Mesh(vertices, indices);
-      //====================================//
-
-      //===================== create shader //
-      shader = new wind::Shader(
+      auto shader = std::make_shared<wind::Shader>(
         R"(
             #version 330 core
 
@@ -61,15 +50,14 @@ namespace game {
             }
     )"
       );
-      //====================================//
 
-      //=================== create material //
+      auto texture = std::shared_ptr<wind::Texture>(
+        wind::AssetManager::getAsset<wind::Texture>("main/art/ship.png")
+      );
 
-      texture =
-        wind::AssetManager::getAsset<wind::Texture>("main/art/ship.png");
+      auto material = std::make_shared<wind::Material>(shader, 1);
 
-      material = new wind::Material(shader, 1);
-      material->setTexture(texture);
+      sprite = std::make_shared<wind::Sprite>(material, texture);
 
       //====================================//
 
@@ -94,7 +82,7 @@ namespace game {
       wind::CommandBuffer render(wind::Engine::getMainRenderContext());
 
       render.clear({0.0f, 0.0f, 0.05f, 1.f});
-      render.drawMesh(mesh, transform, material);
+      render.drawSprite(sprite, transform);
 
       render.submit();
 
@@ -103,18 +91,11 @@ namespace game {
       );
     }
 
-    void quit() override {
-      delete mesh;
-      delete material;
-      delete shader;
-    }
+    void quit() override {}
 
   private:
-    wind::Texture* texture;
-    wind::Mesh* mesh;
-    wind::Shader* shader;
-    wind::Material* material;
     glm::mat4 transform;
+    std::shared_ptr<wind::Sprite> sprite;
   };
 
 } // namespace game
