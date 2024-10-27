@@ -4,5 +4,5 @@
 
 namespace wind {
   template <>
-  static Texture* AssetManager::loadAsset(asset_id _id, Bundle* _bundle);
+  Texture* AssetManager::loadAsset(asset_id _id, Bundle* _bundle);
 }
