@@ -10,5 +10,6 @@
 #include "imgui_export_headers.h"
 
 #include <wind/utils/utils.hpp>
+#include "wind/wind.hpp"
 
 using Callback = std::function<void()>;

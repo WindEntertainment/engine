@@ -58,6 +58,7 @@ namespace wind {
       previousFrame = chrono::high_resolution_clock::now();
 
       while (SDL_PollEvent(&event) != 0) {
+        game->handleEvent(event);
         if (event.type == SDL_QUIT) {
           alive = false;
         }

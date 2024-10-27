@@ -7,6 +7,7 @@ namespace wind {
   public:
     virtual void start() = 0;
     virtual void update() = 0;
+    virtual void handleEvent(SDL_Event& event) = 0;
     virtual void quit() = 0;
   };
 
