@@ -6,16 +6,16 @@ namespace wind {
 
   struct Material {
   public:
-    Material(Shader* shader);
+    Material(Shader* shader, int textureCount);
 
     void apply();
 
     void setMat4(const std::string& name, const glm::mat4& transform);
 
-    void setTexture(Texture* texture);
+    void setTexture(Texture* texture, int ind = 0);
 
   private:
-    std::vector<std::function<void()>> setters;
+    std::vector<Texture*> textures;
     Shader* shader;
   };
 

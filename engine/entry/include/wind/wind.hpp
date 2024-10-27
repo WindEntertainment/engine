@@ -15,7 +15,10 @@ namespace wind {
     static int run(Game*);
     static std::shared_ptr<Window> getMainWindow();
     static std::shared_ptr<RenderContext> getMainRenderContext();
+
     static float getDeltaTime();
+    static int getFPS();
+    static void setFPS(int fps);
 
   private:
     static std::shared_ptr<Window> mainWindow;

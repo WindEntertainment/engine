@@ -13,6 +13,8 @@ namespace game {
   class Game : public wind::Game {
   public:
     void start() override {
+      wind::Engine::setFPS(144);
+
       wind::AssetManager::loadBundle("res/main.bundle");
 
       //======================= create mesh //
@@ -66,7 +68,7 @@ namespace game {
       texture =
         wind::AssetManager::getAsset<wind::Texture>("main/art/ship.png");
 
-      material = new wind::Material(shader);
+      material = new wind::Material(shader, 1);
       material->setTexture(texture);
 
       //====================================//

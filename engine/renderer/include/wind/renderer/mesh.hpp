@@ -2,7 +2,7 @@
 
 namespace wind {
 
-struct Mesh {
+class Mesh {
 public:
   struct Vertex {
     glm::vec3 position;

@@ -1,4 +1,4 @@
-Checks: "-*,bugprone-*,portability-*,readability-*,performance-*,llvm-*,modernize-*,-modernize-use-trailing-return-type,-readability-identifier-length,-llvm-header-guard,-readability-uppercase-literal-suffix,-readability-magic-numbers"
+Checks: "-*,bugprone-*,portability-*,readability-*,performance-*,llvm-*,modernize-*,-modernize-use-trailing-return-type,-readability-identifier-length,-llvm-header-guard,-readability-uppercase-literal-suffix,-readability-magic-numbers,-readability-isolate-declaration,-readability-braces-around-statements,-bugprone-narrowing-conversions"
 # HeaderFilterRegex: '^./.*\.(cpp|h|hpp|c|cc)$'
 # ExcludeHeaderFilterRegex: '(tools|wm|ImGuiFileDialog|\.git|tests|build|\.github|editor/include/bindings).*'
 # ExcludeHeaderFilterRegex: "!/Users/stasangoliuk/Desktop/cosmo/editor/src/shared/file-picker.cpp"
