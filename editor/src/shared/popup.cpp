@@ -3,17 +3,23 @@
 
 namespace editor::components {
   Popup::Popup(std::string id, PopupCallback callback)
-      : id(std::move(id)), callback(std::move(callback)) {}
+      : id(std::move(id)), callback(std::move(callback)) {
+    isOpen = false;
+  }
 
   void Popup::render() {
+    if (!ImGui::IsPopupOpen(id.c_str()) && isOpen) {
+      ImGui::OpenPopup(id.c_str());
+    }
+
     if (ImGui::BeginPopupModal(
-          id.c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize
+          id.c_str(), &isOpen, ImGuiWindowFlags_AlwaysAutoResize
         )) {
-      callback(ImGui::CloseCurrentPopup);
+      callback([&]() { close(); });
       ImGui::EndPopup();
     }
   }
 
-  void Popup::open() { ImGui::OpenPopup(id.c_str()); };
-  void Popup::close() { ImGui::CloseCurrentPopup(); };
+  void Popup::open() { isOpen = true; };
+  void Popup::close() { isOpen = false; };
 } // namespace editor::components

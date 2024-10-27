@@ -1,5 +1,6 @@
 #pragma once
 #include <editor/editor.hpp>
+#include <editor/components.hpp>
 #include <editor/bundle-manager/bundle-manager.hpp>
 #include <editor/sprite-sheet-manager/sprite-sheet-manager.hpp>
 #include <wind/utils/utils.hpp>
@@ -7,16 +8,16 @@
 namespace editor::projectManager {
   class Project {
   public:
-    Project::Project(
+    Project(
       std::string name,
       std::string projectPath,
-      spriteSheetManager::SpriteSheetManager spriteSheetManager
+      std::shared_ptr<spriteSheetManager::SpriteSheetManager> spriteSheetManager
     );
 
     std::string name;
     std::string projectPath;
     // bundleManager::BundleManager bundleManager;
-    spriteSheetManager::SpriteSheetManager spriteSheetManager;
+    std::shared_ptr<spriteSheetManager::SpriteSheetManager> spriteSheetManager;
   };
 
   class ProjectManager {
@@ -24,7 +25,7 @@ namespace editor::projectManager {
     void loadProject();
     void saveProject();
 
-    Project project;
+    std::shared_ptr<Project> project;
 
   private:
   };

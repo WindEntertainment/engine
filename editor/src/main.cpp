@@ -102,7 +102,8 @@ auto main(int /*unused*/, char ** /*unused*/) -> int {
 
   bool done = false;
 
-  auto project = projectManager::ProjectManager();
+  auto projectManager = projectManager::ProjectManager();
+  projectManager.loadProject();
 
   while (!done) {
     SDL_Event event;
@@ -125,6 +126,8 @@ auto main(int /*unused*/, char ** /*unused*/) -> int {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
+
+    projectManager.project->spriteSheetManager->window->render();
 
     ImGui::Render();
 

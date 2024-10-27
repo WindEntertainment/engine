@@ -1,22 +1,24 @@
 #include <editor/project-manager/project-manager.hpp>
+#include <utility>
 
 namespace editor::projectManager {
 
   Project::Project(
     std::string name,
     std::string projectPath,
-    spriteSheetManager::SpriteSheetManager spriteSheetManager
+    std::shared_ptr<spriteSheetManager::SpriteSheetManager> spriteSheetManager
   )
-      : name(name), projectPath(projectPath),
+      : name(std::move(std::move(name))),
+        projectPath(std::move(std::move(projectPath))),
         // bundleManager(bundleManager),
         spriteSheetManager(spriteSheetManager) {};
 
   void ProjectManager::loadProject() {
-    project = Project(
+    project = std::make_shared<Project>(
       "game",
       "./",
-      spriteSheetManager::SpriteSheetManager(
-        spriteSheetManager::CellsManager(), spriteSheetManager::FilesManager()
+      std::make_shared<spriteSheetManager::SpriteSheetManager>(
+        std::make_shared<spriteSheetManager::FilesManager>()
       )
     );
   };

@@ -19,9 +19,9 @@ namespace editor::components {
   };
 
   struct MenuItemHash {
-    std::size_t operator()(const MenuItem &menuItem) const {
-      return std::hash<std::string>()(menuItem.id);
+    std::size_t operator()(const std::shared_ptr<MenuItem> menuItem) const {
+      return std::hash<std::string>()(menuItem->id);
     }
   };
-  using MenuItems = std::unordered_set<MenuItem, MenuItemHash>;
+  using MenuItems = std::unordered_set<std::shared_ptr<MenuItem>, MenuItemHash>;
 } // namespace editor::components

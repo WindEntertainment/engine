@@ -15,6 +15,7 @@ set(HEADERS
   ./include/editor/sprite-sheet-manager/sprite-sheet-manager.hpp
   ./include/editor/project-manager/project-manager.hpp
   ./include/editor/bundle-manager/bundle-manager.hpp
+  ./include/editor/components.hpp
 )
 
 set(SOURCES
@@ -47,8 +48,12 @@ add_executable(
 
 #
 # find_package(imgui REQUIRED)
-# target_link_libraries(${PROJECT_NAME} PUBLIC imgui::imgui)
+# find_package(spdlog REQUIRED)
+# target_link_libraries(${PROJECT_NAME} PUBLIC imgui::imgui spdlog::spdlog)
 # target_link_libraries(${PROJECT_NAME} PUBLIC wind-utils wind-window wind-entry wind-input-system wind-asset-manager ImGuiFileDialog)
+
+find_package(spdlog REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog)
 
 find_package(imgui REQUIRED)
 find_package(sdl2 REQUIRED)

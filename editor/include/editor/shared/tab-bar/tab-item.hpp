@@ -16,9 +16,9 @@ namespace editor::components {
   };
 
   struct TabItemHash {
-    std::size_t operator()(const TabItem &tabItem) const {
-      return std::hash<std::string>()(tabItem.id);
+    std::size_t operator()(const std::shared_ptr<TabItem> tabItem) const {
+      return std::hash<std::string>()(tabItem->id);
     }
   };
-  using TabItems = std::unordered_set<TabItem, TabItemHash>;
+  using TabItems = std::unordered_set<std::shared_ptr<TabItem>, TabItemHash>;
 } // namespace editor::components

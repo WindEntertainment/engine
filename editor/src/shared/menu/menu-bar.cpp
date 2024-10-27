@@ -2,13 +2,17 @@
 #include <utility>
 
 namespace editor::components {
-  MenuBar::MenuBar(std::string id, Menus menus)
-      : id(std::move(id)), menus(std::move(menus)) {}
+  MenuBar::MenuBar(std::string id, std::initializer_list<Menu> menus)
+      : id(std::move(id)) {
+    for (const auto &menu : menus) {
+      this->menus.insert(std::make_shared<Menu>(menu));
+    }
+  }
 
   void MenuBar::render() {
     if (ImGui::BeginMenuBar()) {
       for (auto menuItem : menus) {
-        menuItem.render();
+        menuItem->render();
       }
       ImGui::EndMenuBar();
     }

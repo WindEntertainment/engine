@@ -12,11 +12,10 @@ namespace editor::spriteSheetManager {
   void FilesManager::setActiveFile() {};
 
   SpriteSheetManager::SpriteSheetManager(
-    CellsManager cellsManager,
-    FilesManager filesManager
+    std::shared_ptr<FilesManager> filesManager
   )
-      : cellsManager(cellsManager), filesManager(filesManager) {
-    auto filePicker = components::FilePicker([]() {
+      : filesManager(filesManager) {
+    auto filePicker = wind::share(components::FilePicker([]() {
       std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
       std::string fileName = ImGuiFileDialog::Instance()->GetCurrentFileName();
 
@@ -25,39 +24,39 @@ namespace editor::spriteSheetManager {
       // &height); if (texture) {
       //   openTabs.push_back({fileName, texture, width, height, true});
       // }
-    });
+    }));
 
-    auto popup = components::Popup("autoCellConfig", [&](auto close) {
-      static int cellWidth = 50;
-      static int cellHeight = 50;
+    auto popup =
+      wind::share(components::Popup("autoCellConfig", [](auto close) {
+        static int cellWidth = 50;
+        static int cellHeight = 50;
 
-      ImGui::InputInt("Cell Width", &cellWidth);
-      ImGui::InputInt("Cell Height", &cellHeight);
+        ImGui::InputInt("Cell Width", &cellWidth);
+        ImGui::InputInt("Cell Height", &cellHeight);
 
-      if (ImGui::Button("Apply")) {
-        // for (auto &tab : openTabs) {
-        //   tab.cellWidth = cellWidth;
-        //   tab.cellHeight = cellHeight;
-        //   tab.drawGrid = true;
-        // }
-        // showGridPopup = false;
-        close();
-      }
+        if (ImGui::Button("Apply")) {
+          // for (auto &tab : openTabs) {
+          //   tab.cellWidth = cellWidth;
+          //   tab.cellHeight = cellHeight;
+          //   tab.drawGrid = true;
+          // }
+          // showGridPopup = false;
+          close();
+        }
 
-      ImGui::SameLine();
-      if (ImGui::Button("Cancel")) {
-        // showGridPopup = false;
-        close();
-      }
-    });
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel")) {
+          close();
+        }
+      }));
 
-    auto menuBar = components::MenuBar(
+    auto menuBar = wind::share(components::MenuBar(
       "Spread sheet menu bar",
       {
         components::Menu(
           "File",
           {
-            components::MenuItem("Create", []() {}),
+            components::MenuItem("Create", [&]() {}),
             components::MenuItem(
               "Open",
               []() {
@@ -68,9 +67,9 @@ namespace editor::spriteSheetManager {
               "Ctrl+O"
             ),
             components::MenuItem(
-              "Save", []() {}, "Ctrl+S"
+              "Save", [&]() {}, "Ctrl+S"
             ),
-            components::MenuItem("Save as..", []() {}),
+            components::MenuItem("Save as..", [&]() {}),
           }
         ),
         components::Menu(
@@ -78,42 +77,42 @@ namespace editor::spriteSheetManager {
           {
             components::MenuItem(
               "Auto",
-              [&]() {
+              [popup]() {
                 std::cout << "Here";
-                popup.open();
+                popup->open();
                 // showGridPopup = true;
               }
             ),
           }
         ),
       }
-    );
+    ));
 
-    auto tabBar = components::TabBar({
+    auto tabBar = wind::share(components::TabBar({
       components::Tab({"Files", {components::TabItem({"Example", []() {}})}}),
-    });
+    }));
 
-    window = components::Window("Sprite sheet", [&]() {
-      menuBar.render();
+    window = std::make_shared<components::Window>(
+      "Sprite sheet",
+      [menuBar, popup, filePicker, tabBar]() {
+        menuBar->render();
 
-      // if (showGridPopup) {
-      //   popup.open();
-      // }
-      popup.render();
+        popup->render();
 
-      tabBar.render();
+        tabBar->render();
 
-      filePicker.render();
+        filePicker->render();
 
-      // openTabs.erase(
-      //   std::remove_if(
-      //     openTabs.begin(),
-      //     openTabs.end(),
-      //     [](const ImageTab &tab) { return !tab.isOpen; }
-      //   ),
-      //   openTabs.end()
-      // );
-    });
+        // openTabs.erase(
+        //   std::remove_if(
+        //     openTabs.begin(),
+        //     openTabs.end(),
+        //     [](const ImageTab &tab) { return !tab.isOpen; }
+        //   ),
+        //   openTabs.end()
+        // );
+      }
+    );
 
     // window = spriteSheetWindow;
   };

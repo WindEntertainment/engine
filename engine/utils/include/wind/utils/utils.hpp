@@ -25,6 +25,18 @@ namespace wind {
   //     fmt::make_format_args(_args...)).c_str());
   // }
 
+  // template <typename T, typename... Args>
+  // std::shared_ptr<T> shared(Args &&...args) {
+  //   T instance(args...);
+  //   return instance;
+  //   // return std::make_shared<T>(instance);
+  // }
+
+  template <typename T> std::shared_ptr<T> share(T &&instance) {
+    // Create a shared_ptr by moving the instance
+    return std::shared_ptr<T>(new T(std::forward<T>(instance)));
+  }
+
 #define verify(errorType, condition)                                           \
   if (!(condition))                                                            \
   throw (errorType)(fmt::format("{}: {}", #errorType, #condition))

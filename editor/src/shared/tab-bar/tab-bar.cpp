@@ -2,11 +2,15 @@
 #include <utility>
 
 namespace editor::components {
-  TabBar::TabBar(Tabs tabs) : tabs(std::move(tabs)) {}
+  TabBar::TabBar(std::initializer_list<Tab> tabs) {
+    for (const auto &tab : tabs) {
+      this->tabs.insert(std::make_shared<Tab>(tab));
+    }
+  }
 
   void TabBar::render() {
     for (auto tab : tabs) {
-      tab.render();
+      tab->render();
     }
   }
 } // namespace editor::components

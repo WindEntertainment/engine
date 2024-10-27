@@ -8,7 +8,7 @@ namespace editor::components {
   public:
     const std::string id;
 
-    MenuBar(std::string id, Menus menus);
+    MenuBar(std::string id, std::initializer_list<Menu> menus);
     void render();
 
   private:

@@ -7,7 +7,7 @@ namespace editor {
   namespace components {
     class TabBar {
     public:
-      TabBar(Tabs tabs);
+      TabBar(std::initializer_list<Tab> tabs);
       void render();
 
     private:

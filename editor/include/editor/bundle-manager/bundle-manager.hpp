@@ -1,5 +1,6 @@
 #pragma once
 #include <editor/editor.hpp>
+#include <editor/components.hpp>
 #include <wind/utils/utils.hpp>
 
 namespace editor::bundleManager {
@@ -15,15 +16,15 @@ namespace editor::bundleManager {
     void setActiveFile();
 
   private:
-    File activeFile;
-    std::unordered_set<File> files;
+    std::shared_ptr<File> activeFile;
+    // std::unordered_set<File> files;
   };
 
   class BundleManager {
   public:
-    BundleManager(FilesManager filesManager);
+    BundleManager(std::shared_ptr<FilesManager> filesManager);
 
-    FilesManager filesManager;
+    std::shared_ptr<FilesManager> filesManager;
 
   private:
   };

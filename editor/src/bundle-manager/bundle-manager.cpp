@@ -6,7 +6,7 @@ namespace editor::bundleManager {
   void FilesManager::closeFile() {};
   void FilesManager::setActiveFile() {};
 
-  BundleManager::BundleManager(FilesManager filesManager)
+  BundleManager::BundleManager(std::shared_ptr<FilesManager> filesManager)
       : filesManager(filesManager) {};
 
 } // namespace editor::bundleManager
