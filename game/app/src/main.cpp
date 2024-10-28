@@ -13,61 +13,21 @@ namespace game {
   class Game : public wind::Game {
   public:
     void start() override {
+      wind::Engine::setFPS(144);
+
       wind::AssetManager::loadBundle("res/main.bundle");
 
-      //======================= create mesh //
-      std::vector<wind::Mesh::Vertex> vertices = {
-        {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}},
-        {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
-        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
-        {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}
-      };
-      std::vector<uint> indices = {0, 1, 3, 1, 2, 3};
+      //===================== create sprite //
 
-      mesh = new wind::Mesh(vertices, indices);
-      //====================================//
+      auto shader =
+        wind::AssetManager::getAsset<wind::Shader>("default-sprite-shader");
 
-      //===================== create shader //
-      shader = new wind::Shader(
-        R"(
-            #version 330 core
-
-            layout (location = 0) in vec3 aPos;
-            layout (location = 1) in vec2 aTexCoords;
-
-            uniform mat4 model;
-            uniform mat4 view;
-            uniform mat4 projection;
-
-            out vec2 TexCoord;
-
-            void main() {
-                gl_Position = view * projection * model * vec4(aPos, 1.0);
-                TexCoord = aTexCoords;
-            }
-        )",
-        R"(
-            #version 330 core
-
-            out vec4 FragColor;
-            in vec2 TexCoord;
-
-            uniform sampler2D tex0;
-
-            void main() {
-                FragColor = texture(tex0, TexCoord);
-            }
-    )"
-      );
-      //====================================//
-
-      //=================== create material //
-
-      texture =
+      auto texture =
         wind::AssetManager::getAsset<wind::Texture>("main/art/ship.png");
 
-      material = new wind::Material(shader);
-      material->setTexture(texture);
+      auto material = std::make_shared<wind::Material>(shader, 1);
+
+      sprite = std::make_shared<wind::Sprite>(material, texture);
 
       //====================================//
 
@@ -94,7 +54,7 @@ namespace game {
       wind::CommandBuffer render(wind::Engine::getMainRenderContext());
 
       render.clear({0.0f, 0.0f, 0.05f, 1.f});
-      render.drawMesh(mesh, transform, material);
+      render.drawSprite(sprite, transform);
 
       render.submit();
 
@@ -103,18 +63,11 @@ namespace game {
       );
     }
 
-    void quit() override {
-      delete mesh;
-      delete material;
-      delete shader;
-    }
+    void quit() override {}
 
   private:
-    wind::Texture* texture;
-    wind::Mesh* mesh;
-    wind::Shader* shader;
-    wind::Material* material;
     glm::mat4 transform;
+    std::shared_ptr<wind::Sprite> sprite;
   };
 
 } // namespace game

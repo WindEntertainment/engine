@@ -6,6 +6,7 @@ set(HEADERS
 
 set(SOURCES
     ./src/wind.cpp
+    ./src/default-res.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC

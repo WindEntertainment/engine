@@ -35,49 +35,31 @@ namespace wind {
 
   Window::~Window() { close(); }
 
-  std::shared_ptr<Window> Window::create(void (*buildConfig)(Config *)) {
+  std::shared_ptr<Window> Window::create(void (*buildConfig)(Config*)) {
     Config config;
     buildConfig(&config);
 
-    Window *window = new Window();
+    Window* window = new Window();
     if (window->create(config))
       return std::shared_ptr<Window>(window);
 
     return nullptr;
   }
 
-  SDL_Window *Window::getRawPtr() { return _window; }
+  SDL_Window* Window::getRawPtr() { return _window; }
 
   void Window::close() {
-    if (!_window)
+    if (_window == nullptr)
       return;
 
     _alive = false;
     SDL_DestroyWindow(_window);
   }
 
-  void Window::show() {
-    static const auto oneSecond =
-      std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>(
-        std::chrono::seconds(1)
-      );
-    static int numFrames = 0;
-
-    numFrames += 1;
-    if (chrono::high_resolution_clock::now() > m_perSecond) {
-      _fps = numFrames;
-      numFrames = 0;
-
-      m_perSecond = chrono::high_resolution_clock::now() + oneSecond;
-    }
-  }
-
-  bool Window::update() { return _alive; }
-
   //===========================================//
   // Setters
 
-  void Window::setTitle(const char *_title) {
+  void Window::setTitle(const char* _title) {
     SDL_SetWindowTitle(_window, _title);
     _title = _title;
   }
@@ -101,7 +83,7 @@ namespace wind {
   //===========================================//
   // Getters
 
-  const char *Window::title() { return _title; }
+  const char* Window::title() { return _title; }
 
   glm::ivec2 Window::size() {
     int w, h;
@@ -132,7 +114,5 @@ namespace wind {
   bool Window::isVisibleCursor() {
     return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
   }
-
-  int Window::getFPS() { return _fps; }
 
 } // namespace wind

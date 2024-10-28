@@ -20,9 +20,9 @@ namespace wind {
   }
 
   void CommandBuffer::drawMesh(
-    Mesh* mesh,
+    const std::shared_ptr<Mesh>& mesh,
     glm::mat4x4& transform,
-    Material* material
+    const std::shared_ptr<Material>& material
   ) {
     commands.emplace_back([=]() {
       glBindVertexArray(mesh->id());
@@ -31,6 +31,23 @@ namespace wind {
       material->setMat4("projection", context->getCamera()->getProjection());
       material->apply();
       glDrawElements(GL_TRIANGLES, mesh->length(), GL_UNSIGNED_INT, 0);
+    });
+  }
+
+  void CommandBuffer::drawSprite(
+    const std::shared_ptr<Sprite>& sprite,
+    glm::mat4x4& transform
+  ) {
+    commands.emplace_back([=]() {
+      glBindVertexArray(sprite->id());
+
+      auto material = sprite->getMaterial();
+      material->setMat4("model", transform);
+      material->setMat4("view", context->getCamera()->getTransform());
+      material->setMat4("projection", context->getCamera()->getProjection());
+      material->apply();
+
+      glDrawElements(GL_TRIANGLES, sprite->length(), GL_UNSIGNED_INT, 0);
     });
   }
 
