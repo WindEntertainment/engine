@@ -88,6 +88,8 @@ namespace game {
       );
     }
 
+    void handleEvent(SDL_Event& event) override {}
+
     void update() override {
       wind::CommandBuffer render(wind::Engine::getMainRenderContext());
 
