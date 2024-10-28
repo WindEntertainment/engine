@@ -11,5 +11,6 @@
 
 #include <wind/utils/utils.hpp>
 #include "wind/wind.hpp"
+#include "wind/event-manager/event-manager.hpp"
 
 using Callback = std::function<void()>;

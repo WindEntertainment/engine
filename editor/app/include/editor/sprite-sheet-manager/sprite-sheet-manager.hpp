@@ -12,16 +12,16 @@ namespace editor::spriteSheetManager {
     int height;
     int x;
     int y;
-    bool operator==(const Cell &menuItem) const { return id == menuItem.id; }
+    bool operator==(const Cell& menuItem) const { return id == menuItem.id; }
   };
 
   struct CellHash {
-    std::size_t operator()(const Cell &cell) const {
+    std::size_t operator()(const Cell& cell) const {
       return std::hash<std::string>()(cell.id);
     }
   };
 
-  using Cells = std::unordered_set<Cell, CellHash>;
+  using Cells = std::vector<std::shared_ptr<Cell>>;
 
   class CellsManager {
   public:
@@ -37,12 +37,11 @@ namespace editor::spriteSheetManager {
 
   struct File {
     std::string id;
-    bool isActive;
     std::filesystem::path imagePath;
     std::filesystem::path spriteSheetPath;
     GLuint texture;
     std::shared_ptr<CellsManager> cellsManager;
-    bool operator==(const File &file) const { return id == file.id; }
+    bool operator==(const File& file) const { return id == file.id; }
   };
 
   struct FileHash {
@@ -51,17 +50,16 @@ namespace editor::spriteSheetManager {
     }
   };
 
-  using Files = std::unordered_set<std::shared_ptr<File>, FileHash>;
+  using Files = std::vector<std::shared_ptr<File>>;
 
   class FilesManager {
   public:
-    void openFile();
-    void closeFile();
-
-    void setActiveFile();
+    void openFile(std::shared_ptr<File>);
+    void closeFile(std::shared_ptr<File>);
+    void setActiveFile(std::shared_ptr<File>);
 
     std::shared_ptr<File> activeFile;
-    Files files;
+    Files files = {};
 
   private:
   };
@@ -72,6 +70,7 @@ namespace editor::spriteSheetManager {
 
     std::shared_ptr<components::Window> window;
     std::shared_ptr<FilesManager> filesManager;
+    std::shared_ptr<wind::EventManager> eventManager;
 
   private:
   };

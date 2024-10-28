@@ -8,19 +8,19 @@ namespace editor::projectManager {
     std::string projectPath,
     std::shared_ptr<spriteSheetManager::SpriteSheetManager> spriteSheetManager
   )
-      : name(std::move(std::move(name))),
-        projectPath(std::move(std::move(projectPath))),
+      : name(std::move(name)), projectPath(std::move(projectPath)),
         // bundleManager(bundleManager),
         spriteSheetManager(spriteSheetManager) {};
 
   void ProjectManager::loadProject() {
-    project = std::make_shared<Project>(
+    project = wind::share(Project(
+
       "game",
       "./",
-      std::make_shared<spriteSheetManager::SpriteSheetManager>(
-        std::make_shared<spriteSheetManager::FilesManager>()
-      )
-    );
+      wind::share(spriteSheetManager::SpriteSheetManager(
+        wind::share(spriteSheetManager::FilesManager())
+      ))
+    ));
   };
   void ProjectManager::saveProject() {};
 
