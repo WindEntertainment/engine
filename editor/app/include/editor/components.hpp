@@ -8,5 +8,4 @@
 #include <editor/shared/menu/menu-item.hpp>
 #include <editor/shared/menu/menu.hpp>
 #include <editor/shared/tab-bar/tab-bar.hpp>
-#include <editor/shared/tab-bar/tab-item.hpp>
 #include <editor/shared/tab-bar/tab.hpp>

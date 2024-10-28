@@ -10,7 +10,6 @@ set(HEADERS
   ./app/include/editor/shared/popup.hpp
   ./app/include/editor/shared/tab-bar/tab.hpp
   ./app/include/editor/shared/tab-bar/tab-bar.hpp
-  ./app/include/editor/shared/tab-bar/tab-item.hpp
   ./app/include/editor/shared/window.hpp
   ./app/include/editor/sprite-sheet-manager/sprite-sheet-manager.hpp
   ./app/include/editor/project-manager/project-manager.hpp
@@ -27,7 +26,6 @@ set(SOURCES
   ./app/src/shared/popup.cpp
   ./app/src/shared/tab-bar/tab.cpp
   ./app/src/shared/tab-bar/tab-bar.cpp
-  ./app/src/shared/tab-bar/tab-item.cpp
   ./app/src/shared/window.cpp
   ./app/src/sprite-sheet-manager/sprite-sheet-manager.cpp
   ./app/src/project-manager/project-manager.cpp
@@ -44,25 +42,10 @@ set(BINDINGS
 
 add_wind_game(${PROJECT_NAME} "main;" ${HEADERS} ${SOURCES} ${BINDINGS})
 
-#
 find_package(imgui REQUIRED)
 find_package(spdlog REQUIRED)
-target_link_libraries(${PROJECT_NAME} PUBLIC imgui::imgui spdlog::spdlog)
-target_link_libraries(${PROJECT_NAME} PUBLIC wind-utils wind-window wind-entry wind-input-system wind-asset-manager ImGuiFileDialog)
-
-# find_package(spdlog REQUIRED)
-# target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog)
-
-# find_package(imgui REQUIRED)
-# find_package(sdl2 REQUIRED)
-# find_package(OpenGL REQUIRED)
-# find_package(stb REQUIRED)
-# find_package(glad CONFIG REQUIRED)
-# find_package(portable-file-dialogs REQUIRED)
-
-# target_link_libraries(${PROJECT_NAME} PUBLIC glad::glad portable-file-dialogs::portable-file-dialogs stb::stb imgui::imgui SDL2::SDL2 OpenGL::GL)
-# target_link_libraries(${PROJECT_NAME} PUBLIC wind-utils wind-window wind-entry wind-input-system wind-asset-manager ImGuiFileDialog)
-
-#
+find_package(stb REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC stb::stb imgui::imgui spdlog::spdlog)
+target_link_libraries(${PROJECT_NAME} PUBLIC wind ImGuiFileDialog)
 
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ./app/include/)
