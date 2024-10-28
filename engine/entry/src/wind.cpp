@@ -52,6 +52,8 @@ namespace wind {
     mainRenderContext = std::make_shared<RenderContext>(mainWindow);
     mainRenderContext->use();
 
+    addDefaultAssets();
+
     game->start();
 
     SDL_Event event;

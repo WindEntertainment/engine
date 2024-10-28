@@ -23,6 +23,8 @@ namespace wind {
   private:
     static std::shared_ptr<Window> mainWindow;
     static std::shared_ptr<RenderContext> mainRenderContext;
+
+    static void addDefaultAssets();
   };
 
 } // namespace wind

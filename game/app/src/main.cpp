@@ -19,41 +19,11 @@ namespace game {
 
       //===================== create sprite //
 
-      auto shader = std::make_shared<wind::Shader>(
-        R"(
-            #version 330 core
+      auto shader =
+        wind::AssetManager::getAsset<wind::Shader>("default-sprite-shader");
 
-            layout (location = 0) in vec3 aPos;
-            layout (location = 1) in vec2 aTexCoords;
-
-            uniform mat4 model;
-            uniform mat4 view;
-            uniform mat4 projection;
-
-            out vec2 TexCoord;
-
-            void main() {
-                gl_Position = view * projection * model * vec4(aPos, 1.0);
-                TexCoord = aTexCoords;
-            }
-        )",
-        R"(
-            #version 330 core
-
-            out vec4 FragColor;
-            in vec2 TexCoord;
-
-            uniform sampler2D tex0;
-
-            void main() {
-                FragColor = texture(tex0, TexCoord);
-            }
-    )"
-      );
-
-      auto texture = std::shared_ptr<wind::Texture>(
-        wind::AssetManager::getAsset<wind::Texture>("main/art/ship.png")
-      );
+      auto texture =
+        wind::AssetManager::getAsset<wind::Texture>("main/art/ship.png");
 
       auto material = std::make_shared<wind::Material>(shader, 1);
 

@@ -14,16 +14,16 @@
 namespace wind {
 
   std::unordered_map<Key, Callbacks, KeyHash> InputSystem::keycodeTriggers;
-  std::map<std::string, Trigger *> InputSystem::groupedTriggers;
+  std::map<std::string, Trigger*> InputSystem::groupedTriggers;
 
-  InputSystemContext *InputSystem::context = new InputSystemContext();
+  InputSystemContext* InputSystem::context = new InputSystemContext();
 
   inline void InputSystem::groupedEventToCycle(Key keycode) {
     if (keycodeTriggers.contains(keycode)) {
       std::for_each(
         keycodeTriggers[keycode].begin(),
         keycodeTriggers[keycode].end(),
-        [](Callback *callback) { (*callback)(context); }
+        [](Callback* callback) { (*callback)(context); }
       );
     }
   }
@@ -148,7 +148,7 @@ namespace wind {
     }
 
     YAML::Node config =
-      YAML::Load(reinterpret_cast<const char *>(triggersData));
+      YAML::Load(reinterpret_cast<const char*>(triggersData.get()));
 
     if (!config["triggers"] || !config["triggers"].IsSequence()) {
       spdlog::error(
@@ -159,11 +159,11 @@ namespace wind {
       return;
     }
 
-    for (const auto &triggerNode : config["triggers"]) {
+    for (const auto& triggerNode : config["triggers"]) {
       std::string name = triggerNode["name"].as<std::string>();
       Keys bindings;
 
-      for (const auto &bindingNode : triggerNode["bindings"]) {
+      for (const auto& bindingNode : triggerNode["bindings"]) {
         auto key = mapStringToKeycode(bindingNode["key"].as<std::string>());
         auto actionType =
           mapStringToKeyAction(bindingNode["action"].as<std::string>());
@@ -198,7 +198,7 @@ namespace wind {
   void InputSystem::addTrigger(
     std::string groupName,
     Keys bindings,
-    Callback *callback
+    Callback* callback
   ) {
     verify(InputSystemError, callback);
     forEach(bindings, [](auto binding) {
@@ -225,7 +225,7 @@ namespace wind {
   void InputSystem::addTrigger(
     std::string groupName,
     Key binding,
-    Callback *callback
+    Callback* callback
   ) {
     verify(InputSystemError, binding != Key{} && callback);
     addGroupedTrigger(groupName, binding, callback);
@@ -271,7 +271,7 @@ namespace wind {
   }
 
   void
-  InputSystem::addTriggerCallbacks(std::string groupName, Callback *callback) {
+  InputSystem::addTriggerCallbacks(std::string groupName, Callback* callback) {
     addGroupedTriggerCallbacks(groupName, callback);
     addKeycodeTriggerCallbacks(groupName, callback);
   }

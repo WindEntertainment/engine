@@ -13,17 +13,17 @@ namespace wind {
     private:
       // std::map<asset_id, asset_id> m_assets;
       // std::map<asset_id, asset_id> m_assetsSizes;
-      std::vector<asset_id> m_ids;
-      std::vector<asset_id> m_offsets;
-      std::vector<asset_id> m_ends;
-      asset_id m_fileSize;
+      std::vector<asset_id> ids;
+      std::vector<asset_id> offsets;
+      std::vector<asset_id> ends;
+      asset_id fileSize;
 
     public:
       std::ifstream m_file;
 
-      Bundle(std::ifstream&& _file) : m_file(std::move(_file)) {
+      Bundle(std::ifstream&& file) : m_file(std::move(file)) {
         m_file.seekg(0, std::ios::end);
-        m_fileSize = m_file.tellg();
+        fileSize = m_file.tellg();
         m_file.seekg(0, std::ios::beg);
 
         asset_id header_size;
@@ -45,32 +45,31 @@ namespace wind {
 
           spdlog::debug("Load meta-resource. id: {}, offset: {}", id, offset);
           // m_assets.insert(std::make_pair(id, offset));
-          m_ids.push_back(id);
-          m_offsets.push_back(offset);
+          ids.push_back(id);
+          offsets.push_back(offset);
         }
 
         for (asset_id i = 0; i < count; ++i) {
           asset_id size = 0;
-          if (i + 1 < m_offsets.size())
-            size = m_offsets[i + 1];
+          if (i + 1 < offsets.size())
+            size = offsets[i + 1];
           else
-            size = m_fileSize;
+            size = fileSize;
 
-          m_ends.push_back(size);
+          ends.push_back(size);
         }
       }
 
       ~Bundle() { m_file.close(); }
 
-      bool tryGetOffsetById(asset_id _id, asset_id& _offset, asset_id& _end) {
-        if (std::find(m_ids.begin(), m_ids.end(), _id) == m_ids.end())
+      bool tryGetOffsetById(asset_id id, asset_id& offset, asset_id& end) {
+        if (std::find(ids.begin(), ids.end(), id) == ids.end())
           return false;
 
-        size_t ind = std::distance(
-          m_ids.begin(), std::find(m_ids.begin(), m_ids.end(), _id)
-        );
-        _offset = m_offsets[ind];
-        _end = m_ends[ind] - 12;
+        size_t ind =
+          std::distance(ids.begin(), std::find(ids.begin(), ids.end(), id));
+        offset = offsets[ind];
+        end = ends[ind] - 12;
 
         // if (_id + 1 < m_assets.size())
         //   _end = m_assets[_id + 1];
@@ -81,7 +80,7 @@ namespace wind {
       }
 
       bool determinatePipe(asset_id offset, asset_id size, asset_id& pipe) {
-        if (size > m_fileSize)
+        if (size > fileSize)
           return false;
 
         try {
@@ -103,42 +102,39 @@ namespace wind {
     };
 
   private:
-    static std::vector<Bundle*> m_bundles;
-    static std::hash<std::string> m_hasher;
-    static std::map<asset_id, std::any> m_preloads;
+    static std::vector<Bundle*> bundles;
+    static std::hash<std::string> hasher;
+    static std::map<asset_id, std::any> permanent;
+    static std::map<asset_id, std::any> cached;
 
     template <typename T>
-    static T* loadAsset(asset_id _id, Bundle* _bundle) {
+    static T* loadAsset(asset_id id, Bundle* bundle) {
       asset_id begin, end;
 
-      if (!_bundle->tryGetOffsetById(_id, begin, end))
+      if (!bundle->tryGetOffsetById(id, begin, end))
         return nullptr;
 
       asset_id size = end - begin;
 
       spdlog::debug(
-        "Load asset by id {}. begin: {}, end: {}, size: {}",
-        _id,
-        begin,
-        end,
-        size
+        "Load asset by id {}. begin: {}, end: {}, size: {}", id, begin, end, size
       );
 
       void* asset = nullptr;
       asset_id pipe_id = 0;
 
-      if (_bundle->determinatePipe(begin, size, pipe_id)) {
+      if (bundle->determinatePipe(begin, size, pipe_id)) {
         assets::AssetPipe* pipe = assets::PipeRegister::getPipe(pipe_id);
         if (!pipe)
           spdlog::error(
-            "Failed load asset. unknow pipe:  {}. asset id: {}", pipe_id, _id
+            "Failed load asset. unknow pipe:  {}. asset id: {}", pipe_id, id
           );
 
         try {
-          asset = pipe->load(_bundle->m_file);
+          asset = pipe->load(bundle->m_file);
         } catch (std::exception& ex) {
           spdlog::error(
-            "Failed load asset by id {} by pipe {}: {}", _id, pipe_id, ex.what()
+            "Failed load asset by id {} by pipe {}: {}", id, pipe_id, ex.what()
           );
           return nullptr;
         }
@@ -148,58 +144,85 @@ namespace wind {
     }
 
   public:
-    static void loadBundle(const fs::path& _path) {
-      std::ifstream file(_path, std::ios_base::binary);
+    static void loadBundle(const fs::path& path) {
+      std::ifstream file(path, std::ios_base::binary);
       if (!file.is_open()) {
         spdlog::error(
-          "Fail load bundle: fail open file by path: {}", _path.string()
+          "Fail load bundle: fail open file by path: {}", path.string()
         );
         return;
       }
 
-      m_bundles.push_back(new Bundle(std::move(file)));
+      bundles.push_back(new Bundle(std::move(file)));
     }
 
     static void unloadBundles() {
-      for (auto& bundle : m_bundles)
+      for (auto& bundle : bundles)
         delete bundle;
-      m_bundles.clear();
+      bundles.clear();
     }
 
     template <typename T>
-    static void preload(const char* _key) {
-      asset_id id = m_hasher(_key);
+    static void loadPermanent(const char* key) {
+      asset_id id = hasher(key);
 
-      if (m_preloads.contains(id))
+      if (permanent.contains(id))
         return;
 
-      m_preloads.insert(
-        std::make_pair(id, std::shared_ptr<T>(getAsset<T>(_key)))
+      permanent.insert(std::make_pair(id, std::shared_ptr<T>(getAsset<T>(key)))
       );
     }
 
+    static void unloadPermanent(const char* key) {
+      asset_id id = hasher(key);
+
+      if (permanent.contains(id))
+        return;
+
+      permanent.erase(id);
+    }
+
     template <typename T>
-    static T* getAsset(const char* _key) {
-      asset_id id = m_hasher(_key);
+    static void addAsset(const char* key, std::shared_ptr<T> resource) {
+      asset_id id = hasher(key);
 
-      if (m_preloads.contains(id))
-        return std::any_cast<std::shared_ptr<T>>(m_preloads[id]).get();
+      permanent.insert(std::make_pair(id, resource));
+    }
 
-      for (auto& bundle : m_bundles) {
-        T* asset = loadAsset<T>(id, bundle);
-        if (asset != nullptr)
-          return asset;
+    // template <typename T>
+    // static T* getAssetExternal(const char* path) {}
+
+    template <typename T>
+    static std::shared_ptr<T> getAsset(const char* key) {
+      asset_id id = hasher(key);
+
+      if (permanent.contains(id))
+        return std::any_cast<std::shared_ptr<T>>(permanent[id]);
+
+      if (cached.contains(id)) {
+        auto value = std::any_cast<std::weak_ptr<T>>(cached[id]);
+        if (!value.expired())
+          return std::shared_ptr<T>(value);
       }
 
-      spdlog::error("Failed get asset. name: '{}', hash: {}", _key, id);
+      for (auto& bundle : bundles) {
+        T* asset = loadAsset<T>(id, bundle);
+        if (asset != nullptr) {
+          auto shared_ptr = std::shared_ptr<T>(asset);
+          cached.insert(std::make_pair(id, std::weak_ptr<T>(shared_ptr)));
+          return shared_ptr;
+        }
+      }
+
+      spdlog::error("Failed get asset. name: '{}', hash: {}", key, id);
       return nullptr;
     }
 
-    static bool exists(const char* _key) {
-      asset_id id = m_hasher(_key);
+    static bool exists(const char* key) {
+      asset_id id = hasher(key);
       asset_id begin, end;
 
-      for (auto& bundle : m_bundles)
+      for (auto& bundle : bundles)
         if (bundle->tryGetOffsetById(id, begin, end))
           return true;
       return false;
