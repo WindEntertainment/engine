@@ -32,8 +32,8 @@ namespace wind {
   //   // return std::make_shared<T>(instance);
   // }
 
-  template <typename T> std::shared_ptr<T> share(T &&instance) {
-    // Create a shared_ptr by moving the instance
+  template <typename T>
+  std::shared_ptr<T> share(T&& instance) {
     return std::shared_ptr<T>(new T(std::forward<T>(instance)));
   }
 
@@ -43,7 +43,7 @@ namespace wind {
 
   // static auto forEach = std::ranges::for_each;
   template <typename Range, typename Func>
-  static auto forEach(const Range &range, Func func) {
+  static auto forEach(const Range& range, Func func) {
     std::for_each(std::begin(range), std::end(range), func);
   }
 
@@ -60,15 +60,15 @@ namespace wind {
     std::string narrowString =
       std::wstring_convert<std::codecvt_utf8<wchar_t>>{}.to_bytes(input);
 
-    const char *charPtr = narrowString.c_str();
+    const char* charPtr = narrowString.c_str();
     return charPtr;
   }
 #endif
 
   static auto replaceAll(
     std::string input,
-    const std::string &searched,
-    const std::string &replacement
+    const std::string& searched,
+    const std::string& replacement
   ) {
     size_t pos = 0;
     while ((pos = input.find(searched, pos)) != std::string::npos) {
@@ -78,11 +78,11 @@ namespace wind {
     return input;
   }
 
-  static fs::path removeFirstDirectory(const fs::path &filePath) {
+  static fs::path removeFirstDirectory(const fs::path& filePath) {
     fs::path sourceFile;
 
     bool first = true;
-    for (const auto &part : filePath) {
+    for (const auto& part : filePath) {
       if (first) {
         first = false;
         continue;
@@ -95,7 +95,7 @@ namespace wind {
 
   class Stopwatch {
   public:
-    Stopwatch(const std::string &message) : message(message) {
+    Stopwatch(const std::string& message) : message(message) {
       start_time = std::chrono::high_resolution_clock::now();
     }
 

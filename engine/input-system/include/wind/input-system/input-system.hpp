@@ -16,11 +16,11 @@ namespace wind {
     static void
     addTrigger(std::string groupName, Keys bindings, Callbacks callbacks);
     static void
-    addTrigger(std::string groupName, Keys bindings, Callback *callback);
+    addTrigger(std::string groupName, Keys bindings, Callback* callback);
     static void
     addTrigger(std::string groupName, Key binding, Callbacks callbacks);
     static void
-    addTrigger(std::string groupName, Key binding, Callback *callback);
+    addTrigger(std::string groupName, Key binding, Callback* callback);
     static void addTrigger(std::string groupName, Key binding);
     static void addTrigger(std::string groupName, Keys bindings);
     static void addTrigger(std::string groupName);
@@ -29,7 +29,7 @@ namespace wind {
     static void addTriggerBindings(std::string groupName, Key binding);
 
     static void addTriggerCallbacks(std::string groupName, Callbacks callbacks);
-    static void addTriggerCallbacks(std::string groupName, Callback *callback);
+    static void addTriggerCallbacks(std::string groupName, Callback* callback);
 
     static void removeTriggerBindings(std::string groupName, Keys bindings);
     static void removeTriggerBindings(std::string groupName, Key binding);
@@ -37,23 +37,23 @@ namespace wind {
     static void
     removeTriggerCallbacks(std::string groupName, Callbacks callbacks);
     static void
-    removeTriggerCallbacks(std::string groupName, Callback *callback);
+    removeTriggerCallbacks(std::string groupName, Callback* callback);
 
     static void removeTrigger(std::string groupName);
     static void removeTrigger(std::set<std::string> groupNames);
 
     static std::unordered_map<Key, Callbacks, KeyHash> keycodeTriggers;
-    static std::map<std::string, Trigger *> groupedTriggers;
+    static std::map<std::string, Trigger*> groupedTriggers;
 
   private:
-    static InputSystemContext *context;
+    static InputSystemContext* context;
 
     static inline void groupedEventToCycle(Key keycode);
 
     static void addKeycodeTrigger(Keys bindings, Callbacks callbacks);
-    static void addKeycodeTrigger(Keys bindings, Callback *callback);
+    static void addKeycodeTrigger(Keys bindings, Callback* callback);
     static void addKeycodeTrigger(Key binding, Callbacks callbacks);
-    static void addKeycodeTrigger(Key binding, Callback *callback);
+    static void addKeycodeTrigger(Key binding, Callback* callback);
     static void addKeycodeTrigger(Keys bindings);
     static void addKeycodeTrigger(Key binding);
 
@@ -61,18 +61,18 @@ namespace wind {
     static void addKeycodeTriggerBindings(std::string groupName, Keys bindings);
 
     static void
-    addKeycodeTriggerCallbacks(std::string groupName, Callback *callback);
+    addKeycodeTriggerCallbacks(std::string groupName, Callback* callback);
     static void
     addKeycodeTriggerCallbacks(std::string groupName, Callbacks callbacks);
 
     static void
     addGroupedTrigger(std::string groupName, Keys bindings, Callbacks callbacks);
     static void
-    addGroupedTrigger(std::string groupName, Keys bindings, Callback *callback);
+    addGroupedTrigger(std::string groupName, Keys bindings, Callback* callback);
     static void
     addGroupedTrigger(std::string groupName, Key binding, Callbacks callbacks);
     static void
-    addGroupedTrigger(std::string groupName, Key binding, Callback *callback);
+    addGroupedTrigger(std::string groupName, Key binding, Callback* callback);
     static void addGroupedTrigger(std::string groupName, Keys bindings);
     static void addGroupedTrigger(std::string groupName, Key binding);
     static void addGroupedTrigger(std::string groupName);
@@ -81,13 +81,13 @@ namespace wind {
     static void addGroupedTriggerBindings(std::string groupName, Keys bindings);
 
     static void
-    addGroupedTriggerCallbacks(std::string groupName, Callback *callback);
+    addGroupedTriggerCallbacks(std::string groupName, Callback* callback);
     static void
     addGroupedTriggerCallbacks(std::string groupName, Callbacks callbacks);
 
     static void removeKeycodeTrigger(Key binding, Callbacks callbacks);
     static void removeKeycodeTrigger(Callbacks callbacks);
-    static void removeKeycodeTrigger(Key binding, Callback *callback);
-    static void removeKeycodeTrigger(Callback *callback);
+    static void removeKeycodeTrigger(Key binding, Callback* callback);
+    static void removeKeycodeTrigger(Callback* callback);
   };
 } // namespace wind
