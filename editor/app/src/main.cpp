@@ -7,11 +7,11 @@
 
 namespace editor {
   class Editor : public wind::Game {
-    ImGuiIO io;
     std::shared_ptr<projectManager::ProjectManager> projectManager;
 
   public:
     void start() override {
+      wind::Engine::setFPS(60);
       auto window = wind::Engine::getMainWindow();
       auto rendererContext = wind::Engine::getMainRenderContext();
 
@@ -29,17 +29,17 @@ namespace editor {
 
       IMGUI_CHECKVERSION();
       ImGui::CreateContext();
-      io = ImGui::GetIO();
-      (void)io;
-      io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-      io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-      io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-      io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+      ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+      ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+      ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+      ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+      ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 
       ImGui::StyleColorsDark();
 
       ImGuiStyle& style = ImGui::GetStyle();
-      if ((io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) != 0) {
+      if ((ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) !=
+          0) {
         style.WindowRounding = 0.0F;
         style.Colors[ImGuiCol_WindowBg].w = 1.0F;
       }
@@ -62,7 +62,7 @@ namespace editor {
       ImGui_ImplSDL2_NewFrame();
       ImGui::NewFrame();
 
-      projectManager->project->spriteSheetManager->window->render();
+      projectManager->project->spriteSheetManager->render();
 
       ImGui::Render();
 

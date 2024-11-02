@@ -7,12 +7,16 @@ namespace editor::components {
   class TabBar {
   public:
     const std::string id;
+    std::optional<std::string> focusedTabId;
 
     TabBar(std::string id, std::initializer_list<Tab> tabs);
     void render();
+    void focusTab(std::string tabId);
+    void removeFocusedTab();
     void addTab(std::shared_ptr<Tab> tab);
-    void removeTab(std::string tabId);
-    void updateTab(std::shared_ptr<Tab> updatedTab);
+    std::shared_ptr<Tab> getTab(std::string tabId);
+    void removeTab(std::shared_ptr<Tab> tab);
+    void updateTab(std::shared_ptr<Tab> tab);
 
     bool operator==(const TabBar& tabBar) const { return id == tabBar.id; }
 

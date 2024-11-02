@@ -11,31 +11,49 @@ namespace editor::components {
 
   void TabBar::render() {
     if (ImGui::BeginTabBar(id.c_str())) {
-      for (auto tab : tabs) {
-        tab->render();
+      // ImGuiTabBarFlags_AutoSelectNewTabs
+      for (const auto& tab : tabs) {
+        tab->render(focusedTabId == tab->id);
       }
       ImGui::EndTabBar();
     }
   }
 
-  void TabBar::addTab(std::shared_ptr<Tab> tab) { tabs.insert(tab); }
+  void TabBar::focusTab(std::string tabId) { focusedTabId = tabId; };
+  void TabBar::removeFocusedTab() { focusedTabId.reset(); };
 
-  void TabBar::removeTab(std::string tabId) {
-    auto it = std::find_if(
-      tabs.begin(),
-      tabs.end(),
-      [&tabId](std::shared_ptr<Tab> tab) { return tab->id == tabId; }
-    );
+  void TabBar::addTab(std::shared_ptr<Tab> tab) {
+    tabs.insert(tab);
+    focusTab(tab->id);
+  };
+
+  std::shared_ptr<Tab> TabBar::getTab(std::string tabId) {
+    auto it =
+      std::ranges::find_if(tabs, [&tabId](const std::shared_ptr<Tab>& tab) {
+        return tab->id == tabId;
+      });
+
+    if (it != tabs.end()) {
+      return *it;
+    }
+
+    return nullptr;
+  }
+
+  void TabBar::removeTab(std::shared_ptr<Tab> tab) {
+    auto it = tabs.find(tab);
+
     if (it != tabs.end()) {
       tabs.erase(it);
     }
   }
 
-  void TabBar::updateTab(std::shared_ptr<Tab> updatedTab) {
-    auto it = tabs.find(updatedTab);
+  void TabBar::updateTab(std::shared_ptr<Tab> tab) {
+    auto it = tabs.find(tab);
+
     if (it != tabs.end()) {
       tabs.erase(it);
+      tabs.insert(tab);
     }
-    tabs.insert(updatedTab);
   }
 } // namespace editor::components

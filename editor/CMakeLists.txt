@@ -10,8 +10,15 @@ set(HEADERS
   ./app/include/editor/shared/popup.hpp
   ./app/include/editor/shared/tab-bar/tab.hpp
   ./app/include/editor/shared/tab-bar/tab-bar.hpp
+  ./app/include/editor/shared/image.hpp
   ./app/include/editor/shared/window.hpp
-  ./app/include/editor/sprite-sheet-manager/sprite-sheet-manager.hpp
+  ./app/include/editor/sprite-sheet/cell.hpp
+  ./app/include/editor/sprite-sheet/cells-manager.hpp
+  ./app/include/editor/sprite-sheet/events.hpp
+  ./app/include/editor/sprite-sheet/file.hpp
+  ./app/include/editor/sprite-sheet/behavior.hpp
+  ./app/include/editor/sprite-sheet/files-manager.hpp
+  ./app/include/editor/sprite-sheet/sprite-sheet-manager.hpp
   ./app/include/editor/project-manager/project-manager.hpp
   ./app/include/editor/bundle-manager/bundle-manager.hpp
   ./app/include/editor/components.hpp
@@ -26,8 +33,14 @@ set(SOURCES
   ./app/src/shared/popup.cpp
   ./app/src/shared/tab-bar/tab.cpp
   ./app/src/shared/tab-bar/tab-bar.cpp
+  ./app/src/shared/image.cpp
   ./app/src/shared/window.cpp
-  ./app/src/sprite-sheet-manager/sprite-sheet-manager.cpp
+  ./app/src/sprite-sheet/cell.cpp
+  ./app/src/sprite-sheet/cells-manager.cpp
+  ./app/src/sprite-sheet/events.cpp
+  ./app/src/sprite-sheet/file.cpp
+  ./app/src/sprite-sheet/files-manager.cpp
+  ./app/src/sprite-sheet/sprite-sheet-manager.cpp
   ./app/src/project-manager/project-manager.cpp
   ./app/src/bundle-manager/bundle-manager.cpp
 )

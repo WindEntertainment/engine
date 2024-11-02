@@ -2,7 +2,7 @@
 #include <editor/editor.hpp>
 #include <editor/components.hpp>
 #include <editor/bundle-manager/bundle-manager.hpp>
-#include <editor/sprite-sheet-manager/sprite-sheet-manager.hpp>
+#include <editor/sprite-sheet/sprite-sheet-manager.hpp>
 #include <wind/utils/utils.hpp>
 
 namespace editor::projectManager {

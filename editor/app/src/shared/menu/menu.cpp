@@ -4,7 +4,7 @@
 namespace editor::components {
   Menu::Menu(std::string id, std::initializer_list<MenuItem> menuItems)
       : id(std::move(id)) {
-    for (const auto &menuItem : menuItems) {
+    for (const auto& menuItem : menuItems) {
       this->menuItems.insert(std::make_shared<MenuItem>(menuItem));
     }
   }
