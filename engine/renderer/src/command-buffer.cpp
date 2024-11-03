@@ -1,0 +1,57 @@
+#include "wind/renderer/opengl_includes.hpp"
+
+#include "wind/renderer/command-buffer.hpp"
+
+namespace wind {
+
+  void CommandBuffer::submit() {
+    if (!context->getCamera())
+      return;
+
+    for (const auto& command : commands)
+      command();
+  }
+
+  void CommandBuffer::clear(glm::vec4 color) {
+    commands.emplace_back([=]() {
+      glClearColor(color.r, color.g, color.b, color.a);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    });
+  }
+
+  void CommandBuffer::drawMesh(
+    const std::shared_ptr<Mesh>& mesh,
+    glm::mat4x4& transform,
+    const std::shared_ptr<Material>& material
+  ) {
+    commands.emplace_back([=]() {
+      glBindVertexArray(mesh->id());
+      material->setMat4("model", transform);
+      material->setMat4("view", context->getCamera()->getTransform());
+      material->setMat4("projection", context->getCamera()->getProjection());
+      material->apply();
+      glDrawElements(GL_TRIANGLES, mesh->length(), GL_UNSIGNED_INT, 0);
+    });
+  }
+
+  void CommandBuffer::drawSprite(
+    const std::shared_ptr<Sprite>& sprite,
+    glm::mat4x4& transform
+  ) {
+    commands.emplace_back([=]() {
+      glBindVertexArray(sprite->id());
+
+      auto material = sprite->getMaterial();
+      material->setMat4("model", transform);
+      material->setMat4("view", context->getCamera()->getTransform());
+      material->setMat4("projection", context->getCamera()->getProjection());
+      material->apply();
+
+      glDrawElements(GL_TRIANGLES, sprite->length(), GL_UNSIGNED_INT, 0);
+    });
+  }
+
+  CommandBuffer::CommandBuffer(std::shared_ptr<RenderContext> context)
+      : context(context) {};
+
+} // namespace wind

@@ -40,12 +40,13 @@ jobs:
         with:
           fetch-depth: 0
           lfs: false
+          submodules: true
       - name: Env
         uses: './.github/workflows/utils/json-to-env'
         with:
           json: ${{ toJSON(matrix.config) }}
-      - name: Game
-        uses: './.github/workflows/modules/game/lint'
+      - name: Engine
+        uses: './.github/workflows/modules/engine/lint'
       - name: Linting commit
         uses: './.github/workflows/utils/commit'
 
@@ -73,6 +74,7 @@ jobs:
         with:
           fetch-depth: 0
           lfs: false
+          submodules: true
       - name: Env
         uses: './.github/workflows/utils/json-to-env'
         with:
@@ -131,13 +133,14 @@ jobs:
         with:
           fetch-depth: 0
           lfs: false
+          submodules: true
       - name: Env
         uses: './.github/workflows/utils/json-to-env'
         with:
           json: ${{ toJSON(matrix.config) }}
       - uses: ./.github/workflows/utils/setup-base-libs
-      - name: Game
-        uses: './.github/workflows/modules/game/build'
+      - name: Engine
+        uses: './.github/workflows/modules/engine/build'
 
   building_wasm:
     name: 'Build wasm: ${{ matrix.config.name }}'
@@ -185,10 +188,11 @@ jobs:
         with:
           fetch-depth: 0
           lfs: false
+          submodules: true
       - name: Env
         uses: './.github/workflows/utils/json-to-env'
         with:
           json: ${{ toJSON(matrix.config) }}
       - uses: ./.github/workflows/utils/setup-base-libs
-      - name: Game
-        uses: './.github/workflows/modules/game/build'
+      - name: Engine
+        uses: './.github/workflows/modules/engine/build'

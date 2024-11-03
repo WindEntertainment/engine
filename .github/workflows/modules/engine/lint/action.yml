@@ -1,0 +1,13 @@
+name: Lint native
+description: Lint native
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Format
+      uses: DoozyX/clang-format-lint-action@v0.17
+      with:
+        source: '.'
+        extensions: 'c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx'
+        clangFormatVersion: 18
+        inplace: true

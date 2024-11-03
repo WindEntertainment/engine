@@ -2,6 +2,11 @@
 Thumbs.db
 
 CMakeUserPresets.json
+compile_commands.json
+
+.vscode/c_cpp_properties.json
+.vscode/settings.json
+deprecated
 
 *.log
 *.app
@@ -19,10 +24,12 @@ conan-deploy
 [Tt]mp/
 [Ll]ogs/
 [Rr]eleases/
+[Rr]es/
+.cache
 
 emcc-cache
 /.cache/
 !/.github/**
-!/.vscode/**
 
 coverage
+imgui.ini

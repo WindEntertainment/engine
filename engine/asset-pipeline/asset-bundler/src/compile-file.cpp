@@ -1,5 +1,5 @@
-#include "asset-bundler/asset-bundler.hpp"
-#include "pipes/pipe.hpp"
+#include "wind/asset-bundler/asset-bundler.hpp"
+#include "wind/pipes/pipe.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -8,38 +8,52 @@
 
 namespace wind {
 
-namespace assets {
+  namespace assets {
 
-void AssetBundler::compileFile(const fs::path& _source, const fs::path& _destination, AssetPipe* _pipe) {
-  spdlog::info("Compile file: {}", _source.string());
+    void AssetBundler::compileFile(
+      const fs::path &_source,
+      const fs::path &_destination,
+      AssetPipe *_pipe
+    ) {
+      spdlog::info("Compile file: {}", _source.string());
 
-  if (!fs::exists(_source)) {
-    spdlog::error("Cannot compile file by specified path {} as it's a non exists location", _source.string());
-    return;
-  }
+      if (!fs::exists(_source)) {
+        spdlog::error(
+          "Cannot compile file by specified path {} as it's a non exists "
+          "location",
+          _source.string()
+        );
+        return;
+      }
 
-  if (fs::is_directory(_source)) {
-    spdlog::error("Cannot compile file by specified path {} as it's a directory", _source.string());
-    return;
-  }
+      if (fs::is_directory(_source)) {
+        spdlog::error(
+          "Cannot compile file by specified path {} as it's a directory",
+          _source.string()
+        );
+        return;
+      }
 
-  fs::path destination = _destination;
-  destination += c_cacheExtension;
+      fs::path destination = _destination;
+      destination += c_cacheExtension;
 
-  try {
-    auto parent_path = destination.parent_path();
-    if (!fs::exists(parent_path))
-      fs::create_directories(parent_path);
+      try {
+        auto parent_path = destination.parent_path();
+        if (!fs::exists(parent_path))
+          fs::create_directories(parent_path);
 
-    if (fs::exists(destination) && fs::last_write_time(_source) <= fs::last_write_time(destination))
-      return;
+        if (fs::exists(destination) &&
+            fs::last_write_time(_source) <= fs::last_write_time(destination))
+          return;
 
-    _pipe->compile(_source, destination);
-  } catch (std::exception& ex) {
-    spdlog::error("Failed compile file by path {}: {}", _source.string(), ex.what());
-    return;
-  }
-}
+        _pipe->compile(_source, destination);
+      } catch (std::exception &ex) {
+        spdlog::error(
+          "Failed compile file by path {}: {}", _source.string(), ex.what()
+        );
+        return;
+      }
+    }
 
-} // namespace assets
+  } // namespace assets
 } // namespace wind

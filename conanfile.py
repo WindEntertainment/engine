@@ -28,7 +28,8 @@ class MyConanFile(ConanFile):
 
     self.requires("glad/0.1.36")
     self.requires("glm/cci.20230113")
-    self.requires("imgui/1.89.4")
+    self.requires("imgui/cci.20230105+1.89.2.docking")
+    self.requires("portable-file-dialogs/0.1.0")
 
   def build(self):
     cmake = CMake(self)

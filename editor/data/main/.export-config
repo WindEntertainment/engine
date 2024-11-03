@@ -1,0 +1,5 @@
+exports:
+  - path: "[^\/\\\\]*"
+    output:
+      path: "main"
+      type: bundle

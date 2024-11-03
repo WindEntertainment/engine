@@ -1,7 +1,9 @@
 project(wind-asset-bundler)
 
 set(HEADERS
-    ./include/asset-bundler/asset-bundler.hpp
+    ./include/wind/asset-bundler/asset-bundler.hpp
+    ./include/wind/asset-bundler/asset-bundler-error.hpp
+    ./include/wind/asset-bundler/consts.hpp
 )
 
 set(SOURCES
@@ -17,7 +19,7 @@ set(SOURCES
 )
 
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PUBLIC ./include/)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ./include/)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION /usr/local/bin)
 
