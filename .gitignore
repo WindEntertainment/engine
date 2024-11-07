@@ -33,3 +33,6 @@ emcc-cache
 
 coverage
 imgui.ini
+
+*dist*
+*node_modules*
