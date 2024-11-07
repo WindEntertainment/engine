@@ -29,6 +29,11 @@ find_package(imgui REQUIRED)
 target_link_libraries(ImGuiFileDialog imgui::imgui)
 
 
+add_subdirectory(./ImGuiFileDialog/)
+find_package(imgui REQUIRED)
+target_link_libraries(ImGuiFileDialog imgui::imgui)
+
+
 ###===================================================================================##
 
 import(compiler ON)

@@ -1,13 +1,17 @@
 #pragma once
 #include <editor/editor.hpp>
+// #include <editor/sprite-sheet/behavior.hpp>
 #include <wind/utils/utils.hpp>
 
 namespace editor::components {
   class Tab {
   public:
     const std::string id;
-    Tab(std::string id, Callback callback);
-    void render();
+    bool isOpen;
+
+    Tab(std::string id, Callback callback, bool isOpen = true);
+    void render(bool isFocused);
+    // std::shared_ptr<BehaviorManager<Tab>> behaviorManager;
 
     bool operator==(const Tab& tab) const { return id == tab.id; }
 

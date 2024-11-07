@@ -2,11 +2,14 @@
 #include <utility>
 
 namespace editor::components {
-  Tab::Tab(std::string id, Callback callback)
-      : id(std::move(id)), callback(std::move(callback)) {}
+  Tab::Tab(std::string id, Callback callback, bool isOpen)
+      : id(std::move(id)), callback(std::move(callback)),
+        isOpen(std::move(isOpen)) {}
 
-  void Tab::render() {
-    if (ImGui::BeginTabItem(id.c_str())) {
+  void Tab::render(bool isFocused) {
+    if (ImGui::BeginTabItem(
+          id.c_str(), &isOpen, (isFocused ? ImGuiTabItemFlags_SetSelected : 0)
+        )) {
       callback();
       ImGui::EndTabItem();
     }

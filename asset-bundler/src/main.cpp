@@ -6,7 +6,9 @@
 
 #undef main
 
-int main(int argc, char** argv) {
+#undef main
+
+int main(int argc, char **argv) {
   cxxopts::Options conf_options(
     "wind-asset-bundler",
     "Asset-Bundler Tool. Version: 0.3a.\n"

@@ -7,11 +7,11 @@
 
 namespace editor {
   class Editor : public wind::Game {
-    ImGuiIO io;
     std::shared_ptr<projectManager::ProjectManager> projectManager;
 
   public:
     void start() override {
+      wind::Engine::setFPS(60);
       auto window = wind::Engine::getMainWindow();
       auto rendererContext = wind::Engine::getMainRenderContext();
 
@@ -21,56 +21,57 @@ namespace editor {
           glm::vec3{0, 0, 1},
           glm::vec3{0, 1, 0},
           glm::ivec2{
-            wind::Engine::getMainWindow()->size().x / 50,
-            wind::Engine::getMainWindow()->size().y / 50
+            wind::Engine::getMainWindow()->size().x,
+            wind::Engine::getMainWindow()->size().y
           }
         )
       );
 
-      IMGUI_CHECKVERSION();
-      ImGui::CreateContext();
-      io = ImGui::GetIO();
-      (void)io;
-      io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-      io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-      io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-      io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+      // IMGUI_CHECKVERSION();
+      // ImGui::CreateContext();
+      // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+      // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+      // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+      // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+      // ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 
-      ImGui::StyleColorsDark();
+      // ImGui::StyleColorsDark();
 
-      ImGuiStyle& style = ImGui::GetStyle();
-      if ((io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) != 0) {
-        style.WindowRounding = 0.0F;
-        style.Colors[ImGuiCol_WindowBg].w = 1.0F;
-      }
+      // ImGuiStyle& style = ImGui::GetStyle();
+      // if ((ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) !=
+      //     0) {
+      //   style.WindowRounding = 0.0F;
+      //   style.Colors[ImGuiCol_WindowBg].w = 1.0F;
+      // }
 
-      ImGui_ImplSDL2_InitForOpenGL(
-        window->getRawPtr(), rendererContext->getRawContext()
-      );
-      ImGui_ImplOpenGL3_Init("#version 150");
+      // ImGui_ImplSDL2_InitForOpenGL(
+      //   window->getRawPtr(), rendererContext->getRawContext()
+      // );
+      // ImGui_ImplOpenGL3_Init("#version 150");
 
       projectManager = wind::share(projectManager::ProjectManager());
       projectManager->loadProject();
     };
 
     void handleEvent(SDL_Event& event) override {
-      ImGui_ImplSDL2_ProcessEvent(&event);
+      // ImGui_ImplSDL2_ProcessEvent(&event);
     };
 
     void update() override {
-      ImGui_ImplOpenGL3_NewFrame();
-      ImGui_ImplSDL2_NewFrame();
-      ImGui::NewFrame();
+      // ImGui_ImplOpenGL3_NewFrame();
+      // ImGui_ImplSDL2_NewFrame();
+      // ImGui::NewFrame();
 
-      projectManager->project->spriteSheetManager->window->render();
+      // projectManager->project->spriteSheetManager->render();
 
-      ImGui::Render();
+      // ImGui::Render();
 
       wind::CommandBuffer render(wind::Engine::getMainRenderContext());
       render.clear({0.0f, 0.0f, 0.05f, 1.f});
+
       render.submit();
 
-      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+      // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
       // if ((io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) != 0) {
       //   SDL_Window* backupCurrentWindow = SDL_GL_GetCurrentWindow();
       //   SDL_GLContext backupCurrentContext = SDL_GL_GetCurrentContext();
@@ -82,9 +83,9 @@ namespace editor {
     };
 
     void quit() override {
-      ImGui_ImplOpenGL3_Shutdown();
-      ImGui_ImplSDL2_Shutdown();
-      ImGui::DestroyContext();
+      // ImGui_ImplOpenGL3_Shutdown();
+      // ImGui_ImplSDL2_Shutdown();
+      // ImGui::DestroyContext();
     };
   };
 } // namespace editor

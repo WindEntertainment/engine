@@ -1,0 +1,56 @@
+1. relative placing
+2. save/load project
+3. create cell on double click
+4. unselect cell on empty area click
+5. Refactoring files/folder
+6. why cells does not need events, but tabs does
+7. key combinations
+8. input system
+9. assets manager
+10. project scope for file picker, etc.
+11. cell window update for new changes
+12. Refactoring behavior, cell, sprite-sheet-manager(divide windows? like main class, secondary class, composer)
+13. Image component
+14. behavior ui? Resizable missing ui
+15. behavior utils? Resizable getDirection util
+16. sizing, zoom, window size, image size, scale
+17. proportions for loaded images
+18. preview for cell props window
+19. limits for cells inside image
+20. Command pattern
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ui
+language
