@@ -29,8 +29,8 @@ namespace game {
       //   new wind::Texture(image->pixels, image->size)
       // );
 
-      auto texture =
-        wind::AssetManager::getAsset<wind::Texture>("main/art/ship.png");
+      texture =
+        wind::AssetManager::getAsset<wind::Texture>("main/art/simple.png");
 
       auto material = std::make_shared<wind::Material>(shader, 1);
 
@@ -69,6 +69,7 @@ namespace game {
       render.drawRect(
         {-100.f, 100.f}, {100, 50}, {0.9f, 0.9f, 0.9f, 1.f}, nullptr, 0, 0
       );
+      render.drawCircle({100.f, 0}, 100, {1.f, 1.f, 1.f, 1.f}, texture);
 
       render.submit();
 
@@ -82,6 +83,7 @@ namespace game {
   private:
     glm::mat4 transform;
     std::shared_ptr<wind::Sprite> sprite;
+    std::shared_ptr<wind::Texture> texture;
   };
 
 } // namespace game

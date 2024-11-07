@@ -35,6 +35,13 @@ namespace wind {
       float borderRadius
     );
 
+    void drawCircle(
+      glm::vec2 position,
+      float radius,
+      glm::vec4 color,
+      const std::shared_ptr<Texture>& texture
+    );
+
     void setCurrentCamera(Camera* camera);
 
   private:

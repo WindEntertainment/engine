@@ -73,6 +73,36 @@ namespace wind {
     });
   }
 
+  void CommandBuffer::drawCircle(
+    glm::vec2 position,
+    float radius,
+    glm::vec4 color,
+    const std::shared_ptr<Texture>& texture
+  ) {
+    static std::shared_ptr<Mesh> mesh =
+      AssetManager::getAsset<Mesh>("default-circle-mesh");
+    static std::shared_ptr<Material> material =
+      AssetManager::getAsset<Material>("default-ui-material");
+    static std::shared_ptr<Texture> defaultTexture =
+      AssetManager::getAsset<Texture>("default-white-texture");
+
+    commands.emplace_back([=]() {
+      glBindVertexArray(mesh->id());
+
+      glm::mat4 transform = glm::mat4(1);
+      transform = glm::translate(transform, {position, 0});
+      transform = glm::scale(transform, {radius, radius, 1});
+
+      material->setTexture(texture == nullptr ? defaultTexture : texture, 0);
+      material->apply();
+      material->setVec4("uColor", color);
+      material->setMat4("uModel", transform);
+      material->setMat4("uProjection", context->getCamera()->getProjection());
+
+      glDrawElements(GL_TRIANGLES, mesh->length(), GL_UNSIGNED_INT, 0);
+    });
+  }
+
   void CommandBuffer::drawSprite(
     const std::shared_ptr<Sprite>& sprite,
     glm::mat4x4& transform
