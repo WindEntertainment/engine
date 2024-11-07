@@ -4,6 +4,8 @@
 #include "wind/renderer/mesh.hpp"
 #include "wind/renderer/material.hpp"
 
+#include <glm/gtc/constants.hpp>
+
 namespace wind {
 
   void Engine::addDefaultAssets() {
@@ -107,6 +109,36 @@ namespace wind {
       "default-white-texture",
       std::shared_ptr<wind::Texture>(new Texture(whiteRect, {1, 1}))
     );
+
+    {
+      std::vector<Mesh::Vertex> vertices;
+      std::vector<unsigned int> indices;
+
+      const int numSegments = 32;
+      const float segmentAngle = 2.f * glm::pi<float>() / numSegments;
+
+      vertices.emplace_back(Mesh::Vertex{{0, 0, 0}, {0.5f, 0.5f}});
+
+      for (int i = 0; i < numSegments; ++i) {
+        float angle = i * segmentAngle;
+        float c = cosf(angle), s = sinf(angle);
+
+        vertices.emplace_back(
+          Mesh::Vertex{{c, s, 0.f}, {0.5f + 0.5f * c, 0.5f + 0.5f * s}}
+        );
+      }
+
+      for (int i = 1; i <= numSegments; ++i) {
+        indices.push_back(0);
+        indices.push_back(i);
+        indices.push_back((i % numSegments) + 1);
+      }
+
+      AssetManager::addAsset<Mesh>(
+        "default-circle-mesh",
+        std::shared_ptr<Mesh>(new Mesh(vertices, indices))
+      );
+    }
   }
 
 } // namespace wind
