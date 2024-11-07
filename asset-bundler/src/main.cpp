@@ -1,11 +1,10 @@
 #define WIND_PIPE_WRITE
 
-#define STB_IMAGE_IMPLEMENTATION
-
 #include <cxxopts.hpp>
-#include <spdlog/spdlog.h>
 
-#include "wind/asset-bundler/asset-bundler.hpp"
+#include "wind/asset-pipeline/asset-bundler.hpp"
+
+#undef main
 
 #undef main
 

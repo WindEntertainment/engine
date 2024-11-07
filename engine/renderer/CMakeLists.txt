@@ -31,7 +31,7 @@ add_library(${PROJECT_NAME} STATIC
 
 target_include_directories(${PROJECT_NAME} PUBLIC ./include/)
 target_link_libraries(${PROJECT_NAME} PUBLIC wind-window)
-target_link_libraries(${PROJECT_NAME} PUBLIC wind-asset-manager)
+target_link_libraries(${PROJECT_NAME} PUBLIC wind-asset-pipeline)
 
 find_package(glad CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC glad::glad)

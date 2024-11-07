@@ -1,5 +1,5 @@
-#include "wind/asset-bundler/asset-bundler.hpp"
-#include "wind/pipes/pipe.hpp"
+#include "wind/asset-pipeline/asset-bundler.hpp"
+#include "wind/asset-pipeline/pipes/pipe.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -11,7 +11,7 @@ namespace wind {
   namespace assets {
 
     void AssetBundler::processDirectory(
-      const fs::path &_source,
+      const fs::path& _source,
       fs::path _destination
     ) {
       Stopwatch sw("Processed");
@@ -25,7 +25,7 @@ namespace wind {
       YAML::Node config;
       try {
         config = YAML::LoadFile(configPath.string());
-      } catch (std::exception &ex) {
+      } catch (std::exception& ex) {
         spdlog::error("Failed open export config: {}", _source.string());
         return;
       }
@@ -55,14 +55,14 @@ namespace wind {
     }
 
     void AssetBundler::processChildDirectories(
-      const fs::path &_source,
-      const fs::path &_destination,
-      const YAML::Node &config
+      const fs::path& _source,
+      const fs::path& _destination,
+      const YAML::Node& config
     ) {
       fs::recursive_directory_iterator it;
       try {
         it = createRecursiveIterator(_source);
-      } catch (AssetBundlerError &ex) {
+      } catch (AssetBundlerError& ex) {
         spdlog::error("Cannot create directory iterator: {}", ex.what());
         return;
       }
@@ -74,7 +74,7 @@ namespace wind {
 
         spdlog::info("Run processing child directories...");
 
-        for (const auto &entry : it) {
+        for (const auto& entry : it) {
           if (!entry.is_directory())
             continue;
 
@@ -100,7 +100,7 @@ namespace wind {
             std::regex regex;
             try {
               regex = std::regex(exportPath.as<std::string>());
-            } catch (std::regex_error &ex) {
+            } catch (std::regex_error& ex) {
               spdlog::error(
                 "Invalid regex expression in path option {}:\n {}",
                 _source.string(),
@@ -145,7 +145,7 @@ namespace wind {
 
           processDirectory(entry.path(), destination);
         }
-      } catch (std::exception &ex) {
+      } catch (std::exception& ex) {
         spdlog::error("Failed compiling child directories: {}", ex.what());
         return;
       }
