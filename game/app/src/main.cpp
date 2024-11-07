@@ -22,13 +22,6 @@ namespace game {
       auto shader =
         wind::AssetManager::getAsset<wind::Shader>("default-sprite-shader");
 
-      // auto image =
-      //   wind::AssetManager::getAsset<wind::assets::Image>("main/art/ship.png");
-
-      // auto texture = std::shared_ptr<wind::Texture>(
-      //   new wind::Texture(image->pixels, image->size)
-      // );
-
       texture =
         wind::AssetManager::getAsset<wind::Texture>("main/art/simple.png");
 
@@ -64,7 +57,7 @@ namespace game {
       render.clear({0.5f, 0.5f, 0.5f, 1.f});
       render.drawSprite(sprite, transform);
       render.drawRect(
-        {-100.f, 0}, {100, 100}, {0.9f, 0.9f, 0.9f, 1.f}, nullptr, 0, 0
+        {-100.f, 0}, {100, 100}, {0.9f, 0.9f, 0.9f, 1.f}, texture, 0, 0
       );
       render.drawRect(
         {-100.f, 100.f}, {100, 50}, {0.9f, 0.9f, 0.9f, 1.f}, nullptr, 0, 0
