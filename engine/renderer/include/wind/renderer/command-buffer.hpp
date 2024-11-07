@@ -26,6 +26,15 @@ namespace wind {
     void
     drawSprite(const std::shared_ptr<Sprite>& sprite, glm::mat4x4& transform);
 
+    void drawRect(
+      glm::vec2 position,
+      glm::vec2 size,
+      glm::vec4 color,
+      const std::shared_ptr<Texture>& texture,
+      float angle,
+      float borderRadius
+    );
+
     void setCurrentCamera(Camera* camera);
 
   private:

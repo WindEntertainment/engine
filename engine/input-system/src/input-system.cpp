@@ -9,7 +9,7 @@
 #include <fstream>
 #include <yaml-cpp/yaml.h>
 
-#include <wind/asset-manager/asset-manager.hpp>
+#include <wind/asset-pipeline/asset-manager.hpp>
 
 namespace wind {
 

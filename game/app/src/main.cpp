@@ -1,7 +1,7 @@
 #include "wind/renderer/command-buffer.hpp"
 #include "wind/wind.hpp"
 
-#include "wind/asset-manager/asset-manager.hpp"
+#include "wind/asset-pipeline/asset-manager.hpp"
 #include "wind/renderer/assets.hpp"
 
 #include <glm/ext/matrix_transform.hpp>
@@ -22,6 +22,13 @@ namespace game {
       auto shader =
         wind::AssetManager::getAsset<wind::Shader>("default-sprite-shader");
 
+      // auto image =
+      //   wind::AssetManager::getAsset<wind::assets::Image>("main/art/ship.png");
+
+      // auto texture = std::shared_ptr<wind::Texture>(
+      //   new wind::Texture(image->pixels, image->size)
+      // );
+
       auto texture =
         wind::AssetManager::getAsset<wind::Texture>("main/art/ship.png");
 
@@ -33,6 +40,7 @@ namespace game {
 
       //=================== create transform //
       transform = glm::mat4(1);
+      transform = glm::scale(transform, {100, 100, 1});
       //====================================//
 
       wind::Engine::getMainRenderContext()->setCamera(
@@ -41,8 +49,8 @@ namespace game {
           glm::vec3{0, 0, 1},
           glm::vec3{0, 1, 0},
           glm::ivec2{
-            wind::Engine::getMainWindow()->size().x / 50,
-            wind::Engine::getMainWindow()->size().y / 50
+            wind::Engine::getMainWindow()->size().x,
+            wind::Engine::getMainWindow()->size().y
           }
         )
       );
@@ -53,8 +61,14 @@ namespace game {
     void update() override {
       wind::CommandBuffer render(wind::Engine::getMainRenderContext());
 
-      render.clear({0.0f, 0.0f, 0.05f, 1.f});
+      render.clear({0.5f, 0.5f, 0.5f, 1.f});
       render.drawSprite(sprite, transform);
+      render.drawRect(
+        {-100.f, 0}, {100, 100}, {0.9f, 0.9f, 0.9f, 1.f}, nullptr, 0, 0
+      );
+      render.drawRect(
+        {-100.f, 100.f}, {100, 50}, {0.9f, 0.9f, 0.9f, 1.f}, nullptr, 0, 0
+      );
 
       render.submit();
 

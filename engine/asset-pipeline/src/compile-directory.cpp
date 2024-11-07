@@ -1,5 +1,5 @@
-#include "wind/asset-bundler/asset-bundler.hpp"
-#include "wind/pipes/pipe.hpp"
+#include "wind/asset-pipeline/asset-bundler.hpp"
+#include "wind/asset-pipeline/pipes/pipe.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -11,9 +11,9 @@ namespace wind {
   namespace assets {
 
     void AssetBundler::compileDirectory(
-      const fs::path &_source,
-      const fs::path &_destination,
-      const YAML::Node &config
+      const fs::path& _source,
+      const fs::path& _destination,
+      const YAML::Node& config
     ) {
       Stopwatch sw("Compiled");
 
@@ -22,7 +22,7 @@ namespace wind {
       fs::recursive_directory_iterator it;
       try {
         it = createRecursiveIterator(_source);
-      } catch (AssetBundlerError &ex) {
+      } catch (AssetBundlerError& ex) {
         spdlog::error("Cannot create directory iterator: {}", ex.what());
         return;
       }
@@ -30,7 +30,7 @@ namespace wind {
       try {
         spdlog::info("Run compiling process...");
         if (auto options = config["exports"])
-          for (const auto &entry : it) {
+          for (const auto& entry : it) {
             if (entry.is_directory() ||
                 entry.path().filename() == ".export-config" ||
                 entry.path().filename().extension() == ".export-config")
@@ -56,7 +56,7 @@ namespace wind {
               std::regex regex;
               try {
                 regex = std::regex(exportPath.as<std::string>());
-              } catch (std::regex_error &ex) {
+              } catch (std::regex_error& ex) {
                 spdlog::error(
                   "Invalid regex expression in path option {}:\n {}",
                   _source.string(),
@@ -76,7 +76,7 @@ namespace wind {
             if (exportNode.IsNull())
               continue;
 
-            AssetPipe *pipe = nullptr;
+            AssetPipe* pipe = nullptr;
             if (!exportNode["pipe"]) {
               spdlog::error(
                 "Cannot find pipe for compile asset by path '{}'",
@@ -90,19 +90,19 @@ namespace wind {
             asset_id hashType = hasher(pipeType);
 
             pipe = PipeRegister::getPipe(hashType);
-            if (!pipe) {
+            if (pipe == nullptr) {
               spdlog::warn("Unknown pipe type: '{}'", pipeType);
               continue;
             }
 
-            pipe->config(exportNode);
+            // pipe->config(exportNode);
 
             fs::path sourceFile = sourceParentPath.empty()
                                     ? entry.path()
                                     : fs::relative(entry, sourceParentPath);
             compileFile(sourceFile, _destination / sourceFile, pipe);
           }
-      } catch (std::exception &ex) {
+      } catch (std::exception& ex) {
         spdlog::error(
           "Failed compiling directory '{}': {}", _source.string(), ex.what()
         );

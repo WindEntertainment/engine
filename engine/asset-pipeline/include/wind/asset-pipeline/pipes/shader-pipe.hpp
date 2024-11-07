@@ -1,18 +1,14 @@
 #pragma once
 #include "pipe.hpp"
-
-#ifdef WIND_PIPE_WRITE
 #include <pugixml.hpp>
-#endif
 
 namespace wind {
   namespace assets {
 
     class ShaderPipe : public AssetPipe {
     public:
-#ifdef WIND_PIPE_WRITE
       void
-      compile(const fs::path &_source, const fs::path &_destination) override {
+      compile(const fs::path& _source, const fs::path& _destination) override {
         std::ifstream input(_source, std::ios_base::in);
         std::ofstream output(_destination, std::ios_base::binary);
 
@@ -53,8 +49,8 @@ namespace wind {
           return;
         }
 
-        const char *vtxShader = vtx.child_value();
-        const char *fgtShader = fgt.child_value();
+        const char* vtxShader = vtx.child_value();
+        const char* fgtShader = fgt.child_value();
 
         // =====================================================//
         // Compress file content
@@ -62,19 +58,19 @@ namespace wind {
         const uLong vtxSize = strlen(vtxShader) + 1;
 
         uLongf vtxZippedSize = compressBound(vtxSize);
-        char *vtxZipped = new char[vtxZippedSize];
+        char* vtxZipped = new char[vtxZippedSize];
 
         const uLong fgtSize = strlen(fgtShader) + 1;
 
         uLongf fgtZippedSize = compressBound(fgtSize);
-        char *fgtZipped = new char[fgtZippedSize];
+        char* fgtZipped = new char[fgtZippedSize];
 
         // vtx
         {
           auto result = compress(
-            reinterpret_cast<Bytef *>(vtxZipped),
+            reinterpret_cast<Bytef*>(vtxZipped),
             &vtxZippedSize,
-            reinterpret_cast<const Bytef *>(vtxShader),
+            reinterpret_cast<const Bytef*>(vtxShader),
             vtxSize
           );
           if (result != Z_OK) {
@@ -88,9 +84,9 @@ namespace wind {
         // fgt
         {
           auto result = compress(
-            reinterpret_cast<Bytef *>(fgtZipped),
+            reinterpret_cast<Bytef*>(fgtZipped),
             &fgtZippedSize,
-            reinterpret_cast<const Bytef *>(fgtShader),
+            reinterpret_cast<const Bytef*>(fgtShader),
             fgtSize
           );
           if (result != Z_OK) {
@@ -104,7 +100,7 @@ namespace wind {
         // =====================================================//
         // Writing
 
-        output.write(reinterpret_cast<char *>(&m_id), sizeof(asset_id));
+        output.write(reinterpret_cast<char*>(&m_id), sizeof(asset_id));
 
         output << (uint)vtxZippedSize;
         output.write(vtxZipped, vtxZippedSize);
@@ -112,11 +108,10 @@ namespace wind {
         output << (uint)fgtZippedSize;
         output.write(fgtZipped, fgtZippedSize);
       }
-#endif
 
-      void *load(std::ifstream &file) override { return nullptr; }
+      void* load(std::ifstream& file) override { return nullptr; }
 
-      ShaderPipe() : AssetPipe("shader"){};
+      ShaderPipe() : AssetPipe("shader") {};
     };
 
   } // namespace assets

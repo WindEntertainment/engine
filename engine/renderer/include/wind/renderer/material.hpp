@@ -11,6 +11,7 @@ namespace wind {
     void apply();
 
     void setMat4(const std::string& name, const glm::mat4& transform);
+    void setVec4(const std::string& name, const glm::vec4& vec);
 
     void setTexture(std::shared_ptr<Texture> texture, int ind = 0);
 

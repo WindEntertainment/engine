@@ -1,15 +1,12 @@
 #define WIND_PIPE_WRITE
 
-#define STB_IMAGE_IMPLEMENTATION
-
 #include <cxxopts.hpp>
-#include <spdlog/spdlog.h>
 
-#include "wind/asset-bundler/asset-bundler.hpp"
+#include "wind/asset-pipeline/asset-bundler.hpp"
 
 #undef main
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   cxxopts::Options conf_options(
     "wind-asset-bundler",
     "Asset-Bundler Tool. Version: 0.3a.\n"

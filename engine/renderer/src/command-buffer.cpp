@@ -1,6 +1,10 @@
 #include "wind/renderer/opengl_includes.hpp"
 
 #include "wind/renderer/command-buffer.hpp"
+#include "wind/asset-pipeline/asset-manager.hpp"
+#include "wind/renderer/assets.hpp"
+
+#include <glm/ext/matrix_transform.hpp>
 
 namespace wind {
 
@@ -26,10 +30,45 @@ namespace wind {
   ) {
     commands.emplace_back([=]() {
       glBindVertexArray(mesh->id());
-      material->setMat4("model", transform);
-      material->setMat4("view", context->getCamera()->getTransform());
-      material->setMat4("projection", context->getCamera()->getProjection());
+
       material->apply();
+      material->setMat4("uModel", transform);
+      material->setMat4("uView", context->getCamera()->getTransform());
+      material->setMat4("uProjection", context->getCamera()->getProjection());
+
+      glDrawElements(GL_TRIANGLES, mesh->length(), GL_UNSIGNED_INT, 0);
+    });
+  }
+
+  void CommandBuffer::drawRect(
+    glm::vec2 position,
+    glm::vec2 size,
+    glm::vec4 color,
+    const std::shared_ptr<Texture>& texture,
+    float angle,
+    float borderRadius
+  ) {
+    static std::shared_ptr<Mesh> mesh =
+      AssetManager::getAsset<Mesh>("default-rect-mesh");
+    static std::shared_ptr<Material> material =
+      AssetManager::getAsset<Material>("default-ui-material");
+    static std::shared_ptr<Texture> defaultTexture =
+      AssetManager::getAsset<Texture>("default-white-texture");
+
+    commands.emplace_back([=]() {
+      glBindVertexArray(mesh->id());
+
+      glm::mat4 transform = glm::mat4(1);
+      transform = glm::translate(transform, {position, 0});
+      transform = glm::rotate(transform, angle, {0.0f, 0.0f, 1.0f});
+      transform = glm::scale(transform, {size, 1});
+
+      material->setTexture(texture == nullptr ? defaultTexture : texture, 0);
+      material->apply();
+      material->setVec4("uColor", color);
+      material->setMat4("uModel", transform);
+      material->setMat4("uProjection", context->getCamera()->getProjection());
+
       glDrawElements(GL_TRIANGLES, mesh->length(), GL_UNSIGNED_INT, 0);
     });
   }
@@ -42,10 +81,11 @@ namespace wind {
       glBindVertexArray(sprite->id());
 
       auto material = sprite->getMaterial();
-      material->setMat4("model", transform);
-      material->setMat4("view", context->getCamera()->getTransform());
-      material->setMat4("projection", context->getCamera()->getProjection());
+
       material->apply();
+      material->setMat4("uModel", transform);
+      material->setMat4("uView", context->getCamera()->getTransform());
+      material->setMat4("uProjection", context->getCamera()->getProjection());
 
       glDrawElements(GL_TRIANGLES, sprite->length(), GL_UNSIGNED_INT, 0);
     });

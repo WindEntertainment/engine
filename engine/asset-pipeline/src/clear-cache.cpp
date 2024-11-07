@@ -1,5 +1,5 @@
-#include "wind/asset-bundler/asset-bundler.hpp"
-#include "wind/pipes/pipe.hpp"
+#include "wind/asset-pipeline/asset-bundler.hpp"
+#include "wind/asset-pipeline/pipes/pipe.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -11,8 +11,8 @@ namespace wind {
   namespace assets {
 
     void AssetBundler::clearUnusedCache(
-      const fs::path &_source,
-      const fs::path &_cache
+      const fs::path& _source,
+      const fs::path& _cache
     ) {
       if (!fs::exists(_cache))
         return;
@@ -22,13 +22,13 @@ namespace wind {
       fs::recursive_directory_iterator cache_it;
       try {
         cache_it = createRecursiveIterator(_cache);
-      } catch (AssetBundlerError &ex) {
+      } catch (AssetBundlerError& ex) {
         spdlog::error(ex.what());
         return;
       }
 
       const fs::path cacheParentPath = _source.parent_path();
-      for (const auto &entry : cache_it) {
+      for (const auto& entry : cache_it) {
         if (entry.is_directory()) {
           if (fs::is_empty(entry))
             fs::remove(entry);

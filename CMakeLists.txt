@@ -22,6 +22,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_subdirectory(./game/)
 add_subdirectory(./engine/)
 add_subdirectory(./editor/)
+add_subdirectory(./asset-bundler/)
 
 add_subdirectory(./ImGuiFileDialog/)
 find_package(imgui REQUIRED)

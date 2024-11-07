@@ -4,8 +4,25 @@
 
 namespace wind {
 
-  Mesh::Mesh(std::vector<Vertex>& meshVertices, std::vector<uint>& meshIndices)
+  Mesh::Mesh(
+    const std::vector<Vertex>&& meshVertices,
+    const std::vector<uint>&& meshIndices
+  ) {
+    vertices = std::move(meshVertices);
+    indices = std::move(meshIndices);
+
+    generateBuffers();
+  }
+
+  Mesh::Mesh(
+    const std::vector<Vertex>& meshVertices,
+    const std::vector<uint>& meshIndices
+  )
       : vertices(meshVertices), indices(meshIndices) {
+    generateBuffers();
+  }
+
+  void Mesh::generateBuffers() {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);

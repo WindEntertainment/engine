@@ -1,5 +1,5 @@
 #pragma once
-#include <wind/pipes/pipes-register.hpp>
+#include <wind/asset-pipeline/pipes/pipes-register.hpp>
 
 #include <any>
 #include <fstream>
@@ -148,11 +148,12 @@ namespace wind {
       std::ifstream file(path, std::ios_base::binary);
       if (!file.is_open()) {
         spdlog::error(
-          "Fail load bundle: fail open file by path: {}", path.string()
+          "Failed load bundle: fail open file by path: {}", path.string()
         );
         return;
       }
 
+      spdlog::info("Opened new asset bundle: {}", path.string());
       bundles.push_back(new Bundle(std::move(file)));
     }
 

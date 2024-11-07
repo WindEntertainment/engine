@@ -10,7 +10,11 @@ namespace wind {
       glm::vec2 texCoord;
     };
 
-    Mesh(std::vector<Vertex>& vertices, std::vector<uint>& indices);
+    Mesh(const std::vector<Vertex>& vertices, const std::vector<uint>& indices);
+    Mesh(
+      const std::vector<Vertex>&& vertices,
+      const std::vector<uint>&& indices
+    );
     ~Mesh();
 
     uint id();
@@ -20,6 +24,8 @@ namespace wind {
     uint VAO, VBO, EBO;
     std::vector<uint> indices;
     std::vector<Vertex> vertices;
+
+    void generateBuffers();
   };
 
 } // namespace wind
