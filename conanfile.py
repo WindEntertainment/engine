@@ -24,7 +24,7 @@ class MyConanFile(ConanFile):
     self.requires("pugixml/1.13")
     self.requires("yaml-cpp/0.8.0")
     self.requires("stb/cci.20220909")
-    self.requires("zlib/1.2.11")
+    self.requires("zlib/1.3.1")
 
     self.requires("glad/0.1.36")
     self.requires("glm/cci.20230113")
