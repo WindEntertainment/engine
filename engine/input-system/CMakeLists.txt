@@ -27,7 +27,7 @@ target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ./include/)
 
 # internal depencencies
 
-target_link_libraries(${PROJECT_NAME} PUBLIC wind-utils)
+target_link_libraries(${PROJECT_NAME} PUBLIC wind-utils wind-window)
 target_link_libraries(${PROJECT_NAME} PRIVATE wind-asset-pipeline)
 
 # extrenal depencencies

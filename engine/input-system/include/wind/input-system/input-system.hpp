@@ -4,12 +4,22 @@
 #include "wind/input-system/context.hpp"
 #include "wind/input-system/trigger.hpp"
 #include "wind/input-system/keys.hpp"
+#include "wind/window/window.hpp"
 
 namespace wind {
 
   class InputSystem {
   public:
     // static void init(GLFWwindow* window);
+
+    static void
+    handleKeyPress(SDL_Keycode key, int scancode, int action, int mods);
+    static void handleMousePress(uint button, int action, int mods);
+    static void handleMouseMove(double x, double y);
+    static void handleCharPress(uint codepoint);
+    static void handleScroll(double x, double y);
+
+    static void handleEvent(SDL_Event& event);
 
     static void createTriggersFromFile(std::filesystem::path path);
 
@@ -43,11 +53,11 @@ namespace wind {
     static void removeTrigger(std::set<std::string> groupNames);
 
     static std::unordered_map<Key, Callbacks, KeyHash> keycodeTriggers;
-    static std::map<std::string, Trigger*> groupedTriggers;
+    static std::map<std::string, std::shared_ptr<Trigger>> groupedTriggers;
+
+    static std::shared_ptr<InputSystemContext> context;
 
   private:
-    static InputSystemContext* context;
-
     static inline void groupedEventToCycle(Key keycode);
 
     static void addKeycodeTrigger(Keys bindings, Callbacks callbacks);
