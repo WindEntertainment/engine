@@ -4,6 +4,8 @@
 #include "wind/asset-pipeline/asset-manager.hpp"
 #include "wind/renderer/assets.hpp"
 
+#include "wind/renderer/procedural-graphics.hpp"
+
 #include <glm/ext/matrix_transform.hpp>
 
 using uint = unsigned int;
@@ -31,6 +33,12 @@ namespace game {
 
       //====================================//
 
+      font = wind::AssetManager::getAsset<wind::Font>("main/fonts/SourGummy-VariableFont.ttf");
+      text = std::make_shared<wind::TextMesh>();
+      text->font = font;
+      text->letterSpacing = 0;
+      text->setText("Hello World!");
+
       //=================== create transform //
       transform = glm::mat4(1);
       transform = glm::scale(transform, {100, 100, 1});
@@ -54,7 +62,9 @@ namespace game {
     void update() override {
       wind::CommandBuffer render(wind::Engine::getMainRenderContext());
 
-      render.clear({0.5f, 0.5f, 0.5f, 1.f});
+      static const auto circle = wind::ProceduralGraphics::genCircle(8);
+
+      render.clear({0.4f, 0.4f, 0.4f, 1.f});
       render.drawSprite(sprite, transform);
       render.drawRect(
         {-100.f, 0}, {100, 100}, {0.9f, 0.9f, 0.9f, 1.f}, texture, 0, 0
@@ -62,7 +72,9 @@ namespace game {
       render.drawRect(
         {-100.f, 100.f}, {100, 50}, {0.9f, 0.9f, 0.9f, 1.f}, nullptr, 0, 0
       );
-      render.drawCircle({100.f, 0}, 100, {1.f, 1.f, 1.f, 1.f}, texture);
+      render.drawCircle(circle, {100.f, 0}, 100, {1.f, 1.f, 1.f, 1.f}, texture);
+
+      render.drawText(text, {0.f, 200.f}, {1.f, 1.f}, {1.f, 1.f, 1.f, 1.f});
 
       render.submit();
 
@@ -77,6 +89,8 @@ namespace game {
     glm::mat4 transform;
     std::shared_ptr<wind::Sprite> sprite;
     std::shared_ptr<wind::Texture> texture;
+    std::shared_ptr<wind::TextMesh> text;
+    std::shared_ptr<wind::Font> font;
   };
 
 } // namespace game
