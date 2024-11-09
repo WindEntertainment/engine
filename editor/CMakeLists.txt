@@ -57,8 +57,8 @@ add_wind_game(${PROJECT_NAME} "main;" ${HEADERS} ${SOURCES} ${BINDINGS})
 
 find_package(imgui REQUIRED)
 find_package(spdlog REQUIRED)
-find_package(stb REQUIRED)
-target_link_libraries(${PROJECT_NAME} PUBLIC stb::stb imgui::imgui spdlog::spdlog)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC imgui::imgui spdlog::spdlog)
 target_link_libraries(${PROJECT_NAME} PUBLIC wind ImGuiFileDialog)
 
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ./app/include/)
