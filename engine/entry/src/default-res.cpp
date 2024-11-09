@@ -44,7 +44,7 @@ namespace wind {
       )
     );
 
-   AssetManager::addAsset(
+    AssetManager::addAsset(
       "default-ui-shader",
       std::make_shared<wind::Shader>(
         R"(
@@ -169,7 +169,7 @@ namespace wind {
       )
     );
 
-     AssetManager::addAsset(
+    AssetManager::addAsset(
       "default-text-material",
       std::make_shared<wind::Material>(
         AssetManager::getAsset<wind::Shader>("default-text-shader"), 1

@@ -18,7 +18,7 @@ namespace wind {
       config.position.y,
       config.size.x,
       config.size.y,
-      SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL
+      SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL 
     );
 
     if (!_window) {

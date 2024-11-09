@@ -22,7 +22,7 @@ namespace game {
       //===================== load texture //
 
       animeTexture =
-        wind::AssetManager::getAsset<wind::Texture>("main/art/anime.png");  
+        wind::AssetManager::getAsset<wind::Texture>("main/art/anime.png");
 
       stoneTexture =
         wind::AssetManager::getAsset<wind::Texture>("main/art/stone.png");
@@ -46,16 +46,21 @@ namespace game {
 
       //============== create texts meshes //
 
-      fontHostGrotesk = wind::AssetManager::getAsset<wind::Font>("main/fonts/OpenSans-Bold.ttf");
-      fontSourGummy = wind::AssetManager::getAsset<wind::Font>("main/fonts/SourGummy-VariableFont.ttf");
-     
+      fontHostGrotesk =
+        wind::AssetManager::getAsset<wind::Font>("main/fonts/OpenSans-Bold.ttf"
+        );
+      fontSourGummy = wind::AssetManager::getAsset<wind::Font>(
+        "main/fonts/SourGummy-VariableFont.ttf"
+      );
+
       textSample = std::make_shared<wind::TextMesh>();
       textSample->font = fontSourGummy;
       textSample->letterSpacing = 0;
       textSample->lineSpacing = 12;
       textSample->lineWidth = 250;
-      textSample->setText("Hello, World! Tell me something about this application\nThis is new line");
-     
+      textSample->setText("Hello, World! Tell me something about this "
+                          "application\nThis is new line");
+
       textFPS = std::make_shared<wind::TextMesh>();
       textFPS->font = fontSourGummy;
       textFPS->letterSpacing = 0;
@@ -124,7 +129,7 @@ namespace game {
         nullptr,
         0,
         0.05f,
-        0.025f, 
+        0.025f,
         {0.1f, 0.1f, 0.1f, 1.f}
       );
 
@@ -159,7 +164,8 @@ namespace game {
       if (pos.x >= 400) {
         transform = glm::mat4(1);
         transform = glm::translate(transform, {-400.f, -200.f, 0});
-        transform = glm::rotate(transform, glm::radians(-90.f), {0.f, 0.f, 1.f});
+        transform =
+          glm::rotate(transform, glm::radians(-90.f), {0.f, 0.f, 1.f});
         transform = glm::scale(transform, {100, 100, 1});
       }
     }
@@ -167,7 +173,6 @@ namespace game {
     void quit() override {}
 
   private:
-
     std::shared_ptr<wind::Sprite> sprite;
     glm::mat4 transform;
 
@@ -176,7 +181,7 @@ namespace game {
 
     std::shared_ptr<wind::TextMesh> textSample;
     std::shared_ptr<wind::TextMesh> textFPS;
-    
+
     std::shared_ptr<wind::Font> fontSourGummy;
     std::shared_ptr<wind::Font> fontHostGrotesk;
   };
