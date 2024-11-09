@@ -26,7 +26,7 @@ namespace wind {
 
   int Engine::getFPS() { return fps; }
 
-  void Engine::setFPS(int fps) {
+  void Engine::setTargetFPS(int fps) {
     minDeltaTime = chrono::milliseconds(1000 / fps);
   }
 
@@ -36,8 +36,9 @@ namespace wind {
       return EXIT_FAILURE;
     }
 
-    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
-    // SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+    // SDL_GL_SetAttribute(
+    //   SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY
+    // );
     SDL_GL_SetAttribute(
       SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE
     );

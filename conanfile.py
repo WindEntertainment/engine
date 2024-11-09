@@ -19,6 +19,7 @@ class MyConanFile(ConanFile):
     self.requires("sdl/2.30.8")
     self.requires("catch2/3.7.1")
     self.requires("spdlog/1.13.0")
+    self.requires("freetype/2.13.3")
 
     self.requires("cxxopts/3.1.1")
     self.requires("pugixml/1.13")

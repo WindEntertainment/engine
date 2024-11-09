@@ -4,7 +4,8 @@
 namespace wind {
   class Texture {
   public:
-    Texture(const unsigned char* pixels, const glm::ivec2 size);
+    Texture(uint texture) : texture_id(texture){}
+    Texture(void* pixels, const glm::ivec2 size);
     ~Texture();
 
     uint id() const;

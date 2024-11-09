@@ -3,6 +3,10 @@
 
 namespace wind {
   namespace assets {
+    struct RawData {
+      size_t size;
+      void* data;
+    };
 
     class DefaultPipe : public AssetPipe {
     public:
@@ -90,7 +94,7 @@ namespace wind {
 
         delete[] zipData;
 
-        return (void*)(unzipData);
+        return (void*)(new RawData{orgSize, (void*)(unzipData)});
       }
 
       DefaultPipe() : AssetPipe("default") {};

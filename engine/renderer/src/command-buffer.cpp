@@ -74,13 +74,12 @@ namespace wind {
   }
 
   void CommandBuffer::drawCircle(
+    std::shared_ptr<CircleMesh> mesh,
     glm::vec2 position,
     float radius,
     glm::vec4 color,
     const std::shared_ptr<Texture>& texture
   ) {
-    static std::shared_ptr<Mesh> mesh =
-      AssetManager::getAsset<Mesh>("default-circle-mesh");
     static std::shared_ptr<Material> material =
       AssetManager::getAsset<Material>("default-ui-material");
     static std::shared_ptr<Texture> defaultTexture =
@@ -118,6 +117,59 @@ namespace wind {
       material->setMat4("uProjection", context->getCamera()->getProjection());
 
       glDrawElements(GL_TRIANGLES, sprite->length(), GL_UNSIGNED_INT, 0);
+    });
+  }
+
+  void CommandBuffer::drawText(
+    std::shared_ptr<TextMesh> mesh,
+    glm::vec2 position,
+    glm::vec2 scale,
+    glm::vec4 color
+  ) {
+    static std::shared_ptr<Mesh> rectMesh =
+      AssetManager::getAsset<Mesh>("default-rect-mesh");
+    static std::shared_ptr<Material> material =
+      AssetManager::getAsset<Material>("default-text-material");
+
+    commands.emplace_back([=]() { 
+      glBindVertexArray(rectMesh->id());
+
+      glm::vec2 offset = {};
+
+      for (int i = 0; i < mesh->glyphs.size(); ++i) {
+        auto glyph = mesh->glyphs[i];
+
+        glm::mat4 transform = glm::mat4(1);
+        
+        transform = glm::translate(transform, {
+          position.x + offset.x + glyph.size.x / 2 * scale.x + glyph.bearing.x * scale.x,
+          position.y + offset.y + glyph.size.y / 2 * scale.y - (glyph.size.y - glyph.bearing.y) * scale.y,
+          0
+        });
+
+        transform = glm::scale(transform, {
+          glyph.size.x * scale.x,
+          glyph.size.y * scale.y,
+          1
+         });
+
+        offset.x += ((glyph.advance.x >> 6) + mesh->letterSpacing) * scale.x;
+        if ((mesh->lineWidth != 0 && offset.x > mesh->lineWidth * scale.x) || glyph.character == '\n') {
+          offset.x = 0;
+          offset.y -= ((glyph.advance.y >> 6) + mesh->lineSpacing) * scale.y;
+        }
+
+        if (glyph.character == '\n')
+          continue;
+
+        material->setTexture(glyph.texture);
+        material->apply();
+        material->setVec4("uColor", color);
+        material->setMat4("uModel", transform);
+        material->setMat4("uProjection", context->getCamera()->getProjection());
+
+        glDrawElements(GL_TRIANGLES, rectMesh->length(), GL_UNSIGNED_INT, 0);
+      }
     });
   }
 

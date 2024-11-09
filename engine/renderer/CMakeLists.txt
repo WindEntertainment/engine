@@ -11,6 +11,7 @@ set(HEADERS
     ./include/wind/renderer/assets.hpp
     ./include/wind/renderer/camera.hpp
     ./include/wind/renderer/sprite.hpp
+    ./include/wind/renderer/procedural-graphics.hpp
 )
 
 set(SOURCES
@@ -23,6 +24,7 @@ set(SOURCES
     ./src/assets.cpp
     ./src/camera.cpp
     ./src/sprite.cpp
+    ./src/procedural-graphics.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC
