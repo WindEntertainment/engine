@@ -134,7 +134,7 @@ namespace wind {
     commands.emplace_back([=]() { 
       glBindVertexArray(rectMesh->id());
 
-      glm::vec2 glyphPosition = position;
+      glm::vec2 offset = {};
 
       for (int i = 0; i < mesh->glyphs.size(); ++i) {
         auto glyph = mesh->glyphs[i];
@@ -142,8 +142,8 @@ namespace wind {
         glm::mat4 transform = glm::mat4(1);
         
         transform = glm::translate(transform, {
-          glyphPosition.x + glyph.size.x / 2 + glyph.bearing.x * scale.x,
-          glyphPosition.y + glyph.size.y / 2 - (glyph.size.y - glyph.bearing.y) * scale.y,
+          position.x + offset.x + glyph.size.x / 2 * scale.x + glyph.bearing.x * scale.x,
+          position.y + offset.y + glyph.size.y / 2 * scale.y - (glyph.size.y - glyph.bearing.y) * scale.y,
           0
         });
 
@@ -153,7 +153,14 @@ namespace wind {
           1
          });
 
-        glyphPosition.x += ((glyph.advance >> 6) + mesh->letterSpacing) * scale.x;
+        offset.x += ((glyph.advance.x >> 6) + mesh->letterSpacing) * scale.x;
+        if ((mesh->lineWidth != 0 && offset.x > mesh->lineWidth * scale.x) || glyph.character == '\n') {
+          offset.x = 0;
+          offset.y -= ((glyph.advance.y >> 6) + mesh->lineSpacing) * scale.y;
+        }
+
+        if (glyph.character == '\n')
+          continue;
 
         material->setTexture(glyph.texture);
         material->apply();

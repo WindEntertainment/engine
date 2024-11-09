@@ -39,7 +39,7 @@ namespace wind {
   void Material::setTexture(std::shared_ptr<Texture> texture, int ind) {
     if (textures.size() < ind) {
       spdlog::error(
-        "Texture index {} is out of bounds. Valid indices are 0 to {}.",
+        "Texture index {} is out of bounds. Valid indices are from 0 to {}.",
         ind,
         textures.size() - 1
       );

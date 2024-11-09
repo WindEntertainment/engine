@@ -11,7 +11,7 @@ namespace editor {
 
   public:
     void start() override {
-      wind::Engine::setFPS(60);
+      wind::Engine::setTargetFPS(60);
       auto window = wind::Engine::getMainWindow();
       auto rendererContext = wind::Engine::getMainRenderContext();
 

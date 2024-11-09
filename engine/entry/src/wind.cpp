@@ -26,7 +26,7 @@ namespace wind {
 
   int Engine::getFPS() { return fps; }
 
-  void Engine::setFPS(int fps) {
+  void Engine::setTargetFPS(int fps) {
     minDeltaTime = chrono::milliseconds(1000 / fps);
   }
 

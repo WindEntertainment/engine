@@ -12,7 +12,8 @@ namespace wind {
       std::shared_ptr<Texture> texture;
       glm::ivec2 size;
       glm::ivec2 bearing;
-      int advance;
+      glm::ivec2 advance;
+      unsigned char character;
     };
 
     Font(FT_Face face, int fontSize): face(face) {
@@ -49,7 +50,8 @@ namespace wind {
           .texture = std::shared_ptr<Texture>(new Texture(texture)),
           .size = { face->glyph->bitmap.width, face->glyph->bitmap.rows },
           .bearing = { face->glyph->bitmap_left, face->glyph->bitmap_top },
-          .advance = face->glyph->advance.x
+          .advance = {face->glyph->advance.x, face->height},
+          .character = c
         }));
       }
     }
@@ -70,12 +72,16 @@ namespace wind {
 
     std::shared_ptr<Font> font = nullptr;
     int letterSpacing = 0;
+    int lineSpacing = 0;
+    int lineWidth = 0;
 
     void setText(const std::string& text) {
        if (font == nullptr) {
          spdlog::error("Font is nullptr");
          return;
        }
+
+       glyphs.clear();
 
        std::string::const_iterator c;
        for (c = text.begin(); c != text.end(); ++c) {
