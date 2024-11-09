@@ -44,54 +44,69 @@ namespace wind {
       )
     );
 
-    AssetManager::addAsset(
+   AssetManager::addAsset(
       "default-ui-shader",
       std::make_shared<wind::Shader>(
         R"(
-            #version 330 core
+        #version 330 core
 
-            layout (location = 0) in vec3 aPos;
-            layout (location = 1) in vec2 aTexCoords;
+        layout (location = 0) in vec3 aPos;
+        layout (location = 1) in vec2 aTexCoords;
 
-            uniform mat4 uModel;
-            uniform mat4 uProjection;
+        uniform mat4 uModel;
+        uniform mat4 uProjection;
 
-            out vec2 texCoord;
+        out vec2 texCoord;
 
-            void main() {
-                gl_Position = uProjection * uModel * vec4(aPos, 1.0);
-                texCoord = aTexCoords;
-            }
-        )",
+        void main() {
+            gl_Position = uProjection * uModel * vec4(aPos, 1.0);
+            texCoord = aTexCoords;
+        }
+    )",
         R"(
-            #version 330 core
+        #version 330 core
 
-            out vec4 FragColor;
-            in vec2 texCoord;
-            in vec4 color;
+        out vec4 FragColor;
+        in vec2 texCoord;
 
-            uniform sampler2D tex0;
+        uniform sampler2D tex0;
 
-            uniform float uBorderRadius;
-            uniform vec4 uColor;
-            uniform vec2 uSize;
+        uniform float uBorderRadius;
+        uniform vec4 uColor;
+        uniform vec2 uSize;
+        uniform float uBorderWidth; 
+        uniform vec4 uBorderColor;
 
-            void main() {
-              vec2 pos = texCoord * uSize;
-              vec2 halfSize = uSize * 0.5;
-              vec2 cornerDist = abs(pos - halfSize) - (halfSize - uBorderRadius);
+        void main() {
+          vec2 pos = texCoord * uSize;
+          vec2 halfSize = uSize * 0.5;
+          
+          if (uBorderRadius == 0.0) {
+            vec2 edgeDist = min(pos, uSize - pos);
+            if (min(edgeDist.x, edgeDist.y) < uBorderWidth) {
+              FragColor = uBorderColor;
+            } else {
+              FragColor = texture(tex0, texCoord) * uColor;
+            }   
+          } else { 
+            vec2 cornerDist = abs(pos - halfSize) - (halfSize - uBorderRadius);
 
-              float outside = max(cornerDist.x, cornerDist.y);
-              if (outside > 0.0) {
-                float cornerDistSq = dot(max(cornerDist, 0.0), max(cornerDist, 0.0));
-                if (cornerDistSq > uBorderRadius * uBorderRadius) {
-                   discard;
-                }
-              }
+            float outside = max(cornerDist.x, cornerDist.y);
+            float cornerDistSq = dot(max(cornerDist, 0.0), max(cornerDist, 0.0));
+            if (outside > 0.0 && cornerDistSq > uBorderRadius * uBorderRadius) {
+                 discard;        
+            }
 
+            float distFromBorder = uBorderRadius - sqrt(cornerDistSq);
+          
+            if (distFromBorder < uBorderWidth && distFromBorder > 0.0) {
+              FragColor = uBorderColor;
+            } else {
               FragColor = texture(tex0, texCoord) * uColor;
             }
-    )"
+          }
+        }
+)"
       )
     );
 

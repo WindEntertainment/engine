@@ -46,7 +46,9 @@ namespace wind {
     glm::vec4 color,
     const std::shared_ptr<Texture>& texture,
     float angle,
-    float borderRadius
+    float borderRadius,
+    float borderWidth,
+    glm::vec4 borderColor
   ) {
     static std::shared_ptr<Mesh> mesh =
       AssetManager::getAsset<Mesh>("default-rect-mesh");
@@ -66,6 +68,8 @@ namespace wind {
       material->setTexture(texture == nullptr ? defaultTexture : texture, 0);
       material->apply();
       material->setVec4("uColor", color);
+      material->setVec4("uBorderColor", borderColor);
+      material->setFloat("uBorderWidth", borderWidth);
       material->setMat4("uModel", transform);
       material->setFloat("uBorderRadius", borderRadius/2);
       material->setVec2("uSize", {1, 1});
@@ -98,6 +102,8 @@ namespace wind {
       material->apply();
       material->setVec4("uColor", color);
       material->setFloat("uBorderRadius", 0.f);
+      material->setVec4("uBorderColor", { 0, 0, 0, 0 });
+      material->setFloat("uBorderWidth", 0.0f);
       material->setMat4("uModel", transform);
       material->setMat4("uProjection", context->getCamera()->getProjection());
 

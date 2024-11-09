@@ -112,16 +112,20 @@ namespace game {
         {1.f, 1.0f, 1.0f, 1.f},
         stoneTexture,
         0,
-        1.f
+        1.f,
+        0.04f,
+        {0.8f, 0.8f, 0.8f, 1.f}
       );
 
       render.drawRect(
         {-100.f, 105.f},
         {200.f, 100.f},
-        {0.7f, 0.7f, 0.7f, 1.f},
+        {0.0f, 0.0f, 0.0f, 0.f},
         nullptr,
         0,
-        0.05f
+        0.05f,
+        0.025f, 
+        {0.1f, 0.1f, 0.1f, 1.f}
       );
 
       for (int i = 0; i < 10; ++i) {
@@ -139,7 +143,9 @@ namespace game {
           {0.8f, 0.2f, 0.2f, 1.f},
           nullptr,
           0,
-          i / 10.f
+          i / 10.f,
+          0.04f,
+          {0, 0, 0, 1}
         );
       }
 

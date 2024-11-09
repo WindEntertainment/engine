@@ -32,9 +32,11 @@ namespace wind {
       glm::vec2 position,
       glm::vec2 size,
       glm::vec4 color,
-      const std::shared_ptr<Texture>& texture,
-      float angle,
-      float borderRadius
+      const std::shared_ptr<Texture>& texture = nullptr,
+      float angle = 0,
+      float borderRadius = 0,
+      float borderWidth = 0,
+      glm::vec4 borderColor = {}
     );
 
     void drawCircle(

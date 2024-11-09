@@ -45,6 +45,8 @@ namespace wind {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
+    //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+
     mainWindow = Window::create([](Window::Config* self) {
       self->title = "Hello, World!";
       self->position = {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED};
