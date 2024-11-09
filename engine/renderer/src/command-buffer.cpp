@@ -67,6 +67,8 @@ namespace wind {
       material->apply();
       material->setVec4("uColor", color);
       material->setMat4("uModel", transform);
+      material->setFloat("uBorderRadius", borderRadius/2);
+      material->setVec2("uSize", {1, 1});
       material->setMat4("uProjection", context->getCamera()->getProjection());
 
       glDrawElements(GL_TRIANGLES, mesh->length(), GL_UNSIGNED_INT, 0);
@@ -95,6 +97,7 @@ namespace wind {
       material->setTexture(texture == nullptr ? defaultTexture : texture, 0);
       material->apply();
       material->setVec4("uColor", color);
+      material->setFloat("uBorderRadius", 0.f);
       material->setMat4("uModel", transform);
       material->setMat4("uProjection", context->getCamera()->getProjection());
 
@@ -118,6 +121,29 @@ namespace wind {
 
       glDrawElements(GL_TRIANGLES, sprite->length(), GL_UNSIGNED_INT, 0);
     });
+  }
+
+  void CommandBuffer::drawText(
+    std::shared_ptr<Font> font,
+    std::string text,
+    glm::vec2 position,
+    glm::vec2 scale,
+    glm::vec4 color,
+    int letterSpacing,
+    int lineWidth,
+    int lineSpacing
+  ) {
+    static std::shared_ptr<TextMesh> textMesh = std::make_shared<TextMesh>();
+
+     commands.emplace_back([=]() { 
+        textMesh->font = font;
+        textMesh->setText(text);
+        textMesh->letterSpacing = letterSpacing;
+        textMesh->lineSpacing = lineSpacing;
+        textMesh->lineWidth = lineWidth;
+     });
+
+     drawText(textMesh, position, scale, color);
   }
 
   void CommandBuffer::drawText(
@@ -151,7 +177,7 @@ namespace wind {
           glyph.size.x * scale.x,
           glyph.size.y * scale.y,
           1
-         });
+        });
 
         offset.x += ((glyph.advance.x >> 6) + mesh->letterSpacing) * scale.x;
         if ((mesh->lineWidth != 0 && offset.x > mesh->lineWidth * scale.x) || glyph.character == '\n') {

@@ -55,15 +55,12 @@ namespace wind {
 
             uniform mat4 uModel;
             uniform mat4 uProjection;
-            uniform vec4 uColor;
 
             out vec2 texCoord;
-            out vec4 color;
 
             void main() {
                 gl_Position = uProjection * uModel * vec4(aPos, 1.0);
                 texCoord = aTexCoords;
-                color = uColor;
             }
         )",
         R"(
@@ -75,8 +72,24 @@ namespace wind {
 
             uniform sampler2D tex0;
 
+            uniform float uBorderRadius;
+            uniform vec4 uColor;
+            uniform vec2 uSize;
+
             void main() {
-              FragColor = texture(tex0, texCoord) * color;
+              vec2 pos = texCoord * uSize;
+              vec2 halfSize = uSize * 0.5;
+              vec2 cornerDist = abs(pos - halfSize) - (halfSize - uBorderRadius);
+
+              float outside = max(cornerDist.x, cornerDist.y);
+              if (outside > 0.0) {
+                float cornerDistSq = dot(max(cornerDist, 0.0), max(cornerDist, 0.0));
+                if (cornerDistSq > uBorderRadius * uBorderRadius) {
+                   discard;
+                }
+              }
+
+              FragColor = texture(tex0, texCoord) * uColor;
             }
     )"
       )

@@ -46,6 +46,17 @@ namespace wind {
     );
 
     void drawText(
+      std::shared_ptr<Font> font,
+      std::string text,
+      glm::vec2 position, 
+      glm::vec2 scale, 
+      glm::vec4 color, 
+      int letterSpacing = 0,
+      int lineWidth = 0,
+      int lineSpacing = 12
+    );
+
+    void drawText(
       std::shared_ptr<TextMesh> mesh,
       glm::vec2 position,
       glm::vec2 scale,

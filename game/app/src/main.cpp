@@ -19,41 +19,53 @@ namespace game {
 
       wind::AssetManager::loadBundle("res/main.bundle");
 
+      //===================== load texture //
+
+      animeTexture =
+        wind::AssetManager::getAsset<wind::Texture>("main/art/anime.png");  
+
+      stoneTexture =
+        wind::AssetManager::getAsset<wind::Texture>("main/art/stone.png");
+
       //===================== create sprite //
 
       auto shader =
         wind::AssetManager::getAsset<wind::Shader>("default-sprite-shader");
 
-      texture =
-        wind::AssetManager::getAsset<wind::Texture>("main/art/simple.png");
-
       auto material = std::make_shared<wind::Material>(shader, 1);
 
-      sprite = std::make_shared<wind::Sprite>(material, texture);
+      auto spriteTexture =
+        wind::AssetManager::getAsset<wind::Texture>("main/art/ship.png");
 
-      //====================================//
+      sprite = std::make_shared<wind::Sprite>(material, spriteTexture);
 
-      font = wind::AssetManager::getAsset<wind::Font>("main/fonts/SourGummy-VariableFont.ttf");
-      text = std::make_shared<wind::TextMesh>();
-      text->font = font;
-      text->letterSpacing = 0;
-      text->lineSpacing = 12;
-      text->lineWidth = 250;
-      text->setText("Hello, World! Tell me something about this application\nThis is new line");
+      transform = glm::mat4(1);
+      transform = glm::translate(transform, {-350.f, -200.f, 0});
+      transform = glm::rotate(transform, glm::radians(-90.f), {0.f, 0.f, 1.f});
+      transform = glm::scale(transform, {100, 100, 1});
+
+      //============== create texts meshes //
+
+      fontHostGrotesk = wind::AssetManager::getAsset<wind::Font>("main/fonts/OpenSans-Bold.ttf");
+      fontSourGummy = wind::AssetManager::getAsset<wind::Font>("main/fonts/SourGummy-VariableFont.ttf");
+     
+      textSample = std::make_shared<wind::TextMesh>();
+      textSample->font = fontSourGummy;
+      textSample->letterSpacing = 0;
+      textSample->lineSpacing = 12;
+      textSample->lineWidth = 250;
+      textSample->setText("Hello, World! Tell me something about this application\nThis is new line");
      
       textFPS = std::make_shared<wind::TextMesh>();
-      textFPS->font = font;
+      textFPS->font = fontSourGummy;
       textFPS->letterSpacing = 0;
 
-      //=================== create transform //
-      transform = glm::mat4(1);
-      transform = glm::scale(transform, {100, 100, 1});
-      //====================================//
+      //=================== create camera //
 
       wind::Engine::getMainRenderContext()->setCamera(
         std::make_shared<wind::Camera>(
-          glm::vec3{0, 0, 1},
-          glm::vec3{0, 0, 1},
+          glm::vec3{0, 0, -1},
+          glm::vec3{0, 0, -1},
           glm::vec3{0, 1, 0},
           glm::ivec2{
             wind::Engine::getMainWindow()->size().x,
@@ -74,33 +86,93 @@ namespace game {
 
       render.clear({0.4f, 0.4f, 0.4f, 1.f});
       render.drawSprite(sprite, transform);
-      render.drawRect(
-        {-100.f, 0}, {100, 100}, {0.9f, 0.9f, 0.9f, 1.f}, texture, 0, 0
-      );
-      render.drawRect(
-        {-100.f, 100.f}, {100, 50}, {0.9f, 0.9f, 0.9f, 1.f}, nullptr, 0, 0
-      );
-      render.drawCircle(circle, {100.f, -75.f}, 100, {1.f, 1.f, 1.f, 1.f}, texture);
 
-      render.drawText(text, {0.f, 250.f}, {1.f, 1.0f}, {1.f, 1.f, 1.f, 1.f});
-      render.drawText(textFPS, {-400.f, 270.f}, {1.f, 1.f}, {1.f, 1.f, 1.f, 1.f});
+      render.drawCircle(
+        circle, {200, 175.f}, 100, {1.f, 1.f, 1.f, 1.f}, animeTexture
+      );
+
+      render.drawText(
+        textSample, {-150.f, 250.f}, {0.5f, 0.5f}, {1.f, 1.f, 1.f, 1.f}
+      );
+      render.drawText(
+        textFPS, {-390.f, 270.f}, {1.f, 1.f}, {1.f, 1.f, 1.f, 1.f}
+      );
+
+      render.drawText(
+        fontHostGrotesk,
+        "radius: 1.0",
+        {-330.f, 180.f},
+        {0.4f, 0.4f},
+        {1.f, 1.f, 1.f, 1.f}
+      );
+
+      render.drawRect(
+        {-300.f, 105.f},
+        {100.f, 100.f},
+        {1.f, 1.0f, 1.0f, 1.f},
+        stoneTexture,
+        0,
+        1.f
+      );
+
+      render.drawRect(
+        {-100.f, 105.f},
+        {200.f, 100.f},
+        {0.7f, 0.7f, 0.7f, 1.f},
+        nullptr,
+        0,
+        0.05f
+      );
+
+      for (int i = 0; i < 10; ++i) {
+        render.drawText(
+          fontHostGrotesk,
+          fmt::format("radius: {:.1f}", i / 10.f),
+          {-375.f + i * 75.f, 0.f},
+          {0.4f, 0.4f},
+          {1.f, 1.f, 1.f, 1.f}
+        );
+
+        render.drawRect(
+          {-340.f + i * 75.f, -50.f},
+          {50.f, 50.f},
+          {0.8f, 0.2f, 0.2f, 1.f},
+          nullptr,
+          0,
+          i / 10.f
+        );
+      }
 
       render.submit();
 
       transform = glm::translate(
-        transform, {0.f, -0.3f * wind::Engine::getDeltaTime(), 0.f}
+        transform, {0.f, 0.3f * wind::Engine::getDeltaTime(), 0.f}
       );
+
+      auto pos = transform * glm::vec4{0, 0, 0, 1};
+      if (pos.x >= 400) {
+        transform = glm::mat4(1);
+        transform = glm::translate(transform, {-400.f, -200.f, 0});
+        transform = glm::rotate(transform, glm::radians(-90.f), {0.f, 0.f, 1.f});
+        transform = glm::scale(transform, {100, 100, 1});
+      }
     }
 
     void quit() override {}
 
   private:
-    glm::mat4 transform;
+
     std::shared_ptr<wind::Sprite> sprite;
-    std::shared_ptr<wind::Texture> texture;
-    std::shared_ptr<wind::TextMesh> text;
+    glm::mat4 transform;
+
+    std::shared_ptr<wind::Texture> animeTexture;
+    std::shared_ptr<wind::Texture> stoneTexture;
+
+    std::shared_ptr<wind::TextMesh> textSample;
     std::shared_ptr<wind::TextMesh> textFPS;
-    std::shared_ptr<wind::Font> font;
+    
+    std::shared_ptr<wind::Font> fontSourGummy;
+    std::shared_ptr<wind::Font> fontHostGrotesk;
   };
 
 } // namespace game

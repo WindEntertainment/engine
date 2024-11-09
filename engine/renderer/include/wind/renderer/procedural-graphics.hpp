@@ -32,7 +32,7 @@ namespace wind {
         float c = cosf(angle), s = sinf(angle);
 
         vertices.emplace_back(
-          Mesh::Vertex{{c, s, 0.f}, {0.5f + 0.5f * c, 0.5f + 0.5f * s}}
+          Mesh::Vertex{{c, s, 0.f}, {0.5f - 0.5f * c, 0.5f - 0.5f * s}}
         );
       }
 

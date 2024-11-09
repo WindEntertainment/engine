@@ -31,6 +31,21 @@ namespace wind {
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(transform));
   }
 
+  void Material::setFloat(const std::string& name, const float value) {
+    int loc = glGetUniformLocation(shader->id(), name.c_str());
+    glUniform1f(loc, value); 
+  }
+
+  void Material::setVec2(const std::string& name, const glm::vec2& vec) {
+    int loc = glGetUniformLocation(shader->id(), name.c_str());
+    glUniform2fv(loc, 1, glm::value_ptr(vec)); 
+  }
+
+  void Material::setVec3(const std::string& name, const glm::vec3& vec) {
+    int loc = glGetUniformLocation(shader->id(), name.c_str());
+    glUniform3fv(loc, 1, glm::value_ptr(vec));
+  }
+
   void Material::setVec4(const std::string& name, const glm::vec4& vec) {
     int loc = glGetUniformLocation(shader->id(), name.c_str());
     glUniform4fv(loc, 1, glm::value_ptr(vec));
