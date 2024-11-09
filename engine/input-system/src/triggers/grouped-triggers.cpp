@@ -52,7 +52,7 @@ namespace wind {
   void InputSystem::addGroupedTrigger(
     std::string groupName,
     Keys bindings,
-    Callback *callback
+    Callback* callback
   ) {
     if (groupedTriggers.contains(groupName)) {
       groupedTriggers[groupName]->callbacks.insert(callback);
@@ -86,7 +86,7 @@ namespace wind {
   void InputSystem::addGroupedTrigger(
     std::string groupName,
     Key binding,
-    Callback *callback
+    Callback* callback
   ) {
     if (groupedTriggers.contains(groupName)) {
       groupedTriggers[groupName]->callbacks.insert(callback);
@@ -128,7 +128,7 @@ namespace wind {
 
   void InputSystem::addGroupedTriggerCallbacks(
     std::string groupName,
-    Callback *callback
+    Callback* callback
   ) {
     if (groupedTriggers.contains(groupName)) {
       groupedTriggers[groupName]->callbacks.insert(callback);

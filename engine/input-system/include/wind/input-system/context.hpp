@@ -8,5 +8,6 @@ namespace wind {
   struct InputSystemContext {
     KeyboardContext keyboardContext;
     MouseContext mouseContext;
+    Key key;
   };
 } // namespace wind
