@@ -80,7 +80,9 @@ namespace game {
       );
     }
 
-    void handleEvent(SDL_Event& event) override {}
+    void handleEvent(SDL_Event& event) override {
+      wind::InputSystem::handleEvent(event);
+    }
 
     void update() override {
       wind::CommandBuffer render(wind::Engine::getMainRenderContext());
