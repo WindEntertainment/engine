@@ -7,6 +7,8 @@
 
 #include "wind/input-system/input-system.hpp"
 
+#include "wind/language/language.hpp"
+
 #include <glm/ext/matrix_transform.hpp>
 
 using uint = unsigned int;
