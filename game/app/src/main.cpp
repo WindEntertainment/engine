@@ -1,10 +1,11 @@
-#include "wind/renderer/command-buffer.hpp"
 #include "wind/wind.hpp"
 
 #include "wind/asset-pipeline/asset-manager.hpp"
-#include "wind/renderer/assets.hpp"
 
+#include "wind/renderer/command-buffer.hpp"
 #include "wind/renderer/procedural-graphics.hpp"
+
+#include "wind/input-system/input-system.hpp"
 
 #include <glm/ext/matrix_transform.hpp>
 
@@ -77,6 +78,43 @@ namespace game {
             wind::Engine::getMainWindow()->size().y
           }
         )
+      );
+
+      wind::InputSystem::addTrigger(
+        "player-move-up",
+        wind::Key{
+          .keycode = wind::Keycode::K_S, .action = wind::KeyAction::Pressed
+        },
+        new std::function([&velocity=velocity, speed=speed](std::shared_ptr<wind::InputSystemContext> ctx) {
+          velocity = -speed;
+        })
+      );
+      wind::InputSystem::addTrigger(
+        "player-move-down",
+        wind::Key{
+          .keycode = wind::Keycode::K_W, .action = wind::KeyAction::Pressed
+        },
+        new std::function([&velocity = velocity, speed = speed](std::shared_ptr<wind::InputSystemContext> ctx) { 
+            velocity = speed;
+        })
+      );
+      wind::InputSystem::addTrigger(
+        "player-move-left",
+        wind::Key{
+          .keycode = wind::Keycode::K_A, .action = wind::KeyAction::Pressed
+        },
+        new std::function([&angularVelocity = angularVelocity, speed = speed](std::shared_ptr<wind::InputSystemContext> ctx) {
+          angularVelocity = speed;
+         })
+      );
+      wind::InputSystem::addTrigger(
+        "player-move-right",
+        wind::Key{
+          .keycode = wind::Keycode::K_D, .action = wind::KeyAction::Pressed
+        },
+        new std::function([&angularVelocity = angularVelocity, speed = speed](std::shared_ptr<wind::InputSystemContext> ctx) {
+          angularVelocity = -speed;
+        })
       );
     }
 
@@ -159,9 +197,13 @@ namespace game {
       render.submit();
 
       transform = glm::translate(
-        transform, {0.f, 0.3f * wind::Engine::getDeltaTime(), 0.f}
+        transform,
+        {0, velocity * wind::Engine::getDeltaTime(), 0.f}
       );
-
+      transform = glm::rotate(
+        transform, angularVelocity * wind::Engine::getDeltaTime(), {0, 0, 1}
+      );
+      
       auto pos = transform * glm::vec4{0, 0, 0, 1};
       if (pos.x >= 400) {
         transform = glm::mat4(1);
@@ -177,6 +219,10 @@ namespace game {
   private:
     std::shared_ptr<wind::Sprite> sprite;
     glm::mat4 transform;
+
+    float velocity;
+    float angularVelocity;
+    const float speed = 0.5f;
 
     std::shared_ptr<wind::Texture> animeTexture;
     std::shared_ptr<wind::Texture> stoneTexture;
