@@ -5,18 +5,14 @@
 int main() {
   wind::wdlang::Tokenizer t(
     R"(
-      class Program {
-      public:
-        void main() {
-          spdlog::info("Hello, World!");
-        }  
-      }
+      23 + {
     )"
   );
 
-  auto& stream = t.getStream();
-  auto token = stream.get();
-  for (; token != stream.end(); token = stream.get()) {
-    spdlog::info("Token({}:{}) type: {}, value: '{}'", stream.line, stream.position, (int)token.type, token.value);
+  wind::wdlang::AST ast(t.getStream());
+  auto errors = ast.getErrors();
+  while (!errors.empty()) {
+    auto error = errors.front();
+    spdlog::info("({}, {}): {}: '{}'", error.line, error.position, error.message, error.token.value);
   }
 }

@@ -1,229 +1,231 @@
-#include "wind/utils/utils.hpp"
+#include "wind/language/tokenizer.hpp"
+#include <queue>
 
 namespace wind {
 	namespace wdlang {
 
-    class Tokenizer {
-      friend class TokenStream;
+		struct Expression {};
+		
+		struct Value : public Expression {
+			enum ValueType {
+				Number,
+				Char,
+				String,
+			};
+
+			ValueType type;
+      std::string value;
+		};
+
+    struct Identifier : public Expression {
+      std::string name;
+		};
+    
+		struct BinaryOperation : public Expression {
+      enum OperationType {
+				Add, 
+				Sub, 
+				Mul,
+				Div
+      };
+
+			OperationType type;
+      Expression* lhs;
+      Expression* rhs;
+		};
+
+    struct UnaryOperation : public Expression {
+			enum OperationType {
+				NEGATE
+			};
+
+			OperationType type;
+      Expression* operand;
+		};
+	
+		class AST {
+			using Token = Tokenizer::Token;
     public:
-
-      struct Token {
-        enum TokenType {
-          T_EOF,
-
-          Unknown,
-
-          Number,
-          Word,
-          Operator,
-          Char,
-          String
-        };
-
-        TokenType type;
-        std::string value;
-
-        bool operator==(const Token& rhs) {
-          return type == rhs.type && value == rhs.value;
-        }
-
-        bool operator!=(const Token& rhs) { 
-          return type != rhs.type && value != rhs.value;
-        }
-      };
-
-      class TokenStream {
-        friend class Tokenizer;
-      public:
-        Token& end() {
-          static Token eof = {
-            .type = Token::T_EOF,
-            .value = ""
-          };
-
-          return eof;
-        }
-
-        Token get() {
-          return tokenizer.getNextToken();
-        }
-
-        int line;
+			struct Error {
         int position;
+        int line;
+        std::string message;
+				Tokenizer::Token token;
+			};
 
-        TokenStream(const TokenStream&) = delete;
-        TokenStream& operator=(const TokenStream&) = delete;
-      private:
-        Tokenizer& tokenizer;
+			AST(Tokenizer::TokenStream& tokenStream): tokenStream(tokenStream) {
+          parse();
+			};
 
-        TokenStream(Tokenizer& tokenizer) : tokenizer(tokenizer) {
-          line = position = 1;
-        }
-      };
-
-      Tokenizer(const std::string& text): text(text), stream(*this) {
-        cPos = 0;
-      }
-
-      TokenStream& getStream() {
-        return stream;
-      }
+			std::queue<Error> getErrors() const {
+        return errorStack;
+			}
 
     private:
-      TokenStream stream;
-      std::string text;
+			std::queue<Error> errorStack;
+			
+			std::vector<Expression*> ast;
+			std::vector<Token> tokens;
+			Tokenizer::TokenStream& tokenStream;
 
-      int cPos;
+			int cPos = 0;
 
-      const std::set<char> operators = {'=', '+', '-', '*', '/', '&', '|', ':', ',', '.'};
-      const std::set<char> singleOperators = {'{', '}', '(', ')', ';'};
+			//===========================================//
+			// Utils
 
-      //====================================================//
-      // Utils
+			Token& get(unsigned int relativePosition = 0) {
+        int pos = cPos + relativePosition;
 
-      char get(unsigned int relativePosition = 0) { 
-        auto pos = cPos + relativePosition;
-        if (pos >= text.size())
-          return '\0';
-        return text[pos];
-      }
+				while (pos >= tokens.size()) {
+          auto token = tokenStream.get();
+          if (token.type == Token::Unknown)
+						errorStack.push(Error{
+						 	.position = tokenStream.position,
+							.line = tokenStream.line, 
+							.message = "Unknown symbol",
+							.token = token
+						});
 
-      char shift(unsigned int step=1) { 
-        cPos += step;
-        stream.position += step;
+					tokens.emplace_back(token);
+				}
 
-        return get();
-      }
+				return tokens[pos];
+			}
 
-      bool isInSet(char ch, const std::set<char>& set) { 
-        return set.find(ch) != set.end();
-      }
+			Token& shift(unsigned int step = 1) {
+				cPos += step;
+        return get(0);
+			}
 
-      //====================================================//
-      // Tokenization 
-
-      Token getNextToken() { 
-        auto ch = get();
-
-        if (ch == '\0')
-          return Token {
-            .type = Token::T_EOF,
-            .value = ""
-          };
-
-        if (ch == '\n') {
-          stream.position = 0;
-          stream.line += 1;
-        }
-
-        if (ch == ' ' || ch == '\n'  || ch == '\t') {
-          shift();
-          return getNextToken();
-        }
-        
-        if (isInSet(ch, singleOperators)) {
-          shift();
-          return Token{
-            .type = Token::Operator,
-            .value = std::move(std::string(1, ch))
-          };
-        }
-
-        if (ch == '\'') return getChar();
-        if (ch == '"') return getString();
-        if (SDL_isdigit(ch)) return getNumber();
-        if (SDL_isalpha(ch)) return getWord();
-        if (isInSet(ch, operators)) return getOperator();
-         
+			Token& consume() { 
         shift();
-        return Token{ 
-          .type = Token::Unknown,
-          .value = std::string(1, ch)
-        };
-      }
+				return get(-1);
+			}
 
-      Token getString() { 
-        std::string res = "";
-        char ch = shift();
+			bool isType(Token::TokenType type, int relativePosition = 0) { 
+				auto res = get(relativePosition).type == type;
+				
+				if (res)
+					shift();
 
-        while (ch != '"') {
-          res.append(1, ch);
+				return res;
+			}
 
-          ch = shift();
-          if (ch == '\0')
-            return Token{
-              .type = Token::T_EOF,
-              .value = std::move(res)
-            };
-        }
+			bool isEqual(Token::TokenType type, std::string&& value, int relativePosition = 0) {
+				auto token = get(relativePosition);
+				auto res = token.type == type && token.value == value;
 
-        shift();
-        return Token{
-          .type = Token::String,
-          .value = std::move(res)
-        };
-      }
+				if (res)
+					shift();
 
-      Token getChar() {
-        char value = shift();
-        if (shift() != '\'')
-          return Token{
-            .type = Token::Unknown,
-            .value = fmt::format("'{}", std::string(1, value))
-          };
+				return res;
+			}
 
-        shift();
-        return Token{
-          .type = Token::Char,
-          .value = std::string(1, value)
-        };
-      }
+			void push(const std::string&& message) {
+        errorStack.push(Error{
+          .position = tokenStream.position,
+          .line = tokenStream.line,
+          .message = message,
+          .token = get(-1)
+        });
+			}
 
-      Token getNumber() {
-        std::string res = "";
-        auto ch = get();
+			//===========================================//
+			// Parsing
 
-        while (SDL_isdigit(ch)) {
-          res.append(1, ch);
-          ch = shift();
-        }
+			void parse() {
+				while (get(0).type != Token::T_EOF) {
+          ast.emplace_back(expression());
+				}
+			}
 
-        return Token{
-          .type = Token::Number,
-          .value = std::move(res)
-        };
-      }
+			Expression* expression() {
+				return binary();
+			}
 
-      Token getWord() { 
-        std::string res = "";
-        auto ch = get();
+			Expression* binary() {
+				auto lhs = unary();
 
-        while (SDL_isalnum(ch)) {
-          res.append(1, ch);
-          ch = shift();
-        }
+				if (!lhs)
+					return nullptr;
 
-        return Token{
-          .type = Token::Word,
-          .value = std::move(res)
-        };
-      }
+				auto token = consume();
+				if (token.type == Token::Operator && (
+					token.value == "+" ||
+					token.value == "-" ||
+					token.value == "*" ||
+					token.value == "/"
+				)) {
+          auto binaryEx = new BinaryOperation();
+					binaryEx->lhs = lhs;
+          binaryEx->rhs = expression();
 
-      Token getOperator() {
-        std::string res = "";
-        auto ch = get();
+					if (binaryEx->rhs)
+						return binaryEx;
 
-        while (isInSet(ch, operators)) {
-          res.append(1, ch);
-          ch = shift();
-        }
+					if			(token.value == "+") binaryEx->type = BinaryOperation::Add;
+					else if (token.value == "-") binaryEx->type = BinaryOperation::Sub;
+					else if (token.value == "*") binaryEx->type = BinaryOperation::Mul;
+          else if (token.value == "/") binaryEx->type = BinaryOperation::Div;
 
-        return Token{
-          .type = Token::Operator,
-          .value = std::move(res)
-        };
-      }
-    };
+					push("Unexcepted symbol. Excepted expression to binary operation");
+					delete binaryEx;
+					return nullptr;
+				}
 
-  }
+				return lhs;
+			}
+
+			Expression* unary() { 
+				if (isEqual(Token::Operator, "-")) {
+          auto unaryEx = new UnaryOperation();
+					unaryEx->type = UnaryOperation::NEGATE;
+          unaryEx->operand = expression();
+
+					if (unaryEx->operand)
+						return unaryEx;
+					
+					push("Unexcepted symbol. Excepted expression to negate");
+					delete unaryEx;
+					return nullptr;
+				}
+
+				return identifier();
+			}
+
+			Expression* identifier() {
+				if (isType(Token::Word))
+					return new Identifier{ 
+						.name = std::move(get(-1).value)
+					};
+				
+				return value();
+			}
+
+			Expression* value() { 
+				auto value = new Value();
+        value->value = get(0).value;
+
+				if (isType(Token::Number)) {
+					value->type = Value::Number;
+					return value;
+				}
+
+				if (isType(Token::Char)) {
+					value->type = Value::Char;
+					return value;
+				}
+
+				if (isType(Token::String)) {
+					value->type = Value::String;
+					return value;
+				}
+
+				shift();
+				push("Unknown value type");
+				delete value;
+				return nullptr;
+			}
+		}; 
+	}
 }

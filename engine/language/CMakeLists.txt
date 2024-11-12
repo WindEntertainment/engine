@@ -2,6 +2,7 @@ project(wind-language)
 
 set(HEADERS
     ./include/wind/language/language.hpp
+    ./include/wind/language/tokenizer.hpp
 )
 
 set(SOURCES
