@@ -6,6 +6,7 @@ build_type=Release
 target=wind
 skip_configure=false
 flags=()
+run=false
 wasm=false
 
 call_dir=$(pwd)
@@ -18,6 +19,7 @@ while [[ "$#" -gt 0 ]]; do
     -wt|--with-testing) flags+=("-wt"); ;;
     -w|--wasm) wasm=true; flags+=("-w"); ;;
     -t|--target) target="$2"; shift ;;
+    -r|--run) run=true; ;;
     --root) root="$2"; shift ;;
     *) echo "Unknown parameter passed: $1" ;;
   esac
@@ -38,5 +40,18 @@ else
   fi
 fi
 
+if [[ $run == true && "$target" != "all" ]]; then
+  if [ $wasm = true ]; then
+    echo emscripten
+  else
+    if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+      cd "$root/build/app/build/$build_type/$target/Release"
+      "./$target.exe"
+    else
+      cd "$root/build/app/build/$build_type/$target"
+      "./$target"
+    fi
+  fi
+fi
 
 cd "$call_dir" || exit

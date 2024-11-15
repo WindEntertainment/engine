@@ -1,0 +1,1 @@
+namespace wind {} // namespace wind

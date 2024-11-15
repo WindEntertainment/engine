@@ -1,13 +1,13 @@
 project(wind-input-system)
 
 set(HEADERS
-    ./include/input-system/input-system.hpp
-    ./include/input-system/mouse-context.hpp
-    ./include/input-system/keyboard-context.hpp
-    ./include/input-system/context.hpp
-    ./include/input-system/keys.hpp
-    ./include/input-system/trigger.hpp
-    ./include/input-system/error.hpp
+    ./include/wind/input-system/input-system.hpp
+    ./include/wind/input-system/mouse-context.hpp
+    ./include/wind/input-system/keyboard-context.hpp
+    ./include/wind/input-system/context.hpp
+    ./include/wind/input-system/keys.hpp
+    ./include/wind/input-system/trigger.hpp
+    ./include/wind/input-system/error.hpp
 
 )
 
@@ -23,12 +23,12 @@ set(SOURCES
 
 add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 
-target_include_directories(${PROJECT_NAME} PUBLIC ./include/)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ./include/)
 
 # internal depencencies
 
-target_link_libraries(${PROJECT_NAME} PUBLIC wind-utils)
-target_link_libraries(${PROJECT_NAME} PRIVATE wind-asset-manager)
+target_link_libraries(${PROJECT_NAME} PUBLIC wind-utils wind-window)
+target_link_libraries(${PROJECT_NAME} PRIVATE wind-asset-pipeline)
 
 # extrenal depencencies
 
