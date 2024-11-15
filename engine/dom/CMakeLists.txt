@@ -2,10 +2,12 @@ project(wind-dom)
 
 set(HEADERS
     ./include/wind/dom/dom.hpp
+    ./include/wind/dom/shadow-dom.hpp
 )
 
 set(SOURCES
     ./src/dom.cpp
+    ./src/shadow-dom.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})

@@ -22,6 +22,7 @@ namespace wind {
     static void handleEvent(SDL_Event& event);
 
     static void createTriggersFromFile(std::filesystem::path path);
+    static void reset();
 
     static void
     addTrigger(std::string groupName, Keys bindings, Callbacks callbacks);

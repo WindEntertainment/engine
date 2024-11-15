@@ -1,127 +1,164 @@
 #include "wind/dom/dom.hpp"
 #include <random>
+#include <utility>
 
 namespace wind {
+  namespace dom {
 
-  UIElement::UIElement() { children.reserve(3); }
+    UIElement::UIElement(unsigned int id) : id(id) { children.reserve(3); }
 
-  void UIElement::destroy() {
-    parent = nullptr;
-    for (const auto& child : children) {
-      child->destroy();
+    // void UIElement::destroy() {
+    //   parent = nullptr;
+    //   for (const auto& child : children) {
+    //     child->destroy();
+    //   }
+    //   reset();
+    //   release();
+    // }
+
+    void UIElement::appendChild(Ptr child) {
+      if (child) {
+        children.push_back(child);
+        // child->parent = this;
+        // child->root = root;
+      }
     }
-    reset();
-    release();
-  }
-  void UIElement::appendChild(const Ptr& child) {
-    if (child) {
-      children.push_back(child);
-      child->parent = this;
-      child->root = root;
-    }
-  }
 
-  void UIElement::display(wind::CommandBuffer& renderer) {
-    update();
-    render(renderer);
-    for (const auto& child : children) {
-      child->display(renderer);
+    void UIElement::display(wind::CommandBuffer& renderer) {
+      update();
+      render(renderer);
+      for (const auto& child : children) {
+        child->display(renderer);
+      }
     }
-  }
 
-  void UIElement::removeChild(Ptr child) {
-    if (child) {
+    void UIElement::removeChild(unsigned int childId) {
       auto it = std::ranges::find_if(children, [&](const Ptr& item) {
-        return item == child;
+        return item->id == childId;
       });
 
       if (it == children.end())
         return;
 
-      (*it)->parent = nullptr;
+      // (*it)->parent = nullptr;
       children.erase(it);
-    }
-  };
+    };
 
-  Root::Root() { this->root = weak_from_this(); };
+    Root::Root(unsigned int id, RootAttributes attributes)
+        : UIElement(id), attributes(std::move(attributes)) {
+            // this->root = weak_from_this();
+          };
 
-  void Root::render(wind::CommandBuffer& renderer) {};
+    Button::Button(unsigned int id, ButtonAttributes attributes)
+        : UIElement(id), attributes(std::move(attributes)) {};
+    Image::Image(unsigned int id, ImageAttributes attributes)
+        : UIElement(id), attributes(std::move(attributes)) {};
+    Text::Text(unsigned int id, TextAttributes attributes)
+        : UIElement(id), attributes(std::move(attributes)) {};
+    Input::Input(unsigned int id, InputAttributes attributes)
+        : UIElement(id), attributes(std::move(attributes)) {};
+    Checkbox::Checkbox(unsigned int id, CheckboxAttributes attributes)
+        : UIElement(id), attributes(std::move(attributes)) {};
+    Div::Div(unsigned int id, DivAttributes attributes)
+        : UIElement(id), attributes(std::move(attributes)) {};
+    Select::Select(unsigned int id, SelectAttributes attributes)
+        : UIElement(id), attributes(std::move(attributes)) {};
 
-  void Root::reset() {
-    attributes = defaultRootAttributes;
-    styles = defaultStyles;
-  }
+    void Root::render(wind::CommandBuffer& renderer) {};
 
-  void Root::update() {};
+    void Root::reset() { attributes = defaultRootAttributes; }
 
-  void Button::render(wind::CommandBuffer& renderer) {
-    renderer.drawRect(
-      attributes.position,
-      attributes.size,
-      attributes.backgroundColor,
-      nullptr,
-      0,
-      0
-    );
-  }
+    void Root::update() {};
 
-  void Button::reset() {
-    // attributes = defaultButtonAttributes;
-    styles = defaultStyles;
-  }
+    void Button::render(wind::CommandBuffer& renderer) {
+      renderer.drawRect(
+        attributes.position,
+        attributes.size,
+        attributes.backgroundColor,
+        attributes.texture,
+        attributes.angle,
+        attributes.borderRadius,
+        attributes.borderWidth,
+        attributes.borderColor
+      );
+    };
 
-  void Button::update() {
-    auto context = wind::InputSystem::context;
-    if (context->key.keycode == wind::Keycode::M_Move) {
-      if (context->mouseContext.cursorX > 0 &&
-          context->mouseContext.cursorX < 100 &&
-          context->mouseContext.cursorY > 0 &&
-          context->mouseContext.cursorY < 100) {
-        attributes.backgroundColor = glm::vec4({1.0f, 1.f, 0.f, 1.f});
+    void Button::reset() { attributes = defaultButtonAttributes; };
+
+    void Button::update() {
+      auto context = wind::InputSystem::context;
+      auto isHovered = UIUtils::isHovered(attributes);
+      auto isClicked = UIUtils::isClicked(attributes, isHovered);
+
+      if (!isHovered && attributes.isHovered) {
+        attributes.isHovered = false;
       }
-    }
-  };
 
-  void Image::render(wind::CommandBuffer& renderer) {
-    std::cout << "I'm Image";
-  }
+      if (isHovered && !attributes.isHovered) {
+        attributes.isHovered = true;
+        if (attributes.onHover) {
+          attributes.onHover();
+        }
+      }
 
-  void Image::reset() {
-    attributes = defaultImageAttributes;
-    styles = defaultStyles;
-  }
+      if (isClicked && attributes.onClick) {
+        attributes.onClick();
+      }
+    };
 
-  void Image::update() {};
+    void Image::render(wind::CommandBuffer& renderer) {
+      std::cout << "I'm Image";
+    };
 
-  void Text::render(wind::CommandBuffer& renderer) { std::cout << "I'm Text"; }
+    void Image::reset() { attributes = defaultImageAttributes; };
 
-  void Text::reset() {
-    attributes = defaultTextAttributes;
-    styles = defaultStyles;
-  }
+    void Image::update() {};
 
-  void Text::update() {};
+    void Text::render(wind::CommandBuffer& renderer) {
+      std::cout << "I'm Text";
+    };
 
-  void RichText::render(wind::CommandBuffer& renderer) {
-    std::cout << "I'm RichText";
-  }
+    void Text::reset() { attributes = defaultTextAttributes; };
 
-  void RichText::reset() {
-    attributes = defaultRichTextAttributes;
-    styles = defaultStyles;
-  }
+    void Text::update() {};
 
-  void RichText::update() {};
+    void Input::render(wind::CommandBuffer& renderer) {
+      std::cout << "I'm RichText";
+    };
 
-  std::shared_ptr<Root> init() {
-    Button::registerPool(1);
-    Image::registerPool();
-    Text::registerPool();
-    RichText::registerPool();
+    void Input::reset() { attributes = defaultInputAttributes; };
 
-    auto root = std::make_shared<Root>();
+    void Input::update() {};
 
-    return root;
-  }
+    void Div::render(wind::CommandBuffer& renderer) {
+      std::cout << "I'm RichText";
+    };
+
+    void Div::reset() { attributes = defaultDivAttributes; };
+
+    void Div::update() {};
+
+    void Select::render(wind::CommandBuffer& renderer) {
+      std::cout << "I'm RichText";
+    };
+
+    void Select::reset() { attributes = defaultSelectAttributes; };
+
+    void Select::update() {};
+
+    void Checkbox::render(wind::CommandBuffer& renderer) {
+      std::cout << "I'm RichText";
+    };
+
+    void Checkbox::reset() { attributes = defaultCheckboxAttributes; };
+
+    void Checkbox::update() {};
+
+    std::shared_ptr<Root> init(glm::ivec2 windowSize) {
+      auto root = std::make_shared<Root>(0, RootAttributes());
+
+      return root;
+    };
+  } // namespace dom
 
 } // namespace wind
