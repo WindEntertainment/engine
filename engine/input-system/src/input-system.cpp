@@ -152,7 +152,8 @@ namespace wind {
 
   void InputSystem::handleCharPress(uint codepoint) {
     context->keyboardContext.setCodepoint(codepoint);
-    context->key = Key{.keycode=Keycode::K_AllChars, .action = KeyAction::Unknown};
+    context->key =
+      Key{.keycode = Keycode::K_AllChars, .action = KeyAction::Unknown};
     groupedEventToCycle(
       Key{.keycode = Keycode::K_AllChars, .action = KeyAction::Unknown}
     );
@@ -197,6 +198,8 @@ namespace wind {
   }
 
   //
+
+  void InputSystem::reset() { context->key = Key{}; }
 
   void InputSystem::createTriggersFromFile(fs::path path) {
     auto triggersData =

@@ -264,7 +264,10 @@ namespace wind {
 
   KeyAction mapSDLActionToKeyAction(int action) {
     static std::map<int, KeyAction> const table = {
-      {SDL_KEYUP, KeyAction::Released}, {SDL_KEYDOWN, KeyAction::Pressed}
+      {SDL_KEYUP, KeyAction::Released},
+      {SDL_KEYDOWN, KeyAction::Pressed},
+      {SDL_MOUSEBUTTONDOWN, KeyAction::Pressed},
+      {SDL_MOUSEBUTTONUP, KeyAction::Released}
     };
 
     if (table.contains(action))

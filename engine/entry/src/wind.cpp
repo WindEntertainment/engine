@@ -1,6 +1,7 @@
 #include "wind/wind.hpp"
 
 #include "wind/utils/utils.hpp"
+#include "wind/input-system/input-system.hpp"
 
 namespace wind {
 
@@ -45,7 +46,7 @@ namespace wind {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
-    //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+    // SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
     mainWindow = Window::create([](Window::Config* self) {
       self->title = "Hello, World!";
@@ -100,6 +101,8 @@ namespace wind {
       // Update
 
       game->update();
+
+      InputSystem::reset();
 
       //==================================================================//
       // Render

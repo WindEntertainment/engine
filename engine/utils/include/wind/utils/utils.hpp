@@ -16,6 +16,26 @@ namespace wind {
     return it != _container.end();
   }
 
+  template <class T, class U>
+  bool
+  compareSharedByValue(const std::shared_ptr<T>& a, const std::shared_ptr<U>& b) {
+    if (a && b)
+      return *a == *b;
+
+    return !a && !b;
+  }
+
+  template <class T, class U>
+  bool compareSharedByTypeId(
+    const std::shared_ptr<T>& a,
+    const std::shared_ptr<U>& b
+  ) {
+    if (!a || !b)
+      return false;
+
+    return typeid(*a) == typeid(*b);
+  }
+
   // template <class Error, typename... T>
   //   requires std::derived_from<Error, std::exception>
   // void verify(bool _value, const char* _message, T&&... _args) {
