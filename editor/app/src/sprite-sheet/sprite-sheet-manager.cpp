@@ -3,39 +3,37 @@
 #include <editor/sprite-sheet/behavior.hpp>
 #include <utility>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
 #include "imgui.h"
 namespace editor::spriteSheetManager {
 
-  auto loadTextureFromFile(const char* filename, int* width, int* height)
-    -> GLuint {
-    int channels = 0;
-    unsigned char* data = stbi_load(filename, width, height, &channels, 0);
-    if (data == nullptr) {
-      std::cerr << "Failed to load image: " << filename << "\n";
-      return 0;
-    }
+  // auto loadTextureFromFile(const char* filename, int* width, int* height)
+  //   -> GLuint {
+  //   int channels = 0;
+  //   unsigned char* data = stbi_load(filename, width, height, &channels, 0);
+  //   if (data == nullptr) {
+  //     std::cerr << "Failed to load image: " << filename << "\n";
+  //     return 0;
+  //   }
 
-    GLuint texture = 0;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+  //   GLuint texture = 0;
+  //   glGenTextures(1, &texture);
+  //   glBindTexture(GL_TEXTURE_2D, texture);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    GLenum const format = (channels == 4) ? GL_RGBA : GL_RGB;
-    glTexImage2D(
-      GL_TEXTURE_2D, 0, format, *width, *height, 0, format, GL_UNSIGNED_BYTE, data
-    );
-    glGenerateMipmap(GL_TEXTURE_2D);
+  //   GLenum const format = (channels == 4) ? GL_RGBA : GL_RGB;
+  //   glTexImage2D(
+  //     GL_TEXTURE_2D, 0, format, *width, *height, 0, format, GL_UNSIGNED_BYTE,
+  //     data
+  //   );
+  //   glGenerateMipmap(GL_TEXTURE_2D);
 
-    stbi_image_free(data);
-    return texture;
-  }
+  //   stbi_image_free(data);
+  //   return texture;
+  // }
 
   SpriteSheetManager::SpriteSheetManager(
     std::shared_ptr<FilesManager> filesManager
@@ -46,27 +44,28 @@ namespace editor::spriteSheetManager {
         ImGuiFileDialog::Instance()->GetFilePathName();
       std::string fileName = ImGuiFileDialog::Instance()->GetCurrentFileName();
 
-      int width, height;
-      GLuint texture = loadTextureFromFile(filePath.c_str(), &width, &height);
+      // int width, height;
+      // GLuint texture = loadTextureFromFile(filePath.c_str(), &width, &height);
 
-      auto file = wind::share(
-        File(fileName, filePath, filePath, texture, wind::share(CellsManager()))
-      );
+      // auto file = wind::share(
+      //   File(fileName, filePath, filePath, texture,
+      //   wind::share(CellsManager()))
+      // );
 
-      filesManager->openFile(file);
+      // filesManager->openFile(file);
 
-      if (!filesManager->activeFile.has_value()) {
-        return;
-      }
+      // if (!filesManager->activeFile.has_value()) {
+      //   return;
+      // }
 
-      auto activeFile = filesManager->activeFile.value();
+      // auto activeFile = filesManager->activeFile.value();
 
-      activeFile->cellsManager->addCell(wind::share(Cell(
-        "Test",
-        glm::vec2({50, 50}),
-        glm::vec2({150, 150}),
-        wind::share(BehaviorManager<Cell>())
-      )));
+      // activeFile->cellsManager->addCell(wind::share(Cell(
+      //   "Test",
+      //   glm::vec2({50, 50}),
+      //   glm::vec2({150, 150}),
+      //   wind::share(BehaviorManager<Cell>())
+      // )));
     }));
 
     auto popup = wind::share(components::Popup(

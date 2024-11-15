@@ -7,7 +7,6 @@
 #include <wind/utils/utils.hpp>
 
 namespace wind {
-
   class AssetManager {
     struct Bundle {
     private:

@@ -19,17 +19,17 @@ class MyConanFile(ConanFile):
     self.requires("sdl/2.30.8")
     self.requires("catch2/3.7.1")
     self.requires("spdlog/1.13.0")
+    self.requires("freetype/2.13.3")
 
     self.requires("cxxopts/3.1.1")
     self.requires("pugixml/1.13")
     self.requires("yaml-cpp/0.8.0")
     self.requires("stb/cci.20220909")
-    self.requires("zlib/1.2.11")
+    self.requires("zlib/1.3.1")
 
     self.requires("glad/0.1.36")
     self.requires("glm/cci.20230113")
     self.requires("imgui/cci.20230105+1.89.2.docking")
-    self.requires("portable-file-dialogs/0.1.0")
 
   def build(self):
     cmake = CMake(self)

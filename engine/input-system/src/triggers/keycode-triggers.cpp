@@ -8,23 +8,23 @@
 namespace wind {
 
   void InputSystem::addKeycodeTrigger(Keys bindings) {
-    std::for_each(bindings.begin(), bindings.end(), [](Key binding) {
-      keycodeTriggers[binding] = std::set<Callback *>();
+    std::ranges::for_each(bindings, [](Key binding) {
+      keycodeTriggers[binding] = {};
     });
   };
 
   void InputSystem::addKeycodeTrigger(Key binding) {
-    keycodeTriggers[binding] = std::set<Callback *>();
+    keycodeTriggers[binding] = {};
   };
 
   void InputSystem::addKeycodeTrigger(Keys bindings, Callbacks callbacks) {
-    std::for_each(bindings.begin(), bindings.end(), [&callbacks](Key binding) {
+    std::ranges::for_each(bindings, [&callbacks](Key binding) {
       addKeycodeTrigger(binding, callbacks);
     });
   }
 
-  void InputSystem::addKeycodeTrigger(Keys bindings, Callback *callback) {
-    std::for_each(bindings.begin(), bindings.end(), [&callback](Key binding) {
+  void InputSystem::addKeycodeTrigger(Keys bindings, Callback* callback) {
+    std::ranges::for_each(bindings, [&callback](Key binding) {
       addKeycodeTrigger(binding, callback);
     });
   }
@@ -37,11 +37,11 @@ namespace wind {
     };
   }
 
-  void InputSystem::addKeycodeTrigger(Key binding, Callback *callback) {
+  void InputSystem::addKeycodeTrigger(Key binding, Callback* callback) {
     if (keycodeTriggers.contains(binding)) {
       keycodeTriggers.insert(std::make_pair(binding, std::set{callback}));
     } else {
-      keycodeTriggers[binding].insert({callback});
+      keycodeTriggers[binding].insert(callback);
     };
   }
 
@@ -62,7 +62,7 @@ namespace wind {
       return;
 
     auto trigger = groupedTriggers[groupName];
-    std::for_each(bindings.begin(), bindings.end(), [&trigger](auto binding) {
+    std::ranges::for_each(bindings, [&trigger](auto binding) {
       addKeycodeTrigger(binding, trigger->callbacks);
     });
   };
@@ -71,7 +71,7 @@ namespace wind {
 
   void InputSystem::addKeycodeTriggerCallbacks(
     std::string groupName,
-    Callback *callback
+    Callback* callback
   ) {
     if (!groupedTriggers.contains(groupName))
       return;
@@ -114,24 +114,18 @@ namespace wind {
   //
 
   void InputSystem::removeKeycodeTrigger(Key binding, Callbacks callbacks) {
-    std::for_each(
-      callbacks.begin(),
-      callbacks.end(),
-      [&binding](Callback *callback) {
-        removeKeycodeTrigger(binding, callback);
-      }
-    );
+    std::ranges::for_each(callbacks, [&binding](Callback* callback) {
+      removeKeycodeTrigger(binding, callback);
+    });
   }
 
   void InputSystem::removeKeycodeTrigger(Callbacks callbacks) {
-    std::for_each(
-      keycodeTriggers.begin(),
-      keycodeTriggers.end(),
-      [&callbacks](auto pair) { removeKeycodeTrigger(pair.first, callbacks); }
-    );
+    std::ranges::for_each(keycodeTriggers, [&callbacks](auto pair) {
+      removeKeycodeTrigger(pair.first, callbacks);
+    });
   }
 
-  void InputSystem::removeKeycodeTrigger(Key binding, Callback *callback) {
+  void InputSystem::removeKeycodeTrigger(Key binding, Callback* callback) {
     auto it = std::find(
       keycodeTriggers[binding].begin(), keycodeTriggers[binding].end(), callback
     );
@@ -140,11 +134,9 @@ namespace wind {
     }
   }
 
-  void InputSystem::removeKeycodeTrigger(Callback *callback) {
-    std::for_each(
-      keycodeTriggers.begin(),
-      keycodeTriggers.end(),
-      [&callback](auto pair) { removeKeycodeTrigger(pair.first, callback); }
-    );
+  void InputSystem::removeKeycodeTrigger(Callback* callback) {
+    std::ranges::for_each(keycodeTriggers, [&callback](auto pair) {
+      removeKeycodeTrigger(pair.first, callback);
+    });
   }
 } // namespace wind

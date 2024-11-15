@@ -4,6 +4,8 @@
 #include "wind/renderer/sprite.hpp"
 #include "wind/renderer/render_context.hpp"
 #include "wind/renderer/camera.hpp"
+#include "wind/renderer/procedural-graphics.hpp"
+#include "wind/renderer/text-mesh.hpp"
 
 namespace wind {
 
@@ -25,6 +27,43 @@ namespace wind {
 
     void
     drawSprite(const std::shared_ptr<Sprite>& sprite, glm::mat4x4& transform);
+
+    void drawRect(
+      glm::vec2 position,
+      glm::vec2 size,
+      glm::vec4 color,
+      const std::shared_ptr<Texture>& texture = nullptr,
+      float angle = 0,
+      float borderRadius = 0,
+      float borderWidth = 0,
+      glm::vec4 borderColor = {}
+    );
+
+    void drawCircle(
+      std::shared_ptr<CircleMesh> mesh,
+      glm::vec2 position,
+      float radius,
+      glm::vec4 color,
+      const std::shared_ptr<Texture>& texture
+    );
+
+    void drawText(
+      std::shared_ptr<Font> font,
+      std::string text,
+      glm::vec2 position, 
+      glm::vec2 scale, 
+      glm::vec4 color, 
+      int letterSpacing = 0,
+      int lineWidth = 0,
+      int lineSpacing = 12
+    );
+
+    void drawText(
+      std::shared_ptr<TextMesh> mesh,
+      glm::vec2 position,
+      glm::vec2 scale,
+      glm::vec4 color
+    );
 
     void setCurrentCamera(Camera* camera);
 

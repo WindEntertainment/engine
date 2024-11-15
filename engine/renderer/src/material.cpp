@@ -16,11 +16,13 @@ namespace wind {
     glUseProgram(shader->id());
 
     for (int i = 0; i < textures.size(); ++i) {
-      if (textures[i] == nullptr)
-        continue;
-
       glActiveTexture(GL_TEXTURE0 + i);
-      glBindTexture(GL_TEXTURE_2D, textures[i]->id());
+
+      if (textures[i] == nullptr) {
+        spdlog::info("texture is nullptr");
+        glBindTexture(GL_TEXTURE_2D, 0);
+      } else
+        glBindTexture(GL_TEXTURE_2D, textures[i]->id());
     }
   }
 
@@ -29,10 +31,30 @@ namespace wind {
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(transform));
   }
 
+  void Material::setFloat(const std::string& name, const float value) {
+    int loc = glGetUniformLocation(shader->id(), name.c_str());
+    glUniform1f(loc, value); 
+  }
+
+  void Material::setVec2(const std::string& name, const glm::vec2& vec) {
+    int loc = glGetUniformLocation(shader->id(), name.c_str());
+    glUniform2fv(loc, 1, glm::value_ptr(vec)); 
+  }
+
+  void Material::setVec3(const std::string& name, const glm::vec3& vec) {
+    int loc = glGetUniformLocation(shader->id(), name.c_str());
+    glUniform3fv(loc, 1, glm::value_ptr(vec));
+  }
+
+  void Material::setVec4(const std::string& name, const glm::vec4& vec) {
+    int loc = glGetUniformLocation(shader->id(), name.c_str());
+    glUniform4fv(loc, 1, glm::value_ptr(vec));
+  }
+
   void Material::setTexture(std::shared_ptr<Texture> texture, int ind) {
     if (textures.size() < ind) {
       spdlog::error(
-        "Texture index {} is out of bounds. Valid indices are 0 to {}.",
+        "Texture index {} is out of bounds. Valid indices are from 0 to {}.",
         ind,
         textures.size() - 1
       );

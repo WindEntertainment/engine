@@ -1,12 +1,12 @@
-#include "wind/asset-bundler/asset-bundler.hpp"
+#include "wind/asset-pipeline/asset-bundler.hpp"
 #include <filesystem>
 
 namespace wind {
   namespace assets {
 
     void AssetBundler::preprocessDirectory(
-      const fs::path &_path,
-      const YAML::Node &config
+      const fs::path& _path,
+      const YAML::Node& config
     ) {
       auto options = config["preprocessing"];
       if (!options)
@@ -45,7 +45,7 @@ namespace wind {
 
           try {
             system(command.c_str());
-          } catch (std::exception &ex) {
+          } catch (std::exception& ex) {
             yamlError(
               "Failed execute shell command '{}' for preprocessing: {}",
               option.second,

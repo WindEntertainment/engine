@@ -1,11 +1,11 @@
-#include "wind/asset-bundler/asset-bundler.hpp"
+#include "wind/asset-pipeline/asset-bundler.hpp"
 
 namespace wind {
   namespace assets {
 
     void AssetBundler::exportDirectory(
-      const fs::path &_source,
-      const fs::path &_destination
+      const fs::path& _source,
+      const fs::path& _destination
     ) {
       Stopwatch sw("Exported");
 
@@ -16,12 +16,12 @@ namespace wind {
       fs::recursive_directory_iterator it;
       try {
         it = createRecursiveIterator(_source);
-      } catch (AssetBundlerError &ex) {
+      } catch (AssetBundlerError& ex) {
         spdlog::error("Cannot create directory iterator: {}", ex.what());
         return;
       }
 
-      for (const auto &entry : it) {
+      for (const auto& entry : it) {
         if (entry.is_directory())
           continue;
 
@@ -42,7 +42,7 @@ namespace wind {
           fs::copy_file(
             entry.path(), destination, fs::copy_options::overwrite_existing
           );
-        } catch (fs::filesystem_error &ex) {
+        } catch (fs::filesystem_error& ex) {
           spdlog::error(
             "Failed to export file from {}: {}",
             entry.path().string(),

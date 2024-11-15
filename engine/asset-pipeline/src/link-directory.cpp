@@ -1,5 +1,5 @@
-#include "wind/asset-bundler/asset-bundler.hpp"
-#include "wind/pipes/pipe.hpp"
+#include "wind/asset-pipeline/asset-bundler.hpp"
+#include "wind/asset-pipeline/pipes/pipe.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -11,8 +11,8 @@ namespace wind {
   namespace assets {
 
     void AssetBundler::linkDirectory(
-      const fs::path &_source,
-      const fs::path &_destination
+      const fs::path& _source,
+      const fs::path& _destination
     ) {
       Stopwatch sw("Linked");
 
@@ -22,7 +22,7 @@ namespace wind {
       fs::recursive_directory_iterator it;
       try {
         it = createRecursiveIterator(_source);
-      } catch (AssetBundlerError &ex) {
+      } catch (AssetBundlerError& ex) {
         spdlog::error(ex.what());
         return;
       }
@@ -37,7 +37,7 @@ namespace wind {
       }
 
       std::map<fs::path, std::ifstream> files;
-      for (const auto &entry : it) {
+      for (const auto& entry : it) {
         if (entry.is_directory())
           continue;
 
@@ -60,13 +60,13 @@ namespace wind {
       asset_id offset = header_size;
 
       bundle.write(
-        reinterpret_cast<const char *>(&header_size), sizeof(header_size)
+        reinterpret_cast<const char*>(&header_size), sizeof(header_size)
       );
 
       spdlog::info("Write bundle header. header size: {}", header_size);
 
       std::hash<std::string> hasher;
-      for (auto &pair : files) {
+      for (auto& pair : files) {
         asset_id id = hasher(replaceAll(pair.first.string(), "\\", "/"));
 
         spdlog::info(
@@ -76,15 +76,15 @@ namespace wind {
           offset
         );
 
-        bundle.write(reinterpret_cast<const char *>(&id), sizeof(id));
-        bundle.write(reinterpret_cast<const char *>(&offset), sizeof(offset));
+        bundle.write(reinterpret_cast<const char*>(&id), sizeof(id));
+        bundle.write(reinterpret_cast<const char*>(&offset), sizeof(offset));
 
         pair.second.seekg(0, std::ios::end);
         offset += pair.second.tellg();
         pair.second.seekg(0, std::ios::beg);
       }
 
-      for (auto &pair : files)
+      for (auto& pair : files)
         bundle << pair.second.rdbuf();
     }
 
