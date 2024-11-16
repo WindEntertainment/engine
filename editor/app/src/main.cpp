@@ -17,35 +17,6 @@ namespace editor {
     std::shared_ptr<wind::dom::Root> root;
     // std::shared_ptr<projectManager::ProjectManager> projectManager;
 
-    // std::string vectorToString(
-    //   const std::vector<std::shared_ptr<wind::dom::shadow::UIElement>> vec
-    // ) {
-    //   std::ostringstream oss;
-    //   for (size_t i = 0; i < vec.size(); ++i) {
-    //     oss << "vec[" << i << "].id=" << vec[i]->id;
-    //     if (i < vec.size() - 1) { // Add a comma except after the last
-    //     element.
-    //       oss << ", ";
-    //     }
-    //   }
-    //   return oss.str();
-    // };
-
-    // std::string
-    // vectorToString2(const std::vector<std::pair<
-    //                   const unsigned int,
-    //                   std::shared_ptr<wind::dom::shadow::UIElement>>> p) {
-    //   std::ostringstream oss;
-    //   for (size_t i = 0; i < p.size(); ++i) {
-    //     oss << "from: " << p[i].first << " to vec[" << i
-    //         << "].id= " << p[i].second->id;
-    //     if (i < p.size() - 1) { // Add a comma except after the last element.
-    //       oss << ", ";
-    //     }
-    //   }
-    //   return oss.str();
-    // };
-
   public:
     void start() override {
       wind::Engine::setTargetFPS(60);
@@ -68,7 +39,7 @@ namespace editor {
       shadowRoot = wind::dom::shadow::init(window->size());
       auto prevShadowRoot2 = shadowRoot->deepCopy();
       std::shared_ptr<wind::dom::shadow::Root> qwe =
-        std::dynamic_pointer_cast<wind::dom::shadow::Root>(prevShadowRoot);
+        std::dynamic_pointer_cast<wind::dom::shadow::Root>(prevShadowRoot2);
       if (qwe) {
         prevShadowRoot = qwe;
       }
@@ -115,7 +86,7 @@ namespace editor {
 
       auto prevShadowRoot2 = shadowRoot->deepCopy();
       std::shared_ptr<wind::dom::shadow::Root> qwe =
-        std::dynamic_pointer_cast<wind::dom::shadow::Root>(prevShadowRoot);
+        std::dynamic_pointer_cast<wind::dom::shadow::Root>(prevShadowRoot2);
       if (qwe) {
         prevShadowRoot = qwe;
       }

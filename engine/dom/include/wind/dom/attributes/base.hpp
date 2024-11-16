@@ -23,7 +23,30 @@ namespace wind::dom::attributes {
     bool isHovered = false;
 
     bool compareBase(const attributes::Base& attributes) {
-      return std::tie(this->disabled) == std::tie(attributes.disabled);
+      return std::tie(
+               this->disabled,
+               this->position,
+               this->size,
+               this->backgroundColor,
+               this->texture,
+               this->angle,
+               this->borderRadius,
+               this->borderWidth,
+               this->borderColor,
+               this->isHovered
+             ) ==
+             std::tie(
+               attributes.disabled,
+               attributes.position,
+               attributes.size,
+               attributes.backgroundColor,
+               attributes.texture,
+               attributes.angle,
+               attributes.borderRadius,
+               attributes.borderWidth,
+               attributes.borderColor,
+               attributes.isHovered
+             );
     };
 
     virtual bool compare(const attributes::Base& attributes) = 0;

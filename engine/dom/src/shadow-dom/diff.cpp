@@ -49,20 +49,6 @@ namespace wind::dom::shadow {
         addDiffChildren(newElement, diff);
       }
     } else {
-      if (prevElement->id == 2) {
-        std::shared_ptr<Button> element1 =
-          std::dynamic_pointer_cast<Button>(prevElement);
-        std::shared_ptr<Button> element2 =
-          std::dynamic_pointer_cast<Button>(newElement);
-        spdlog::info(
-          "{} {} {} {}",
-          element1->attributes.backgroundColor.x,
-          element2->attributes.backgroundColor.x,
-          wind::compareSharedByValue(element1, element2),
-          element1 == element2
-        );
-      }
-
       if (!wind::compareSharedByValue(prevElement, newElement)) {
         diff.updated.push_back(newElement);
       }
@@ -286,6 +272,7 @@ namespace wind::dom::shadow {
     }
 
     for (auto&& element : diff.removed) {
+      spdlog::info("DELETING {}", element->id);
       if (!element->parent)
         continue;
 
