@@ -2,11 +2,35 @@
 #include <queue>
 
 namespace wind {
-	namespace wdlang {
+  class LangImpl;
 
-		struct Expression {};
-		
-		struct Value : public Expression {
+	namespace wdlang {
+    
+		//class WdExecutor;
+
+		struct Expression {
+      virtual void execute(LangImpl*) = 0;
+    };
+
+		/*class WdExecutor {
+		public:
+      WdExecutor(LangImpl* impl) : impl(impl) {}
+
+      template <typename T>
+        requires(std::derived_from<T, Expression>)
+      void compile(T* t) {
+        impl->compileImpl(t);
+      }
+		private:
+			LangImpl* impl;
+		};*/
+
+		template <typename Derived> 
+		struct ExpressionCRTP : public Expression {
+			void execute(LangImpl* executor) override;
+		};
+
+		struct Value : public ExpressionCRTP<Value> {
 			enum ValueType {
 				Number,
 				Char,
@@ -17,12 +41,14 @@ namespace wind {
       std::string value;
 		};
 
-    struct Identifier : public Expression {
+    struct Identifier : public ExpressionCRTP<Identifier> {
       std::string name;
+
+			Identifier(std::string&& name) : name(name) {}
 		};
     
-		struct BinaryOperation : public Expression {
-      enum OperationType {
+		struct BinaryOperation : public ExpressionCRTP<BinaryOperation> {
+			enum OperationType {
 				Add, 
 				Sub, 
 				Mul,
@@ -34,7 +60,7 @@ namespace wind {
       Expression* rhs;
 		};
 
-    struct UnaryOperation : public Expression {
+    struct UnaryOperation : public ExpressionCRTP<UnaryOperation> {
 			enum OperationType {
 				NEGATE
 			};
@@ -59,6 +85,10 @@ namespace wind {
 
 			std::queue<Error> getErrors() const {
         return errorStack;
+			}
+
+			std::vector<Expression*> getRoot() const {
+				return ast;
 			}
 
     private:
@@ -195,9 +225,7 @@ namespace wind {
 
 			Expression* identifier() {
 				if (isType(Token::Word))
-					return new Identifier{ 
-						.name = std::move(get(-1).value)
-					};
+          return new Identifier(std::move(get(-1).value));
 				
 				return value();
 			}
@@ -227,5 +255,20 @@ namespace wind {
 				return nullptr;
 			}
 		}; 
+	}
+
+	class LangImpl {
+	public:
+    virtual void compile(wdlang::Value*) = 0;
+    virtual void compile(wdlang::Identifier*) = 0;
+    virtual void compile(wdlang::UnaryOperation*) = 0;
+    virtual void compile(wdlang::BinaryOperation*) = 0;
+	};
+
+	namespace wdlang {
+    template <typename Derived>
+    void ExpressionCRTP<Derived>::execute(LangImpl* executor) {
+			executor->compile(static_cast<Derived*>(this));
+    }
 	}
 }
