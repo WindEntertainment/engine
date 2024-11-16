@@ -1,5 +1,5 @@
-#include "wind/dom/dom.hpp"
-#include "wind/dom/shadow-dom.hpp"
+#include "wind/dom/dom/index.hpp"
+#include "wind/dom/shadow-dom/index.hpp"
 #include <editor/editor.hpp>
 #include <editor/main.hpp>
 
@@ -12,38 +12,39 @@
 
 namespace editor {
   class Editor : public wind::Game {
-    std::shared_ptr<wind::shadowDom::Root> shadowRoot;
-    std::shared_ptr<wind::shadowDom::Root> prevShadowRoot;
+    std::shared_ptr<wind::dom::shadow::Root> shadowRoot;
+    std::shared_ptr<wind::dom::shadow::Root> prevShadowRoot;
     std::shared_ptr<wind::dom::Root> root;
     // std::shared_ptr<projectManager::ProjectManager> projectManager;
 
-    std::string vectorToString(
-      const std::vector<std::shared_ptr<wind::shadowDom::UIElement>> vec
-    ) {
-      std::ostringstream oss;
-      for (size_t i = 0; i < vec.size(); ++i) {
-        oss << "vec[" << i << "].id=" << vec[i]->id;
-        if (i < vec.size() - 1) { // Add a comma except after the last element.
-          oss << ", ";
-        }
-      }
-      return oss.str();
-    };
+    // std::string vectorToString(
+    //   const std::vector<std::shared_ptr<wind::dom::shadow::UIElement>> vec
+    // ) {
+    //   std::ostringstream oss;
+    //   for (size_t i = 0; i < vec.size(); ++i) {
+    //     oss << "vec[" << i << "].id=" << vec[i]->id;
+    //     if (i < vec.size() - 1) { // Add a comma except after the last
+    //     element.
+    //       oss << ", ";
+    //     }
+    //   }
+    //   return oss.str();
+    // };
 
-    std::string
-    vectorToString2(const std::vector<std::pair<
-                      const unsigned int,
-                      std::shared_ptr<wind::shadowDom::UIElement>>> p) {
-      std::ostringstream oss;
-      for (size_t i = 0; i < p.size(); ++i) {
-        oss << "from: " << p[i].first << " to vec[" << i
-            << "].id= " << p[i].second->id;
-        if (i < p.size() - 1) { // Add a comma except after the last element.
-          oss << ", ";
-        }
-      }
-      return oss.str();
-    };
+    // std::string
+    // vectorToString2(const std::vector<std::pair<
+    //                   const unsigned int,
+    //                   std::shared_ptr<wind::dom::shadow::UIElement>>> p) {
+    //   std::ostringstream oss;
+    //   for (size_t i = 0; i < p.size(); ++i) {
+    //     oss << "from: " << p[i].first << " to vec[" << i
+    //         << "].id= " << p[i].second->id;
+    //     if (i < p.size() - 1) { // Add a comma except after the last element.
+    //       oss << ", ";
+    //     }
+    //   }
+    //   return oss.str();
+    // };
 
   public:
     void start() override {
@@ -64,70 +65,34 @@ namespace editor {
       );
 
       root = wind::dom::init(window->size());
-      shadowRoot = wind::shadowDom::init(window->size());
-      prevShadowRoot = std::make_shared<wind::shadowDom::Root>(*shadowRoot);
+      shadowRoot = wind::dom::shadow::init(window->size());
+      auto prevShadowRoot2 = shadowRoot->deepCopy();
+      std::shared_ptr<wind::dom::shadow::Root> qwe =
+        std::dynamic_pointer_cast<wind::dom::shadow::Root>(prevShadowRoot);
+      if (qwe) {
+        prevShadowRoot = qwe;
+      }
 
-      auto button2 = wind::shadowDom::createElement<wind::shadowDom::Button>();
+      auto button2 =
+        wind::dom::shadow::createElement<wind::dom::shadow::Button>();
       button2->attributes.position = {100, 100};
 
-      auto button = wind::shadowDom::createElement<wind::shadowDom::Button>();
+      auto button =
+        wind::dom::shadow::createElement<wind::dom::shadow::Button>();
       button->attributes.onClick =
         [&button, &shadowRoot = shadowRoot, button2]() mutable {
-          spdlog::info("CLICK");
+          spdlog::info(shadowRoot->children.size());
           if (shadowRoot->children.size() == 1) {
             shadowRoot->appendChild(button2);
-            spdlog::info("AFTER CLICK, {}", !!shadowRoot->children[1]->parent);
           } else {
             shadowRoot->removeChild(button2->id);
           }
         };
       button->attributes.onHover = [button = button]() mutable {
-        spdlog::info("HOVER");
         button->attributes.backgroundColor = glm::vec4{1.f, 0.f, 1.f, 1.f};
-        spdlog::info(button->attributes.backgroundColor.x);
       };
 
       shadowRoot->appendChild(button);
-
-      // wind::shadowDom::Diff diff = wind::shadowDom::Diff();
-
-      // wind::shadowDom::getDiff(prevShadowRoot, shadowRoot, diff);
-
-      // spdlog::info(
-      //   "added: {}; \n removed: {}; \n updated: {}; \n replaced: {}; \n",
-      //   diff.added.size(),
-      //   diff.removed.size(),
-      //   diff.updated.size(),
-      //   diff.replaced.size()
-      // );
-
-      // wind::shadowDom::fromDiff(root, diff);
-
-      // shadowRoot->removeChild(text2);
-
-      // wind::shadowDom::Diff diff = wind::shadowDom::Diff();
-
-      // wind::shadowDom::getDiff(initialShadowRoot, shadowRoot, diff);
-
-      // wind::shadowDom::fromDiff(root, diff);
-
-      // spdlog::info(
-      //   "added: {}; \n removed: {}; \n updated: {}; \n replaced: {}; \n",
-      //   diff.added.size(),
-      //   diff.removed.size(),
-      //   diff.updated.size(),
-      //   diff.replaced.size()
-      // );
-      // spdlog::info(
-      //   "added: {}; \n removed: {}; \n updated: {}; \n replaced: {}; \n",
-      //   vectorToString(diff.added),
-      //   vectorToString(diff.removed),
-      //   vectorToString(diff.updated),
-      //   vectorToString2(diff.replaced)
-      // );
-
-      // projectManager = wind::share(projectManager::ProjectManager());
-      // projectManager->loadProject();
     };
 
     void handleEvent(SDL_Event& event) override {
@@ -138,71 +103,22 @@ namespace editor {
       wind::CommandBuffer render(wind::Engine::getMainRenderContext());
       render.clear({0.0f, 0.0f, 0.05f, 1.f});
 
-      // spdlog::info(shadowRoot->children.size());
-
-      // auto button2 =
-      // wind::shadowDom::createElement<wind::shadowDom::Button>();
-      // button2->attributes.position = {100, 100};
-
-      // auto button =
-      // wind::shadowDom::createElement<wind::shadowDom::Button>();
-      // button->attributes.onClick =
-      //   [&button, &shadowRoot = shadowRoot, button2]() mutable {
-      //     spdlog::info("CLICK");
-      //     if (shadowRoot->children.size() == 1) {
-      //       shadowRoot->appendChild(button2);
-      //       spdlog::info("AFTER CLICK, {}",
-      //       !!shadowRoot->children[1]->parent);
-      //     } else {
-      //       shadowRoot->removeChild(button2->id);
-      //     }
-      //   };
-      // button->attributes.onHover = [&button]() {
-      //   button->attributes.backgroundColor = {1.f, 0.f, 1.f, 1.f};
-      // };
-
-      // shadowRoot->appendChild(button);
-
-      // auto button = wind::shadowDom::createElement<wind::shadowDom::Button>();
-
-      // button->attributes.onClick = [&button]() {
-      //   button->attributes.backgroundColor = {1.f, 1.f, 0.f, 1.f};
-      // };
-
-      // button->attributes.onHover = [&button]() {
-      //   button->attributes.backgroundColor = {1.f, 0.f, 1.f, 1.f};
-      // };
-
-      // shadowRoot->appendChild(button);
-
       root->display(render);
 
       render.submit();
 
-      wind::shadowDom::Diff diff = wind::shadowDom::Diff();
+      wind::dom::shadow::Diff diff = wind::dom::shadow::Diff();
 
-      // if (prevShadowRoot->children.size() == 2) {
-      //   for (auto&& i : prevShadowRoot->children) {
-      //     spdlog::info("CHILD: {}, PARENT: {}", i->id, !!i->parent);
-      //   }
-      // }
+      wind::dom::shadow::getDiff(prevShadowRoot, shadowRoot, diff);
 
-      wind::shadowDom::getDiff(prevShadowRoot, shadowRoot, diff);
+      wind::dom::shadow::fromDiff(root, diff);
 
-      if (diff.added.size() > 0 || diff.removed.size() > 0 ||
-          diff.updated.size() > 0 || diff.replaced.size() > 0) {
-        spdlog::info(
-          "added: {}; \n removed: {}; \n updated: {}; \n replaced: {}; \n",
-          diff.added.size(),
-          diff.removed.size(),
-          diff.updated.size(),
-          diff.replaced.size()
-        );
+      auto prevShadowRoot2 = shadowRoot->deepCopy();
+      std::shared_ptr<wind::dom::shadow::Root> qwe =
+        std::dynamic_pointer_cast<wind::dom::shadow::Root>(prevShadowRoot);
+      if (qwe) {
+        prevShadowRoot = qwe;
       }
-
-      wind::shadowDom::fromDiff(root, diff);
-
-      prevShadowRoot = std::make_shared<wind::shadowDom::Root>(*shadowRoot);
     };
 
     void quit() override {};

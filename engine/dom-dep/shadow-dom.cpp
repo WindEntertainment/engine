@@ -8,6 +8,7 @@ namespace wind {
     unsigned int UIElement::nextId = 0;
 
     UIElement::UIElement() : id(nextId++) { children.reserve(3); }
+    UIElement::UIElement(unsigned int id) : id(id) { children.reserve(3); }
 
     void UIElement::appendChild(Ptr child) {
       if (child) {
@@ -38,6 +39,23 @@ namespace wind {
       // this->root = weak_from_this();
     };
 
+    Button::Button() {};
+    Image::Image() {};
+    Text::Text() {};
+    Input::Input() {};
+    Checkbox::Checkbox() {};
+    Div::Div() {};
+    Select::Select() {};
+
+    Root::Root(const unsigned int id) : UIElement(id) {};
+    Button::Button(const unsigned int id) : UIElement(id) {};
+    Image::Image(const unsigned int id) : UIElement(id) {};
+    Text::Text(const unsigned int id) : UIElement(id) {};
+    Input::Input(const unsigned int id) : UIElement(id) {};
+    Checkbox::Checkbox(const unsigned int id) : UIElement(id) {};
+    Div::Div(const unsigned int id) : UIElement(id) {};
+    Select::Select(const unsigned int id) : UIElement(id) {};
+
     std::shared_ptr<Root> init(glm::ivec2 windowSize) {
       auto root = std::make_shared<Root>();
 
@@ -45,7 +63,7 @@ namespace wind {
     };
 
     void addDiffChildren(
-      std::shared_ptr<wind::shadowDom::UIElement> element,
+      std::shared_ptr<wind::dom::shadow::UIElement> element,
       Diff& diff
     ) {
       diff.added.insert(
@@ -61,30 +79,10 @@ namespace wind {
     }
 
     void getDiff(
-      std::shared_ptr<wind::shadowDom::UIElement> prevElement,
-      std::shared_ptr<wind::shadowDom::UIElement> newElement,
+      std::shared_ptr<wind::dom::shadow::UIElement> prevElement,
+      std::shared_ptr<wind::dom::shadow::UIElement> newElement,
       Diff& diff
     ) {
-      // std::shared_ptr<Diff> diff = wind::share(Diff());
-      // spdlog::info(
-      //   "prev: {} new: {}", !!prevElement, !!newElement
-      //   // newElement->id
-      //   // prevElement->id,
-      //   // newElement->id
-      //   // prevElement->children.size(),
-      //   // newElement->children.size()
-      // );
-
-      // if (prevElement && prevElement->id == 2) {
-      //   spdlog::info(
-      //     "{} {} {} {}",
-      //     !prevElement && newElement,
-      //     prevElement && !newElement,
-      //     wind::compareSharedByTypeId(prevElement, newElement),
-      //     wind::compareSharedByValue(prevElement, newElement)
-      //   );
-      // }
-
       if (!prevElement && !newElement)
         return;
 
@@ -97,9 +95,6 @@ namespace wind {
       }
 
       if (prevElement && !newElement) {
-        spdlog::info(
-          "REMOVED LIST: {} {}", prevElement->id, !!prevElement->parent
-        );
         diff.removed.push_back(prevElement);
         return;
       }
@@ -111,36 +106,24 @@ namespace wind {
           addDiffChildren(newElement, diff);
         }
       } else {
-        if (prevElement && newElement) {
+        if (prevElement->id == 2) {
           std::shared_ptr<Button> element1 =
             std::dynamic_pointer_cast<Button>(prevElement);
           std::shared_ptr<Button> element2 =
             std::dynamic_pointer_cast<Button>(newElement);
-          if (!!element1 && !!element2) {
-            spdlog::info(
-              "TRUE {}", !wind::compareSharedByValue(prevElement, newElement)
-            );
-          }
+          spdlog::info(
+            "{} {} {} {}",
+            element1->attributes.backgroundColor.x,
+            element2->attributes.backgroundColor.x,
+            wind::compareSharedByValue(element1, element2),
+            element1 == element2
+          );
         }
 
         if (!wind::compareSharedByValue(prevElement, newElement)) {
-          spdlog::info(
-            "UPDATE: {}", wind::compareSharedByValue(prevElement, newElement)
-          );
           diff.updated.push_back(newElement);
         }
       }
-
-      // if () {
-      //   // diff.added.push_back(newElement);
-      //   // diff.removed.push_back(prevElement);
-
-      //   return;
-      // }
-
-      // if (!wind::compareSharedByValue(prevElement, newElement)) {
-      //   diff.updated.push_back(newElement);
-      // }
 
       size_t childrenCount =
         std::max(prevElement->children.size(), newElement->children.size());
@@ -158,42 +141,42 @@ namespace wind {
     using FactoryMap = std::map<
       std::type_index,
       std::function<
-        wind::dom::UIElement::Ptr(wind::shadowDom::UIElement::Ptr element)>>;
+        wind::dom::UIElement::Ptr(wind::dom::shadow::UIElement::Ptr element)>>;
 
     FactoryMap factoryMap = {
       {typeid(Root),
-       [](wind::shadowDom::UIElement::Ptr uiElement) {
+       [](wind::dom::shadow::UIElement::Ptr uiElement) {
          std::shared_ptr<Root> element =
            std::dynamic_pointer_cast<Root>(uiElement);
          return wind::share(wind::dom::Root(element->id, element->attributes));
        }},
       {typeid(Button),
-       [](wind::shadowDom::UIElement::Ptr uiElement) {
+       [](wind::dom::shadow::UIElement::Ptr uiElement) {
          std::shared_ptr<Button> element =
            std::dynamic_pointer_cast<Button>(uiElement);
          return wind::share(wind::dom::Button(element->id, element->attributes)
          );
        }},
       {typeid(Image),
-       [](wind::shadowDom::UIElement::Ptr uiElement) {
+       [](wind::dom::shadow::UIElement::Ptr uiElement) {
          std::shared_ptr<Image> element =
            std::dynamic_pointer_cast<Image>(uiElement);
          return wind::share(wind::dom::Image(element->id, element->attributes));
        }},
       {typeid(Text),
-       [](wind::shadowDom::UIElement::Ptr uiElement) {
+       [](wind::dom::shadow::UIElement::Ptr uiElement) {
          std::shared_ptr<Text> element =
            std::dynamic_pointer_cast<Text>(uiElement);
          return wind::share(wind::dom::Text(element->id, element->attributes));
        }},
       {typeid(Input),
-       [](wind::shadowDom::UIElement::Ptr uiElement) {
+       [](wind::dom::shadow::UIElement::Ptr uiElement) {
          std::shared_ptr<Input> element =
            std::dynamic_pointer_cast<Input>(uiElement);
          return wind::share(wind::dom::Input(element->id, element->attributes));
        }},
       {typeid(Checkbox),
-       [](wind::shadowDom::UIElement::Ptr uiElement) {
+       [](wind::dom::shadow::UIElement::Ptr uiElement) {
          std::shared_ptr<Checkbox> element =
            std::dynamic_pointer_cast<Checkbox>(uiElement);
          return wind::share(
@@ -201,13 +184,13 @@ namespace wind {
          );
        }},
       {typeid(Div),
-       [](wind::shadowDom::UIElement::Ptr uiElement) {
+       [](wind::dom::shadow::UIElement::Ptr uiElement) {
          std::shared_ptr<Div> element =
            std::dynamic_pointer_cast<Div>(uiElement);
          return wind::share(wind::dom::Div(element->id, element->attributes));
        }},
       {typeid(Select),
-       [](wind::shadowDom::UIElement::Ptr uiElement) {
+       [](wind::dom::shadow::UIElement::Ptr uiElement) {
          std::shared_ptr<Select> element =
            std::dynamic_pointer_cast<Select>(uiElement);
          return wind::share(wind::dom::Select(element->id, element->attributes)
@@ -219,14 +202,14 @@ namespace wind {
     using UpdateFactoryMap = std::map<
       std::type_index,
       std::function<void(
-        wind::shadowDom::UIElement::Ptr uiElement,
+        wind::dom::shadow::UIElement::Ptr uiElement,
         wind::dom::UIElement::Ptr domElement
       )>>;
 
     UpdateFactoryMap updateFactoryMap = {
       {typeid(Root),
        [](
-         wind::shadowDom::UIElement::Ptr uiElement,
+         wind::dom::shadow::UIElement::Ptr uiElement,
          wind::dom::UIElement::Ptr domElement
        ) {
          std::shared_ptr<Root> element =
@@ -241,7 +224,7 @@ namespace wind {
        }},
       {typeid(Button),
        [](
-         wind::shadowDom::UIElement::Ptr uiElement,
+         wind::dom::shadow::UIElement::Ptr uiElement,
          wind::dom::UIElement::Ptr domElement
        ) {
          std::shared_ptr<Button> element =
@@ -256,7 +239,7 @@ namespace wind {
        }},
       {typeid(Image),
        [](
-         wind::shadowDom::UIElement::Ptr uiElement,
+         wind::dom::shadow::UIElement::Ptr uiElement,
          wind::dom::UIElement::Ptr domElement
        ) {
          std::shared_ptr<Image> element =
@@ -271,7 +254,7 @@ namespace wind {
        }},
       {typeid(Text),
        [](
-         wind::shadowDom::UIElement::Ptr uiElement,
+         wind::dom::shadow::UIElement::Ptr uiElement,
          wind::dom::UIElement::Ptr domElement
        ) {
          std::shared_ptr<Text> element =
@@ -286,7 +269,7 @@ namespace wind {
        }},
       {typeid(Input),
        [](
-         wind::shadowDom::UIElement::Ptr uiElement,
+         wind::dom::shadow::UIElement::Ptr uiElement,
          wind::dom::UIElement::Ptr domElement
        ) {
          std::shared_ptr<Input> element =
@@ -301,7 +284,7 @@ namespace wind {
        }},
       {typeid(Checkbox),
        [](
-         wind::shadowDom::UIElement::Ptr uiElement,
+         wind::dom::shadow::UIElement::Ptr uiElement,
          wind::dom::UIElement::Ptr domElement
        ) {
          std::shared_ptr<Checkbox> element =
@@ -316,7 +299,7 @@ namespace wind {
        }},
       {typeid(Div),
        [](
-         wind::shadowDom::UIElement::Ptr uiElement,
+         wind::dom::shadow::UIElement::Ptr uiElement,
          wind::dom::UIElement::Ptr domElement
        ) {
          std::shared_ptr<Div> element =
@@ -331,7 +314,7 @@ namespace wind {
        }},
       {typeid(Select),
        [](
-         wind::shadowDom::UIElement::Ptr uiElement,
+         wind::dom::shadow::UIElement::Ptr uiElement,
          wind::dom::UIElement::Ptr domElement
        ) {
          std::shared_ptr<Select> element =
@@ -361,17 +344,12 @@ namespace wind {
           continue;
 
         wind::dom::UIElement::Ptr domElement = factory(element);
-        spdlog::info("APPENDED");
         elementParent->appendChild(domElement);
       }
 
       for (auto&& element : diff.removed) {
-        spdlog::info("DELETING {}", !!element->parent);
-
         if (!element->parent)
           continue;
-
-        spdlog::info(element->id);
 
         auto elementParent = dom->findElementById(dom, element->parent->id);
         if (!elementParent)
@@ -381,6 +359,7 @@ namespace wind {
       }
 
       for (auto&& element : diff.updated) {
+        spdlog::info("UPDATING");
         if (!element->parent)
           continue;
 

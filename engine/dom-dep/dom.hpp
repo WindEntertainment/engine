@@ -2,9 +2,6 @@
 #include <wind/utils/utils.hpp>
 #include "wind/renderer/command-buffer.hpp"
 #include "wind/input-system/input-system.hpp"
-#include <algorithm>
-#include <typeindex>
-#include <utility>
 
 namespace wind {
 
@@ -37,7 +34,7 @@ namespace wind {
       }
     };
 
-    struct BaseAttributes {
+    struct attributes::Base {
       bool disabled = {false};
       std::function<void()> onClick = {};
       std::function<void()> onHover = {};
@@ -56,26 +53,26 @@ namespace wind {
 
       bool isHovered = false;
 
-      bool compareBase(const BaseAttributes& attributes) {
+      bool compareBase(const attributes::Base& attributes) {
         return std::tie(this->disabled) == std::tie(attributes.disabled);
       };
 
-      virtual bool compare(const BaseAttributes& attributes) = 0;
+      virtual bool compare(const attributes::Base& attributes) = 0;
 
-      bool operator==(const BaseAttributes& element) {
+      bool operator==(const attributes::Base& element) {
         return compareBase(element) && compare(element);
       };
 
       // public:
-      //   virtual ~BaseAttributes() = default;
+      //   virtual ~attributes::Base() = default;
     };
 
-    struct ButtonAttributes : public BaseAttributes {
+    struct attributes::Button : public attributes::Base {
       bool tmp = {false};
 
-      bool compare(const BaseAttributes& attributes) override {
-        const ButtonAttributes* attrs =
-          dynamic_cast<const ButtonAttributes*>(&attributes);
+      bool compare(const attributes::Base& attributes) override {
+        const attributes::Button* attrs =
+          dynamic_cast<const attributes::Button*>(&attributes);
         if (!attrs) {
           return false;
         }
@@ -83,14 +80,14 @@ namespace wind {
         return std::tie(this->tmp) == std::tie(attrs->tmp);
       }
     };
-    static const ButtonAttributes defaultButtonAttributes = {};
+    static const attributes::Button defaultButtonAttributes = {};
 
-    struct ImageAttributes : public BaseAttributes {
+    struct attributes::Image : public attributes::Base {
       bool tmp = {false};
 
-      bool compare(const BaseAttributes& attributes) override {
-        const ImageAttributes* attrs =
-          dynamic_cast<const ImageAttributes*>(&attributes);
+      bool compare(const attributes::Base& attributes) override {
+        const attributes::Image* attrs =
+          dynamic_cast<const attributes::Image*>(&attributes);
         if (!attrs) {
           return false;
         }
@@ -98,14 +95,14 @@ namespace wind {
         return std::tie(this->tmp) == std::tie(attrs->tmp);
       }
     };
-    static const ImageAttributes defaultImageAttributes = {};
+    static const attributes::Image defaultImageAttributes = {};
 
-    struct TextAttributes : public BaseAttributes {
+    struct attributes::Text : public attributes::Base {
       bool tmp = {false};
 
-      bool compare(const BaseAttributes& attributes) override {
-        const TextAttributes* attrs =
-          dynamic_cast<const TextAttributes*>(&attributes);
+      bool compare(const attributes::Base& attributes) override {
+        const attributes::Text* attrs =
+          dynamic_cast<const attributes::Text*>(&attributes);
         if (!attrs) {
           return false;
         }
@@ -113,14 +110,14 @@ namespace wind {
         return std::tie(this->tmp) == std::tie(attrs->tmp);
       }
     };
-    static const TextAttributes defaultTextAttributes = {};
+    static const attributes::Text defaultTextAttributes = {};
 
-    struct InputAttributes : public BaseAttributes {
+    struct attributes::Input : public attributes::Base {
       bool tmp = {false};
 
-      bool compare(const BaseAttributes& attributes) override {
-        const InputAttributes* attrs =
-          dynamic_cast<const InputAttributes*>(&attributes);
+      bool compare(const attributes::Base& attributes) override {
+        const attributes::Input* attrs =
+          dynamic_cast<const attributes::Input*>(&attributes);
         if (!attrs) {
           return false;
         }
@@ -128,16 +125,16 @@ namespace wind {
         return std::tie(this->tmp) == std::tie(attrs->tmp);
       }
     };
-    static const InputAttributes defaultInputAttributes = {};
+    static const attributes::Input defaultInputAttributes = {};
 
-    struct CheckboxAttributes : public BaseAttributes {
+    struct attributes::Checkbox : public attributes::Base {
       bool tmp = {false};
 
       std::function<void()> onChange;
 
-      bool compare(const BaseAttributes& attributes) override {
-        const CheckboxAttributes* attrs =
-          dynamic_cast<const CheckboxAttributes*>(&attributes);
+      bool compare(const attributes::Base& attributes) override {
+        const attributes::Checkbox* attrs =
+          dynamic_cast<const attributes::Checkbox*>(&attributes);
         if (!attrs) {
           return false;
         }
@@ -145,14 +142,14 @@ namespace wind {
         return std::tie(this->tmp) == std::tie(attrs->tmp);
       }
     };
-    static const CheckboxAttributes defaultCheckboxAttributes = {};
+    static const attributes::Checkbox defaultCheckboxAttributes = {};
 
-    struct DivAttributes : public BaseAttributes {
+    struct attributes::Div : public attributes::Base {
       bool tmp = {false};
 
-      bool compare(const BaseAttributes& attributes) override {
-        const DivAttributes* attrs =
-          dynamic_cast<const DivAttributes*>(&attributes);
+      bool compare(const attributes::Base& attributes) override {
+        const attributes::Div* attrs =
+          dynamic_cast<const attributes::Div*>(&attributes);
         if (!attrs) {
           return false;
         }
@@ -160,14 +157,14 @@ namespace wind {
         return std::tie(this->tmp) == std::tie(attrs->tmp);
       }
     };
-    static const DivAttributes defaultDivAttributes = {};
+    static const attributes::Div defaultDivAttributes = {};
 
-    struct SelectAttributes : public BaseAttributes {
+    struct attributes::Select : public attributes::Base {
       bool tmp = {false};
 
-      bool compare(const BaseAttributes& attributes) override {
-        const SelectAttributes* attrs =
-          dynamic_cast<const SelectAttributes*>(&attributes);
+      bool compare(const attributes::Base& attributes) override {
+        const attributes::Select* attrs =
+          dynamic_cast<const attributes::Select*>(&attributes);
         if (!attrs) {
           return false;
         }
@@ -175,14 +172,14 @@ namespace wind {
         return std::tie(this->tmp) == std::tie(attrs->tmp);
       }
     };
-    static const SelectAttributes defaultSelectAttributes = {};
+    static const attributes::Select defaultSelectAttributes = {};
 
-    struct RootAttributes : public BaseAttributes {
+    struct attributes::Root : public attributes::Base {
       bool tmp = {false};
 
-      bool compare(const BaseAttributes& attributes) override {
-        const RootAttributes* attrs =
-          dynamic_cast<const RootAttributes*>(&attributes);
+      bool compare(const attributes::Base& attributes) override {
+        const attributes::Root* attrs =
+          dynamic_cast<const attributes::Root*>(&attributes);
         if (!attrs) {
           return false;
         }
@@ -190,7 +187,7 @@ namespace wind {
         return std::tie(this->tmp) == std::tie(attrs->tmp);
       }
     };
-    static const RootAttributes defaultRootAttributes = {};
+    static const attributes::Root defaultRootAttributes = {};
 
   } // namespace shared
 
@@ -214,6 +211,7 @@ namespace wind {
       // virtual void release() {};
       virtual void reset() {};
       virtual void update() = 0;
+      // virtual Ptr deepCopy() = 0;
       virtual Ptr getPtr() = 0;
 
       void appendChild(Ptr child);
@@ -241,11 +239,12 @@ namespace wind {
     class Root : public UIElement, public std::enable_shared_from_this<Root> {
     public:
       GET_PTR();
-      Root(unsigned int id, RootAttributes attributes);
+      Root(unsigned int id, attributes::Root attributes);
 
       void render(wind::CommandBuffer& renderer) override;
       void update() override;
       void reset() override;
+      // Ptr deepCopy() override;
 
       UIElement::Ptr
       findElementById(const UIElement::Ptr& root, const unsigned int& id) {
@@ -264,101 +263,108 @@ namespace wind {
         return nullptr;
       }
 
-      RootAttributes attributes = defaultRootAttributes;
+      attributes::Root attributes = attributes::defaultRootAttributes;
     };
 
     class Button : public UIElement,
                    public std::enable_shared_from_this<Button> {
     public:
       GET_PTR();
-      Button(unsigned int id, ButtonAttributes attributes);
+      Button(unsigned int id, attributes::Button attributes);
       void render(wind::CommandBuffer& renderer) override;
 
       void update() override;
 
       void reset() override;
+      // Ptr deepCopy() override;
 
-      ButtonAttributes attributes = defaultButtonAttributes;
+      attributes::Button attributes = attributes::defaultButtonAttributes;
     };
 
     class Image : public UIElement, public std::enable_shared_from_this<Image> {
     public:
       GET_PTR();
-      Image(unsigned int id, ImageAttributes attributes);
+      Image(unsigned int id, attributes::Image attributes);
       void render(wind::CommandBuffer& renderer) override;
 
       void update() override;
 
       void reset() override;
+      // Ptr deepCopy() override;
 
-      ImageAttributes attributes = defaultImageAttributes;
+      attributes::Image attributes = attributes::defaultImageAttributes;
     };
 
     class Text : public UIElement, public std::enable_shared_from_this<Text> {
     public:
       GET_PTR();
-      Text(unsigned int id, TextAttributes attributes);
+      Text(unsigned int id, attributes::Text attributes);
       void render(wind::CommandBuffer& renderer) override;
 
       void update() override;
 
       void reset() override;
+      // Ptr deepCopy() override;
 
-      TextAttributes attributes = defaultTextAttributes;
+      attributes::Text attributes = attributes::defaultTextAttributes;
     };
 
     class Input : public UIElement, public std::enable_shared_from_this<Input> {
     public:
       GET_PTR();
-      Input(unsigned int id, InputAttributes attributes);
+      Input(unsigned int id, attributes::Input attributes);
       void render(wind::CommandBuffer& renderer) override;
 
       void update() override;
 
       void reset() override;
+      // Ptr deepCopy() override;
 
-      InputAttributes attributes = defaultInputAttributes;
+      attributes::Input attributes = attributes::defaultInputAttributes;
     };
 
     class Checkbox : public UIElement,
                      public std::enable_shared_from_this<Checkbox> {
     public:
       GET_PTR();
-      Checkbox(unsigned int id, CheckboxAttributes attributes);
+      Checkbox(unsigned int id, attributes::Checkbox attributes);
       void render(wind::CommandBuffer& renderer) override;
 
       void update() override;
 
       void reset() override;
+      // Ptr deepCopy() override;
 
-      CheckboxAttributes attributes = defaultCheckboxAttributes;
+      attributes::Checkbox attributes = attributes::defaultCheckboxAttributes;
     };
 
     class Div : public UIElement, public std::enable_shared_from_this<Div> {
     public:
       GET_PTR();
-      Div(unsigned int id, DivAttributes attributes);
+      Div(unsigned int id, attributes::Div attributes);
       void render(wind::CommandBuffer& renderer) override;
 
       void update() override;
 
       void reset() override;
+      // Ptr deepCopy() override;
 
-      DivAttributes attributes = defaultDivAttributes;
+      attributes::Div attributes = attributes::defaultDivAttributes;
     };
 
     class Select : public UIElement,
                    public std::enable_shared_from_this<Select> {
     public:
       GET_PTR();
-      Select(unsigned int id, SelectAttributes attributes);
+      Select(unsigned int id, attributes::Select attributes);
       void render(wind::CommandBuffer& renderer) override;
 
       void update() override;
 
       void reset() override;
+      // Ptr deepCopy() override;
 
-      SelectAttributes attributes = defaultSelectAttributes;
+      attributes::Select attributes = attributes::defaultSelectAttributes;
     };
 
     std::shared_ptr<Root> init(glm::ivec2);
