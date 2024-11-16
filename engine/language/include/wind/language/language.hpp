@@ -52,7 +52,15 @@ namespace wind {
 				Add, 
 				Sub, 
 				Mul,
-				Div
+				Div,
+				Equal,
+				NotEqual,
+				Greater,
+				Less,
+        GreaterOrEqual,
+				LessOrEqual,
+				And,
+				Or
       };
 
 			OperationType type;
@@ -170,40 +178,166 @@ namespace wind {
 			}
 
 			Expression* expression() {
-				return binary();
+				return binaryPriority0();
 			}
 
-			Expression* binary() {
-				auto lhs = unary();
+			Expression* binaryPriority0() {
+        auto result = binaryPriority1();
 
-				if (!lhs)
+				if (!result)
 					return nullptr;
 
-				auto token = consume();
-				if (token.type == Token::Operator && (
-					token.value == "+" ||
-					token.value == "-" ||
-					token.value == "*" ||
-					token.value == "/"
-				)) {
-          auto binaryEx = new BinaryOperation();
-					binaryEx->lhs = lhs;
-          binaryEx->rhs = expression();
+				while (true) {
+					auto token = get();
+					if (token.type == Token::Operator && (
+						token.value == "&&"  ||
+						token.value == "||"
+					)) {
+            shift();
 
-					if (binaryEx->rhs)
-						return binaryEx;
+						auto binaryEx = new BinaryOperation();
+						binaryEx->lhs = result;
+						binaryEx->rhs = binaryPriority1();
 
-					if			(token.value == "+") binaryEx->type = BinaryOperation::Add;
-					else if (token.value == "-") binaryEx->type = BinaryOperation::Sub;
-					else if (token.value == "*") binaryEx->type = BinaryOperation::Mul;
-          else if (token.value == "/") binaryEx->type = BinaryOperation::Div;
+						if			(token.value == "&&") binaryEx->type = BinaryOperation::And;
+						else if (token.value == "||") binaryEx->type = BinaryOperation::Or;
+				
+						if (!binaryEx->rhs) {
+							push("Syntax Error: Unexcepted symbol. Excepted expression to binary operation");
+							return nullptr;
+						}
 
-					push("Unexcepted symbol. Excepted expression to binary operation");
-					delete binaryEx;
-					return nullptr;
+						result = binaryEx;
+					} else 
+						break;
 				}
 
-				return lhs;
+				return result;
+			}
+
+			Expression* binaryPriority1() {
+        auto result = binaryPriority2();
+
+				if (!result)
+					return nullptr;
+
+				while (true) {
+					auto token = get();
+					if (token.type == Token::Operator && (
+						token.value == ">"  ||
+						token.value == "<"  ||
+						token.value == "==" ||
+						token.value == "!=" ||
+						token.value == ">=" ||
+						token.value == "<="
+					)) {
+            shift();
+
+						auto binaryEx = new BinaryOperation();
+						binaryEx->lhs = result;
+						binaryEx->rhs = binaryPriority2();
+
+						if			(token.value == ">") binaryEx->type = BinaryOperation::Greater;
+						else if (token.value == "<") binaryEx->type = BinaryOperation::Less;
+						else if (token.value == "==") binaryEx->type = BinaryOperation::Equal;
+						else if (token.value == "!=") binaryEx->type = BinaryOperation::NotEqual;
+						else if (token.value == ">=") binaryEx->type = BinaryOperation::GreaterOrEqual;
+						else if (token.value == "<=") binaryEx->type = BinaryOperation::LessOrEqual;
+				
+						if (!binaryEx->rhs) {
+							push("Syntax Error: Unexcepted symbol. Excepted expression to binary operation");
+							return nullptr;
+						}
+
+						result = binaryEx;
+					} else 
+						break;
+				}
+
+				return result;
+			}
+
+			Expression* binaryPriority2() {
+        auto result = binaryPriority3();
+
+				if (!result)
+					return nullptr;
+
+				while (true) {
+					auto token = get();
+					if (token.type == Token::Operator && (
+						token.value == "+" ||
+						token.value == "-"
+					)) {
+            shift();
+
+						auto binaryEx = new BinaryOperation();
+						binaryEx->lhs = result;
+						binaryEx->rhs = binaryPriority3();
+
+						if			(token.value == "+") binaryEx->type = BinaryOperation::Add;
+						else if (token.value == "-") binaryEx->type = BinaryOperation::Sub;
+				
+						if (!binaryEx->rhs) {
+							push("Syntax Error: Unexcepted symbol. Excepted expression to binary operation");
+							return nullptr;
+						}
+
+						result = binaryEx;
+					} else 
+						break;
+				}
+
+				return result;
+			}
+
+			Expression* binaryPriority3() {
+        auto result = parentheses();
+
+				if (!result)
+					return nullptr;
+
+				while (true) {
+					auto token = get();
+					if (token.type == Token::Operator && (
+						token.value == "*" ||
+						token.value == "/"
+					)) {
+						shift();
+
+						auto binaryEx = new BinaryOperation();
+						binaryEx->lhs = result;
+            binaryEx->rhs = parentheses();
+
+						if			(token.value == "*") binaryEx->type = BinaryOperation::Mul;
+						else if (token.value == "/") binaryEx->type = BinaryOperation::Div;
+
+						if (!binaryEx->rhs) {
+							push("Syntax Error: Unexcepted symbol. Excepted expression to binary operation");
+							return nullptr;
+						}
+
+						result = binaryEx;
+					} else
+						break;
+				}
+
+				return result;
+			}
+
+			Expression* parentheses() { 
+				if (isEqual(Token::Operator, "(")) {
+          auto result = expression();
+					if (!isEqual(Token::Operator, ")")) {
+            shift();
+            push("Syntax Error: Unmatched opening parenthesis '(' detected. Ensure every '(' has a corresponding ')' before the end of the expression.)");
+						return nullptr;
+					}
+
+					return result;
+				}
+
+				return unary();
 			}
 
 			Expression* unary() { 
@@ -215,7 +349,7 @@ namespace wind {
 					if (unaryEx->operand)
 						return unaryEx;
 					
-					push("Unexcepted symbol. Excepted expression to negate");
+					push("Syntax Error: Unexcepted symbol. Excepted expression to negate");
 					delete unaryEx;
 					return nullptr;
 				}
@@ -250,7 +384,7 @@ namespace wind {
 				}
 
 				shift();
-				push("Unknown value type");
+				push("Syntax Error: Unknown value type");
 				delete value;
 				return nullptr;
 			}

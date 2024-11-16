@@ -7,20 +7,20 @@ namespace wind {
     class Wdl2Cpp : public LangImpl {
     protected:
       void compile(Value* expression) override { 
-        spdlog::info("value");
+        spdlog::info("value: {}", expression->value);
       }
 
       void compile(Identifier* expression) override {
-        spdlog::info("identifier");
+        spdlog::info("identifier: {}", expression->name);
       }
 
       void compile(UnaryOperation* expression) override {
-        spdlog::info("unary-operation");
+        spdlog::info("unary-operation: {}", (int)expression->type);
         expression->operand->execute(this);
       }
 
       void compile(BinaryOperation* expression) override {
-        spdlog::info("binary-operation");
+        spdlog::info("binary-operation: {}", (int)expression->type);
         expression->lhs->execute(this);
         expression->rhs->execute(this);
       }
@@ -31,7 +31,7 @@ namespace wind {
 int main() {
   wind::wdlang::Tokenizer t(
     R"(
-      23 + 12
+      23 - 2 * (2 + 3) > 0 || 9 > 0
     )"
   );
 

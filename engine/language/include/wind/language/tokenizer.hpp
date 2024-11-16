@@ -62,7 +62,9 @@ namespace wind {
         cPos = 0;
       }
 
-      TokenStream& getStream() { return stream; }
+      TokenStream& getStream() { 
+        return stream;
+      }
 
     private:
       TokenStream stream;
@@ -71,7 +73,7 @@ namespace wind {
       int cPos;
 
       const std::set<char> operators =
-        {'=', '+', '-', '*', '/', '&', '|', ':', ',', '.'};
+        {'=', '+', '-', '*', '/', '&', '|', ':', ',', '.', '>', '<', '!'};
       const std::set<char> singleOperators = {'{', '}', '(', ')', ';'};
 
       //====================================================//
