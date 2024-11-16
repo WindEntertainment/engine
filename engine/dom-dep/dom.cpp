@@ -44,29 +44,29 @@ namespace wind {
       children.erase(it);
     };
 
-    Root::Root(unsigned int id, RootAttributes attributes)
+    Root::Root(unsigned int id, attributes::Root attributes)
         : UIElement(id), attributes(std::move(attributes)) {
             // this->root = weak_from_this();
           };
 
-    Button::Button(unsigned int id, ButtonAttributes attributes)
+    Button::Button(unsigned int id, attributes::Button attributes)
         : UIElement(id), attributes(std::move(attributes)) {};
-    Image::Image(unsigned int id, ImageAttributes attributes)
+    Image::Image(unsigned int id, attributes::Image attributes)
         : UIElement(id), attributes(std::move(attributes)) {};
-    Text::Text(unsigned int id, TextAttributes attributes)
+    Text::Text(unsigned int id, attributes::Text attributes)
         : UIElement(id), attributes(std::move(attributes)) {};
-    Input::Input(unsigned int id, InputAttributes attributes)
+    Input::Input(unsigned int id, attributes::Input attributes)
         : UIElement(id), attributes(std::move(attributes)) {};
-    Checkbox::Checkbox(unsigned int id, CheckboxAttributes attributes)
+    Checkbox::Checkbox(unsigned int id, attributes::Checkbox attributes)
         : UIElement(id), attributes(std::move(attributes)) {};
-    Div::Div(unsigned int id, DivAttributes attributes)
+    Div::Div(unsigned int id, attributes::Div attributes)
         : UIElement(id), attributes(std::move(attributes)) {};
-    Select::Select(unsigned int id, SelectAttributes attributes)
+    Select::Select(unsigned int id, attributes::Select attributes)
         : UIElement(id), attributes(std::move(attributes)) {};
 
     void Root::render(wind::CommandBuffer& renderer) {};
 
-    void Root::reset() { attributes = defaultRootAttributes; }
+    void Root::reset() { attributes = attributes::defaultRootAttributes; }
 
     void Root::update() {};
 
@@ -83,12 +83,12 @@ namespace wind {
       );
     };
 
-    void Button::reset() { attributes = defaultButtonAttributes; };
+    void Button::reset() { attributes = attributes::defaultButtonAttributes; };
 
     void Button::update() {
       auto context = wind::InputSystem::context;
-      auto isHovered = UIUtils::isHovered(attributes);
-      auto isClicked = UIUtils::isClicked(attributes, isHovered);
+      auto isHovered = utils::isHovered(attributes);
+      auto isClicked = utils::isClicked(attributes, isHovered);
 
       if (!isHovered && attributes.isHovered) {
         attributes.isHovered = false;
@@ -110,7 +110,7 @@ namespace wind {
       std::cout << "I'm Image";
     };
 
-    void Image::reset() { attributes = defaultImageAttributes; };
+    void Image::reset() { attributes = attributes::defaultImageAttributes; };
 
     void Image::update() {};
 
@@ -118,7 +118,7 @@ namespace wind {
       std::cout << "I'm Text";
     };
 
-    void Text::reset() { attributes = defaultTextAttributes; };
+    void Text::reset() { attributes = attributes::defaultTextAttributes; };
 
     void Text::update() {};
 
@@ -126,7 +126,7 @@ namespace wind {
       std::cout << "I'm RichText";
     };
 
-    void Input::reset() { attributes = defaultInputAttributes; };
+    void Input::reset() { attributes = attributes::defaultInputAttributes; };
 
     void Input::update() {};
 
@@ -134,7 +134,7 @@ namespace wind {
       std::cout << "I'm RichText";
     };
 
-    void Div::reset() { attributes = defaultDivAttributes; };
+    void Div::reset() { attributes = attributes::defaultDivAttributes; };
 
     void Div::update() {};
 
@@ -142,7 +142,7 @@ namespace wind {
       std::cout << "I'm RichText";
     };
 
-    void Select::reset() { attributes = defaultSelectAttributes; };
+    void Select::reset() { attributes = attributes::defaultSelectAttributes; };
 
     void Select::update() {};
 
@@ -150,12 +150,14 @@ namespace wind {
       std::cout << "I'm RichText";
     };
 
-    void Checkbox::reset() { attributes = defaultCheckboxAttributes; };
+    void Checkbox::reset() {
+      attributes = attributes::defaultCheckboxAttributes;
+    };
 
     void Checkbox::update() {};
 
     std::shared_ptr<Root> init(glm::ivec2 windowSize) {
-      auto root = std::make_shared<Root>(0, RootAttributes());
+      auto root = std::make_shared<Root>(0, attributes::Root());
 
       return root;
     };
