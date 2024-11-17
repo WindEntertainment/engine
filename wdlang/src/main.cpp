@@ -24,6 +24,16 @@ namespace wind {
         expression->lhs->execute(this);
         expression->rhs->execute(this);
       }
+
+      void compile(AssignStatement* statement) override {
+        spdlog::info("assign-statement: {}", statement->name);
+        statement->value->execute(this);
+      }
+
+      void compile(VariableStatement* statement) override {
+        spdlog::info("variable-statement: (name: {}, type: {}, mutable: {})", statement->name, statement->type, statement->isMutable);
+        statement->value->execute(this);
+      }
     };
   }
 }
@@ -31,17 +41,24 @@ namespace wind {
 int main() {
   wind::wdlang::Tokenizer t(
     R"(
-      23 - 2 * (2 + 3) > 0 || 9 > 0
+      let x: i32 = 0
+      x = (x - 1) * 2
+      let mut y: i8 = x * (x - x / 2)
     )"
   );
 
   wind::wdlang::AST ast(t.getStream());
   
   auto errors = ast.getErrors();
+  bool failed = !errors.empty();
   while (!errors.empty()) {
     auto error = errors.front();
+    errors.pop();
     spdlog::info("({}, {}): {}: '{}'", error.line, error.position, error.message, error.token.value);
   }
+
+  if (failed)
+    return 0;
 
   std::string ss = "";
   auto root = ast.getRoot();

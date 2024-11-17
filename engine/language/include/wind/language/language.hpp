@@ -5,32 +5,19 @@ namespace wind {
   class LangImpl;
 
 	namespace wdlang {
-    
-		//class WdExecutor;
-
-		struct Expression {
+		struct Node {
       virtual void execute(LangImpl*) = 0;
     };
 
-		/*class WdExecutor {
-		public:
-      WdExecutor(LangImpl* impl) : impl(impl) {}
-
-      template <typename T>
-        requires(std::derived_from<T, Expression>)
-      void compile(T* t) {
-        impl->compileImpl(t);
-      }
-		private:
-			LangImpl* impl;
-		};*/
-
 		template <typename Derived> 
-		struct ExpressionCRTP : public Expression {
+		struct NodeCRTP : public Node {
 			void execute(LangImpl* executor) override;
 		};
 
-		struct Value : public ExpressionCRTP<Value> {
+		template <typename Derived>
+    struct Expression : public NodeCRTP<Derived> {};
+
+		struct Value : public Expression<Value> {
 			enum ValueType {
 				Number,
 				Char,
@@ -41,13 +28,13 @@ namespace wind {
       std::string value;
 		};
 
-    struct Identifier : public ExpressionCRTP<Identifier> {
+    struct Identifier : public Expression<Identifier> {
       std::string name;
 
 			Identifier(std::string&& name) : name(name) {}
 		};
     
-		struct BinaryOperation : public ExpressionCRTP<BinaryOperation> {
+		struct BinaryOperation : public Expression<BinaryOperation> {
 			enum OperationType {
 				Add, 
 				Sub, 
@@ -64,17 +51,29 @@ namespace wind {
       };
 
 			OperationType type;
-      Expression* lhs;
-      Expression* rhs;
+      Node* lhs;
+      Node* rhs;
 		};
 
-    struct UnaryOperation : public ExpressionCRTP<UnaryOperation> {
+    struct UnaryOperation : public Expression<UnaryOperation> {
 			enum OperationType {
 				NEGATE
 			};
 
 			OperationType type;
-      Expression* operand;
+      Node* operand;
+		};
+
+		struct AssignStatement : public NodeCRTP<AssignStatement> {
+			std::string name;
+			Node* value;
+		};
+
+		struct VariableStatement : public NodeCRTP<VariableStatement> {
+			bool isMutable;
+			std::string type;
+			std::string name;
+			Node* value;
 		};
 	
 		class AST {
@@ -95,14 +94,14 @@ namespace wind {
         return errorStack;
 			}
 
-			std::vector<Expression*> getRoot() const {
+			std::vector<Node*> getRoot() const {
 				return ast;
 			}
 
     private:
 			std::queue<Error> errorStack;
 			
-			std::vector<Expression*> ast;
+			std::vector<Node*> ast;
 			std::vector<Token> tokens;
 			Tokenizer::TokenStream& tokenStream;
 
@@ -159,6 +158,20 @@ namespace wind {
 				return res;
 			}
 
+			void except(Token::TokenType type, std::string&& value) {
+        if (isEqual(type, std::move(value)))
+					return;
+
+				push(fmt::format("Syntax Error: Except '{}'. Unexcepted sybmol.", value));
+			}
+
+			void except(Token::TokenType type) {
+        if (isType(type))
+					return;
+
+				push("Syntax Error: Unexcepted sybmol");
+			}
+
 			void push(const std::string&& message) {
         errorStack.push(Error{
           .position = tokenStream.position,
@@ -173,15 +186,62 @@ namespace wind {
 
 			void parse() {
 				while (get(0).type != Token::T_EOF) {
-          ast.emplace_back(expression());
+					ast.emplace_back(statement());
 				}
 			}
 
-			Expression* expression() {
+			Node* statement() {
+				return variable();
+			}
+
+			Node* variable() { 
+				if (isEqual(Token::Word, "let")) {
+					auto isMutable = isEqual(Token::Word, "mut");
+          
+					except(Token::Word);
+          auto name = get(-1).value;
+
+					except(Token::Operator, ":");
+
+          except(Token::Word);
+          auto type = get(-1).value;
+
+					except(Token::Operator, "=");
+          auto value = expression();
+
+					auto statement = new VariableStatement();
+					statement->isMutable = isMutable;
+					statement->type = type;
+					statement->name = name;
+					statement->value = value;
+
+					return statement;
+				}
+
+				return assign();
+			}
+
+			Node* assign() { 
+				if (isType(Token::Word) && isEqual(Token::Operator, "=")) {
+					auto name = get(-2).value;
+          auto value = expression();
+
+					auto statement = new AssignStatement();
+					statement->name = name;
+					statement->value = value;
+
+					return statement;
+				}
+
+				push("Syntax error: Unexcepted symbol");
+				return nullptr;
+			}
+
+			Node* expression() {
 				return binaryPriority0();
 			}
 
-			Expression* binaryPriority0() {
+			Node* binaryPriority0() {
         auto result = binaryPriority1();
 
 				if (!result)
@@ -215,7 +275,7 @@ namespace wind {
 				return result;
 			}
 
-			Expression* binaryPriority1() {
+			Node* binaryPriority1() {
         auto result = binaryPriority2();
 
 				if (!result)
@@ -257,7 +317,7 @@ namespace wind {
 				return result;
 			}
 
-			Expression* binaryPriority2() {
+			Node* binaryPriority2() {
         auto result = binaryPriority3();
 
 				if (!result)
@@ -291,7 +351,7 @@ namespace wind {
 				return result;
 			}
 
-			Expression* binaryPriority3() {
+			Node* binaryPriority3() {
         auto result = parentheses();
 
 				if (!result)
@@ -325,7 +385,7 @@ namespace wind {
 				return result;
 			}
 
-			Expression* parentheses() { 
+			Node* parentheses() { 
 				if (isEqual(Token::Operator, "(")) {
           auto result = expression();
 					if (!isEqual(Token::Operator, ")")) {
@@ -340,7 +400,7 @@ namespace wind {
 				return unary();
 			}
 
-			Expression* unary() { 
+			Node* unary() { 
 				if (isEqual(Token::Operator, "-")) {
           auto unaryEx = new UnaryOperation();
 					unaryEx->type = UnaryOperation::NEGATE;
@@ -357,14 +417,14 @@ namespace wind {
 				return identifier();
 			}
 
-			Expression* identifier() {
+			Node* identifier() {
 				if (isType(Token::Word))
           return new Identifier(std::move(get(-1).value));
 				
 				return value();
 			}
 
-			Expression* value() { 
+			Node* value() { 
 				auto value = new Value();
         value->value = get(0).value;
 
@@ -383,9 +443,8 @@ namespace wind {
 					return value;
 				}
 
-				shift();
+				shift(1);
 				push("Syntax Error: Unknown value type");
-				delete value;
 				return nullptr;
 			}
 		}; 
@@ -397,11 +456,13 @@ namespace wind {
     virtual void compile(wdlang::Identifier*) = 0;
     virtual void compile(wdlang::UnaryOperation*) = 0;
     virtual void compile(wdlang::BinaryOperation*) = 0;
+    virtual void compile(wdlang::AssignStatement*) = 0;
+    virtual void compile(wdlang::VariableStatement*) = 0;
 	};
 
 	namespace wdlang {
     template <typename Derived>
-    void ExpressionCRTP<Derived>::execute(LangImpl* executor) {
+    void NodeCRTP<Derived>::execute(LangImpl* executor) {
 			executor->compile(static_cast<Derived*>(this));
     }
 	}
