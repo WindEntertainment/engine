@@ -19,7 +19,7 @@ namespace wind::dom {
 
     const unsigned int id;
     std::vector<Ptr> children;
-    std::shared_ptr<UIElement> parent = nullptr;
+    Ptr parent = nullptr;
 
   protected:
   };

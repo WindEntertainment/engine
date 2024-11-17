@@ -19,7 +19,7 @@ namespace wind::dom::shadow {
     const unsigned int id;
     static unsigned int nextId;
     std::vector<Ptr> children;
-    std::shared_ptr<UIElement> parent = nullptr;
+    Ptr parent = nullptr;
 
   protected:
   };
