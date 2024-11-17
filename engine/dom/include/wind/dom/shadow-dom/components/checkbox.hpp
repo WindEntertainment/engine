@@ -12,7 +12,6 @@ namespace wind::dom::shadow {
     DEEP_COPY(Checkbox, attributes::Checkbox);
     GET_PTR();
     COMPARE(Checkbox);
-
-    attributes::Checkbox attributes = attributes::defaultCheckboxAttributes;
+    ATTRIBUTES(Checkbox, defaultCheckboxAttributes);
   };
 } // namespace wind::dom::shadow

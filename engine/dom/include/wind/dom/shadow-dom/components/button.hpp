@@ -11,7 +11,6 @@ namespace wind::dom::shadow {
     DEEP_COPY(Button, attributes::Button);
     GET_PTR();
     COMPARE(Button);
-
-    attributes::Button attributes = attributes::defaultButtonAttributes;
+    ATTRIBUTES(Button, defaultButtonAttributes);
   };
 } // namespace wind::dom::shadow

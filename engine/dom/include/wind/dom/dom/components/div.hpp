@@ -8,11 +8,10 @@ namespace wind::dom {
     Div(unsigned int id, attributes::Div attributes);
 
     GET_PTR();
+    ATTRIBUTES(Div, defaultDivAttributes);
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
     void reset() override;
-
-    attributes::Div attributes = attributes::defaultDivAttributes;
   };
 } // namespace wind::dom

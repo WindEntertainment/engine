@@ -11,7 +11,6 @@ namespace wind::dom::shadow {
     DEEP_COPY(Input, attributes::Input);
     GET_PTR();
     COMPARE(Input);
-
-    attributes::Input attributes = attributes::defaultInputAttributes;
+    ATTRIBUTES(Input, defaultInputAttributes);
   };
 } // namespace wind::dom::shadow

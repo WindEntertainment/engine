@@ -11,7 +11,6 @@ namespace wind::dom::shadow {
     DEEP_COPY(Image, attributes::Image);
     GET_PTR();
     COMPARE(Image);
-
-    attributes::Image attributes = attributes::defaultImageAttributes;
+    ATTRIBUTES(Image, defaultImageAttributes);
   };
 } // namespace wind::dom::shadow

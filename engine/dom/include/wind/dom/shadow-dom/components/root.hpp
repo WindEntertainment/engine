@@ -11,6 +11,7 @@ namespace wind::dom::shadow {
     DEEP_COPY(Root, attributes::Root);
     GET_PTR();
     COMPARE(Root);
+    ATTRIBUTES(Root, defaultRootAttributes);
 
     UIElement::Ptr
     findElementById(const UIElement::Ptr& root, const unsigned int& id) {
@@ -28,7 +29,5 @@ namespace wind::dom::shadow {
 
       return nullptr;
     }
-
-    attributes::Root attributes = attributes::defaultRootAttributes;
   };
 } // namespace wind::dom::shadow

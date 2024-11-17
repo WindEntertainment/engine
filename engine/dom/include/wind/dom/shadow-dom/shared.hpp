@@ -6,6 +6,13 @@
 #include "wind/dom/utils/index.hpp"
 
 namespace wind::dom::shadow {
+#define ATTRIBUTES(attributesName, defaultAttributesName)                      \
+  attributes::attributesName attributes = attributes::defaultAttributesName;   \
+  attributes::attributesName hoverAttributes =                                 \
+    attributes::defaultAttributesName;                                         \
+  attributes::attributesName clickAttributes =                                 \
+    attributes::defaultAttributesName;
+
 #define COMPARE(className)                                                     \
   bool operator==(UIElement& elementReference) override {                      \
     className* element = dynamic_cast<className*>(&elementReference);          \

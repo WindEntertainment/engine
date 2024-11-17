@@ -11,7 +11,6 @@ namespace wind::dom::shadow {
     DEEP_COPY(Div, attributes::Div);
     GET_PTR();
     COMPARE(Div);
-
-    attributes::Div attributes = attributes::defaultDivAttributes;
+    ATTRIBUTES(Div, defaultDivAttributes);
   };
 } // namespace wind::dom::shadow

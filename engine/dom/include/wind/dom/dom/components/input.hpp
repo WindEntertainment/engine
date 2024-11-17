@@ -9,11 +9,10 @@ namespace wind::dom {
     Input(unsigned int id, attributes::Input attributes);
 
     GET_PTR();
+    ATTRIBUTES(Input, defaultInputAttributes);
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
     void reset() override;
-
-    attributes::Input attributes = attributes::defaultInputAttributes;
   };
 } // namespace wind::dom

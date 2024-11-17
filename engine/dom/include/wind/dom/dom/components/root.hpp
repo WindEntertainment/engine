@@ -5,9 +5,10 @@
 namespace wind::dom {
   class Root : public UIElement, public std::enable_shared_from_this<Root> {
   public:
-    GET_PTR();
-
     Root(unsigned int id, attributes::Root attributes);
+
+    GET_PTR();
+    ATTRIBUTES(Root, defaultRootAttributes);
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
@@ -29,7 +30,5 @@ namespace wind::dom {
 
       return nullptr;
     }
-
-    attributes::Root attributes = attributes::defaultRootAttributes;
   };
 } // namespace wind::dom

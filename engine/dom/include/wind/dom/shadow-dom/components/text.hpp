@@ -11,7 +11,6 @@ namespace wind::dom::shadow {
     DEEP_COPY(Text, attributes::Text);
     GET_PTR();
     COMPARE(Text);
-
-    attributes::Text attributes = attributes::defaultTextAttributes;
+    ATTRIBUTES(Text, defaultTextAttributes);
   };
 } // namespace wind::dom::shadow

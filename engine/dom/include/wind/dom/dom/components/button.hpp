@@ -8,11 +8,10 @@ namespace wind::dom {
     Button(unsigned int id, attributes::Button attributes);
 
     GET_PTR();
+    ATTRIBUTES(Button, defaultButtonAttributes);
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
     void reset() override;
-
-    attributes::Button attributes = attributes::defaultButtonAttributes;
   };
 } // namespace wind::dom

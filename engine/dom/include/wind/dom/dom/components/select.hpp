@@ -8,12 +8,11 @@ namespace wind::dom {
     Select(unsigned int id, attributes::Select attributes);
 
     GET_PTR();
+    ATTRIBUTES(Select, defaultSelectAttributes);
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
     void reset() override;
-
-    attributes::Select attributes = attributes::defaultSelectAttributes;
   };
 
 } // namespace wind::dom
