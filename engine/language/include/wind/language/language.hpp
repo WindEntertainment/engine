@@ -75,7 +75,41 @@ namespace wind {
 			std::string name;
 			Node* value;
 		};
+
+		struct ClassMember : public NodeCRTP<ClassMember> {
+			enum AccessModifier {
+				Private,
+				Public
+			};
+
+			AccessModifier access;
+			Node* member;
+		};
+
+		struct ClassStatement : public NodeCRTP<ClassStatement> {
+			std::string name;
+			std::string parent;
+			std::list<std::string> interfaces;
+			std::list<ClassMember*> members;
+		};
+
+		struct FunctionArgumentStatement : public NodeCRTP<FunctionArgumentStatement> {
+			std::string name;
+			std::string type;
+			Node* defaultValue;
+		};
+
+		struct FunctionStatement : public NodeCRTP<FunctionStatement> {
+			std::string type;
+			std::string name;
+			std::list<FunctionArgumentStatement*> args;
+			std::list<Node*> body;
+		};
 	
+		struct ReturnStatement : public NodeCRTP<ReturnStatement> {
+			Node* value;
+		};
+
 		class AST {
 			using Token = Tokenizer::Token;
     public:
@@ -105,13 +139,22 @@ namespace wind {
 			std::vector<Token> tokens;
 			Tokenizer::TokenStream& tokenStream;
 
-			int cPos = 0;
+			int currentPosition = 0;
+
+			enum class Scope {
+				Global,
+				InNamespace,
+				InClass,
+				InFunction
+			};
+
+			Scope currentScope;
 
 			//===========================================//
 			// Utils
 
 			Token& get(unsigned int relativePosition = 0) {
-        int pos = cPos + relativePosition;
+        int pos = currentPosition + relativePosition;
 
 				while (pos >= tokens.size()) {
           auto token = tokenStream.get();
@@ -130,7 +173,7 @@ namespace wind {
 			}
 
 			Token& shift(unsigned int step = 1) {
-				cPos += step;
+				currentPosition += step;
         return get(0);
 			}
 
@@ -186,12 +229,95 @@ namespace wind {
 
 			void parse() {
 				while (get(0).type != Token::T_EOF) {
+					currentScope = Scope::Global;
 					ast.emplace_back(statement());
 				}
 			}
 
-			Node* statement() {
-				return variable();
+			Node* statement() { 
+				return classS();
+			}
+
+			Node* classS() { 
+				if (isEqual(Token::Word, "class")) {
+					
+					except(Token::Word);
+          auto name = get(-1).value;
+
+          std::string parent = "";
+					if (isEqual(Token::Word, "extends")) {
+            except(Token::Word);
+						parent = get(-1).value;
+					}
+
+					std::list<std::string> interfaces = {};
+          if (isEqual(Token::Word, "implements")) {
+						if (get().type != Token::Word) {
+              push("Syntax Error: Excepted interface to implements. Unexcepted symbol. ");
+							return nullptr;
+						}
+
+						do {
+              interfaces.emplace_back(get().value);
+
+              shift();
+              if (!isEqual(Token::Operator, ","))
+								break;
+
+						} while (get().type == Token::Word);                            
+					}
+
+					currentScope = Scope::InClass;
+					
+					std::list<ClassMember*> members = {};
+					ClassMember::AccessModifier currentAccess = ClassMember::Private;
+
+					except(Token::Operator, "{");
+					while (!isEqual(Token::Operator, "}")) {
+						
+						if (isEqual(Token::Word, "public")) {
+							except(Token::Operator, ":");
+							currentAccess = ClassMember::Public;
+							continue;
+						}
+
+						if (isEqual(Token::Word, "private")) {
+							except(Token::Operator, ":");
+							currentAccess = ClassMember::Private;
+							continue;
+						}
+
+						auto member = new ClassMember();
+						member->access = currentAccess;
+						member->member = statement();
+
+						if (!member->member)
+							continue;
+
+						members.emplace_back(member);
+					}
+
+					currentScope = Scope::Global;
+
+					auto statement = new ClassStatement();
+					statement->name = name;
+					statement->parent = parent;
+					statement->interfaces = interfaces;
+					statement->members = members;
+
+					return statement;
+				}
+
+				if (
+					currentScope == Scope::InClass ||
+					currentScope == Scope::InFunction
+				) {
+          return variable();
+				}
+
+				shift();
+				push("Syntax Error: In global scope may be only class defination statements");
+				return nullptr;
 			}
 
 			Node* variable() { 
@@ -218,7 +344,129 @@ namespace wind {
 					return statement;
 				}
 
+				return function();
+			}
+
+			Node* function() { 
+				if (
+					get(0).type == Token::Word &&
+					get(1).type == Token::Word &&
+					get(2).type == Token::Operator &&
+					get(2).value == "("
+				) {
+					auto type = consume().value;
+					auto name = consume().value;
+
+					std::list<FunctionArgumentStatement*> args = {};
+					bool require = false;
+					bool first = true;
+
+          except(Token::Operator, "(");
+					while (!isEqual(Token::Operator, ")")) {
+						if (get(0).type == Token::T_EOF) {
+							push("Syntax Error: Unexcepted end of file");
+							return nullptr;	
+						}
+
+						if (!first)
+							except(Token::Operator, ",");
+						first = false;
+
+						auto arg = functionArg(require);
+
+						if (!arg)
+							return nullptr;
+						
+						args.emplace_back(arg);
+					}
+
+					std::list<Node*> body = {};
+
+					if (isEqual(Token::Operator, "->")) {
+						auto returnS = new ReturnStatement();
+						returnS->value = expression();
+            body.emplace_back(returnS);
+					}
+					else {
+						except(Token::Operator, "{");
+						while (!isEqual(Token::Operator, "}")) {
+							if (get(0).type == Token::T_EOF) {
+								push("Syntax Error: Unexcepted end of file");
+								return nullptr;	
+							}
+
+							currentScope = Scope::InFunction;
+							auto part = statement();
+
+							if (!part) 
+								continue;
+
+							body.emplace_back(part);
+						}
+						
+						currentScope = Scope::InClass;
+					}
+
+					auto statement = new FunctionStatement();
+					statement->name = name;
+					statement->type = type;
+					statement->args = args;
+					statement->body = body;
+
+					return statement;
+				}
+
+				if (currentScope == Scope::InFunction) {
+					return returnS();
+				}
+
+				shift();
+				push("Syntax Error: In class scope may be only member defination statements");
+				return nullptr;
+			}
+	
+			Node* returnS() {
+				if (isEqual(Token::Word, "return")) {
+					Node* result = nullptr;
+					if (!isEqual(Token::Operator, ";")) 
+						result = expression();
+
+					auto statement = new ReturnStatement();
+					statement->value = result;
+
+					return statement;
+				}
+
 				return assign();
+			}
+
+			FunctionArgumentStatement* functionArg(bool& requireDefaultParam) {
+        if (isType(Token::Word)) {
+					auto name = get(-1).value;
+          except(Token::Operator, ":");
+					except(Token::Word);
+          auto type = get(-1).value;
+					Node* value = nullptr;
+
+					if (requireDefaultParam) 
+            except(Token::Operator, "=");
+					else if (isEqual(Token::Operator, "="))
+						requireDefaultParam = true;
+					
+					if (requireDefaultParam)
+						value = expression();
+
+					auto statement = new FunctionArgumentStatement();
+					statement->defaultValue = value;
+					statement->name = name;
+					statement->type = type;
+
+					return statement;
+				}
+
+				shift(1);
+        push("Syntax Error: Excepted parameter name. Unexcepted symbol.");
+				return nullptr;
 			}
 
 			Node* assign() { 
@@ -233,6 +481,7 @@ namespace wind {
 					return statement;
 				}
 
+				shift();
 				push("Syntax error: Unexcepted symbol");
 				return nullptr;
 			}
@@ -458,6 +707,11 @@ namespace wind {
     virtual void compile(wdlang::BinaryOperation*) = 0;
     virtual void compile(wdlang::AssignStatement*) = 0;
     virtual void compile(wdlang::VariableStatement*) = 0;
+    virtual void compile(wdlang::ClassMember*) = 0;
+    virtual void compile(wdlang::ClassStatement*) = 0;
+    virtual void compile(wdlang::FunctionArgumentStatement*) = 0;
+    virtual void compile(wdlang::FunctionStatement*) = 0;
+    virtual void compile(wdlang::ReturnStatement*) = 0;
 	};
 
 	namespace wdlang {

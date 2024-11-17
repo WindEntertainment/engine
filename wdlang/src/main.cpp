@@ -2,6 +2,17 @@
 
 #undef main
 
+static std::string join(const std::list<std::string>& lst, const std::string& delimiter) {
+  std::ostringstream oss;
+  for (auto it = lst.begin(); it != lst.end(); ++it) {
+    oss << *it;
+    if (std::next(it) != lst.end()) {
+      oss << delimiter;
+    }
+  }
+  return oss.str();
+}
+
 namespace wind {
   namespace wdlang {
     class Wdl2Cpp : public LangImpl {
@@ -34,6 +45,41 @@ namespace wind {
         spdlog::info("variable-statement: (name: {}, type: {}, mutable: {})", statement->name, statement->type, statement->isMutable);
         statement->value->execute(this);
       }
+
+      void compile(ClassMember* member) override { 
+        spdlog::info("class-member: {}", (int)member->access);
+        member->member->execute(this);
+      }
+
+      void compile(ClassStatement* statement) override {  
+        auto interfaces = join(statement->interfaces, ",");
+        spdlog::info("class-statement: (name: {}, extends: {}, interfaces: [{}])", statement->name, statement->parent, interfaces);
+        
+        for (auto member : statement->members)
+          member->execute(this);
+      }
+
+      void compile(FunctionArgumentStatement* arg) override {
+        spdlog::info("function-argument: (name: {}, type: {}, hasDefaultValue: {})", arg->name, arg->type, (arg->defaultValue != nullptr));
+        if (arg->defaultValue)
+          arg->defaultValue->execute(this);
+      }
+
+      void compile(FunctionStatement* statement) override {
+        spdlog::info("function-statement: (name: {}, return-type: {})", statement->name, statement->type);
+        
+        for (auto arg : statement->args)
+          arg->execute(this);
+
+        for (auto part : statement->body)
+          part->execute(this);
+      }
+
+      void compile(ReturnStatement* statement) override {
+        spdlog::info("return-statement");
+        if (statement->value)
+          statement->value->execute(this);
+      }
     };
   }
 }
@@ -41,9 +87,25 @@ namespace wind {
 int main() {
   wind::wdlang::Tokenizer t(
     R"(
-      let x: i32 = 0
-      x = (x - 1) * 2
-      let mut y: i8 = x * (x - x / 2)
+      class Player extends Container implements A, B {
+      public:
+        let mut x: i32 = 3
+
+        i32 add(a: i32, b: i32, c: i32 = 5) -> a + b + c
+
+        void update() {
+          let y: i8 = 255
+          let z: f32 = 100
+
+          x = x * (y - z) / -(100 + x)
+        }
+      private:
+        let canMove: bool = false
+
+        string getName() {
+          return "NeutrinoZh"
+        }
+      }
     )"
   );
 
