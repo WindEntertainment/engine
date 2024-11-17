@@ -10,10 +10,11 @@ namespace wind::dom {
     Checkbox(unsigned int id, attributes::Checkbox attributes);
 
     GET_PTR();
-    ATTRIBUTES(Checkbox, defaultCheckboxAttributes);
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
     void reset() override;
+
+    attributes::Checkbox attributes = attributes::defaultCheckboxAttributes;
   };
 } // namespace wind::dom

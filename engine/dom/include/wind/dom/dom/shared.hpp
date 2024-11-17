@@ -6,13 +6,6 @@
 #include "wind/dom/utils/index.hpp"
 
 namespace wind::dom {
-#define ATTRIBUTES(attributesName, defaultAttributesName)                      \
-  attributes::attributesName attributes = attributes::defaultAttributesName;   \
-  attributes::attributesName hoverAttributes =                                 \
-    attributes::defaultAttributesName;                                         \
-  attributes::attributesName clickAttributes =                                 \
-    attributes::defaultAttributesName;
-
 #define GET_PTR()                                                              \
   Ptr getPtr() { return shared_from_this(); }
 } // namespace wind::dom

@@ -8,11 +8,12 @@ namespace wind::dom {
     Text(unsigned int id, attributes::Text attributes);
 
     GET_PTR();
-    ATTRIBUTES(Text, defaultTextAttributes);
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
     void reset() override;
+
+    attributes::Text attributes = attributes::defaultTextAttributes;
   };
 
 } // namespace wind::dom

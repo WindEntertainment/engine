@@ -8,7 +8,6 @@ namespace wind::dom {
     Root(unsigned int id, attributes::Root attributes);
 
     GET_PTR();
-    ATTRIBUTES(Root, defaultRootAttributes);
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
@@ -30,5 +29,7 @@ namespace wind::dom {
 
       return nullptr;
     }
+
+    attributes::Root attributes = attributes::defaultRootAttributes;
   };
 } // namespace wind::dom

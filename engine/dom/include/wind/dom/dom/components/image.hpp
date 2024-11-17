@@ -8,10 +8,11 @@ namespace wind::dom {
     Image(unsigned int id, attributes::Image attributes);
 
     GET_PTR();
-    ATTRIBUTES(Image, defaultImageAttributes);
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
     void reset() override;
+
+    attributes::Image attributes = attributes::defaultImageAttributes;
   };
 } // namespace wind::dom
