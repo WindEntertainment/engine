@@ -37,7 +37,7 @@ namespace editor {
 
       root = wind::dom::init(window->size());
       shadowRoot = wind::dom::shadow::init(window->size());
-      auto prevShadowRoot2 = shadowRoot->deepCopy();
+      auto prevShadowRoot2 = wind::share(shadowRoot->deepCopy());
       std::shared_ptr<wind::dom::shadow::Root> qwe =
         std::dynamic_pointer_cast<wind::dom::shadow::Root>(prevShadowRoot2);
       if (qwe) {
@@ -46,11 +46,11 @@ namespace editor {
 
       auto button2 =
         wind::dom::shadow::createElement<wind::dom::shadow::Button>();
-      button2->attributes.position = {100, 100};
+      button2->attributes->position = {100, 100};
 
       auto button =
         wind::dom::shadow::createElement<wind::dom::shadow::Button>();
-      button->attributes.onClick =
+      button->attributes->onClick =
         [&button, &shadowRoot = shadowRoot, button2]() mutable {
           spdlog::info(shadowRoot->children.size());
           if (shadowRoot->children.size() == 1) {
@@ -59,8 +59,8 @@ namespace editor {
             shadowRoot->removeChild(button2->id);
           }
         };
-      button->attributes.onHover = [button = button]() mutable {
-        button->attributes.backgroundColor = glm::vec4{1.f, 0.f, 1.f, 1.f};
+      button->attributes->onHover = [button = button]() mutable {
+        button->attributes->backgroundColor = glm::vec4{1.f, 0.f, 1.f, 1.f};
       };
 
       shadowRoot->appendChild(button);
@@ -84,7 +84,7 @@ namespace editor {
 
       wind::dom::shadow::fromDiff(root, diff);
 
-      auto prevShadowRoot2 = shadowRoot->deepCopy();
+      auto prevShadowRoot2 = wind::share(shadowRoot->deepCopy());
       std::shared_ptr<wind::dom::shadow::Root> qwe =
         std::dynamic_pointer_cast<wind::dom::shadow::Root>(prevShadowRoot2);
       if (qwe) {

@@ -18,14 +18,22 @@ namespace wind::dom::shadow {
     className* element = dynamic_cast<className*>(&elementReference);          \
     if (!element)                                                              \
       return false;                                                            \
-    return attributes == element->attributes;                                  \
+    return this->attributes == element->attributes;                            \
   }
 
+  // #define GET_PTR(className)                                                     \
+//   std::shared_ptr<className> getPtr() { return shared_from_this(); }
+
 #define GET_PTR()                                                              \
-  Ptr getPtr() { return shared_from_this(); }
+  std::shared_ptr<UIElement> getPtr() { return shared_from_this(); }
+
+#define TO_REAL(className)                                                     \
+  dom::UIElement::std::shared_ptr<UIElement> toReal() {                        \
+    return wind::share(wind::dom::className(this->id, this->attributes));      \
+  };
 
 #define DEEP_COPY(className, attributesName)                                   \
-  Ptr deepCopy() override {                                                    \
+  std::shared_ptr<UIElement> deepCopy() override {                             \
     auto element = wind::share(className(this->id));                           \
     element->attributes = attributesName(this->attributes);                    \
     for (auto&& child : this->children) {                                      \

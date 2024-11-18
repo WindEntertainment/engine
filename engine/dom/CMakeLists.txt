@@ -30,16 +30,16 @@ set(HEADERS
     ./include/wind/dom/shadow-dom/diff.hpp
     ./include/wind/dom/shadow-dom/index.hpp
     ./include/wind/dom/shadow-dom/shared.hpp
-    ./include/wind/dom/shadow-dom/components/root.hpp
     ./include/wind/dom/shadow-dom/components/element.hpp
     ./include/wind/dom/shadow-dom/components/button.hpp
-    ./include/wind/dom/shadow-dom/components/image.hpp
-    ./include/wind/dom/shadow-dom/components/text.hpp
-    ./include/wind/dom/shadow-dom/components/input.hpp
-    ./include/wind/dom/shadow-dom/components/checkbox.hpp
-    ./include/wind/dom/shadow-dom/components/div.hpp
-    ./include/wind/dom/shadow-dom/components/select.hpp
-    ./include/wind/dom/shadow-dom/components/index.hpp
+    ./include/wind/dom/shadow-dom/components/root.hpp
+    # ./include/wind/dom/shadow-dom/components/image.hpp
+    # ./include/wind/dom/shadow-dom/components/text.hpp
+    # ./include/wind/dom/shadow-dom/components/input.hpp
+    # ./include/wind/dom/shadow-dom/components/checkbox.hpp
+    # ./include/wind/dom/shadow-dom/components/div.hpp
+    # ./include/wind/dom/shadow-dom/components/select.hpp
+    # ./include/wind/dom/shadow-dom/components/index.hpp
 
     ./include/wind/dom/utils/index.hpp
     ./include/wind/dom/utils/utils.hpp
@@ -62,12 +62,12 @@ set(SOURCES
     ./src/shadow-dom/components/root.cpp
     ./src/shadow-dom/components/element.cpp
     ./src/shadow-dom/components/button.cpp
-    ./src/shadow-dom/components/image.cpp
-    ./src/shadow-dom/components/text.cpp
-    ./src/shadow-dom/components/input.cpp
-    ./src/shadow-dom/components/checkbox.cpp
-    ./src/shadow-dom/components/div.cpp
-    ./src/shadow-dom/components/select.cpp
+    # ./src/shadow-dom/components/image.cpp
+    # ./src/shadow-dom/components/text.cpp
+    # ./src/shadow-dom/components/input.cpp
+    # ./src/shadow-dom/components/checkbox.cpp
+    # ./src/shadow-dom/components/div.cpp
+    # ./src/shadow-dom/components/select.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})

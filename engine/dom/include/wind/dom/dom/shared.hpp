@@ -6,6 +6,6 @@
 #include "wind/dom/utils/index.hpp"
 
 namespace wind::dom {
-#define GET_PTR()                                                              \
+#define GET_ELEMENT_PTR()                                                      \
   Ptr getPtr() { return shared_from_this(); }
 } // namespace wind::dom

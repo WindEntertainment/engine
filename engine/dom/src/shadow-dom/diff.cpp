@@ -6,148 +6,155 @@
 
 namespace wind::dom::shadow {
 
-  class DiffSystemUtils {
-  public:
-    static wind::dom::UIElement::Ptr
-    createElementFromShadow(std::shared_ptr<wind::dom::shadow::Root> uiElement
-    ) {
-      if (!uiElement) {
-        return nullptr;
-      }
-      return wind::share(wind::dom::Root(uiElement->id, uiElement->attributes));
-    };
+  // class DiffSystemUtils {
+  // public:
+  //   static wind::dom::UIElement::Ptr
+  //   createElementFromShadow(std::shared_ptr<wind::dom::shadow::Root>
+  //   uiElement ) {
+  //     if (!uiElement) {
+  //       return nullptr;
+  //     }
+  //     return wind::share(wind::dom::Root(uiElement->id,
+  //     uiElement->attributes));
+  //   };
 
-    static wind::dom::UIElement::Ptr
-    createElementFromShadow(std::shared_ptr<wind::dom::shadow::Button> uiElement
-    ) {
-      if (!uiElement) {
-        return nullptr;
-      }
-      return wind::share(wind::dom::Button(uiElement->id, uiElement->attributes)
-      );
-    };
+  //   static wind::dom::UIElement::Ptr
+  //   createElementFromShadow(std::shared_ptr<wind::dom::shadow::Button>
+  //   uiElement ) {
+  //     if (!uiElement) {
+  //       return nullptr;
+  //     }
+  //     return wind::share(wind::dom::Button(uiElement->id,
+  //     uiElement->attributes)
+  //     );
+  //   };
 
-    static wind::dom::UIElement::Ptr
-    createElementFromShadow(std::shared_ptr<wind::dom::shadow::Image> uiElement
-    ) {
-      if (!uiElement) {
-        return nullptr;
-      }
-      return wind::share(wind::dom::Image(uiElement->id, uiElement->attributes)
-      );
-    };
+  //   static wind::dom::UIElement::Ptr
+  //   createElementFromShadow(std::shared_ptr<wind::dom::shadow::Image>
+  //   uiElement ) {
+  //     if (!uiElement) {
+  //       return nullptr;
+  //     }
+  //     return wind::share(wind::dom::Image(uiElement->id,
+  //     uiElement->attributes)
+  //     );
+  //   };
 
-    static wind::dom::UIElement::Ptr
-    createElementFromShadow(std::shared_ptr<wind::dom::shadow::Text> uiElement
-    ) {
-      if (!uiElement) {
-        return nullptr;
-      }
-      return wind::share(wind::dom::Text(uiElement->id, uiElement->attributes));
-    };
+  //   static wind::dom::UIElement::Ptr
+  //   createElementFromShadow(std::shared_ptr<wind::dom::shadow::Text>
+  //   uiElement ) {
+  //     if (!uiElement) {
+  //       return nullptr;
+  //     }
+  //     return wind::share(wind::dom::Text(uiElement->id,
+  //     uiElement->attributes));
+  //   };
 
-    static wind::dom::UIElement::Ptr
-    createElementFromShadow(std::shared_ptr<wind::dom::shadow::Input> uiElement
-    ) {
-      if (!uiElement) {
-        return nullptr;
-      }
-      return wind::share(wind::dom::Input(uiElement->id, uiElement->attributes)
-      );
-    };
+  //   static wind::dom::UIElement::Ptr
+  //   createElementFromShadow(std::shared_ptr<wind::dom::shadow::Input>
+  //   uiElement ) {
+  //     if (!uiElement) {
+  //       return nullptr;
+  //     }
+  //     return wind::share(wind::dom::Input(uiElement->id,
+  //     uiElement->attributes)
+  //     );
+  //   };
 
-    static wind::dom::UIElement::Ptr createElementFromShadow(
-      std::shared_ptr<wind::dom::shadow::Checkbox> uiElement
-    ) {
-      if (!uiElement) {
-        return nullptr;
-      }
-      return wind::share(
-        wind::dom::Checkbox(uiElement->id, uiElement->attributes)
-      );
-    };
+  //   static wind::dom::UIElement::Ptr createElementFromShadow(
+  //     std::shared_ptr<wind::dom::shadow::Checkbox> uiElement
+  //   ) {
+  //     if (!uiElement) {
+  //       return nullptr;
+  //     }
+  //     return wind::share(
+  //       wind::dom::Checkbox(uiElement->id, uiElement->attributes)
+  //     );
+  //   };
 
-    static wind::dom::UIElement::Ptr
-    createElementFromShadow(std::shared_ptr<wind::dom::shadow::Div> uiElement) {
-      if (!uiElement) {
-        return nullptr;
-      }
-      return wind::share(wind::dom::Div(uiElement->id, uiElement->attributes));
-    };
+  //   static wind::dom::UIElement::Ptr
+  //   createElementFromShadow(std::shared_ptr<wind::dom::shadow::Div>
+  //   uiElement) {
+  //     if (!uiElement) {
+  //       return nullptr;
+  //     }
+  //     return wind::share(wind::dom::Div(uiElement->id,
+  //     uiElement->attributes));
+  //   };
 
-    static void updateElementFromShadow(
-      std::shared_ptr<wind::dom::shadow::Root> uiElement,
-      std::shared_ptr<wind::dom::Root> domElement
-    ) {
-      if (!uiElement || !domElement) {
-        return;
-      }
-      domElement->attributes = uiElement->attributes;
-    };
-    static void updateElementFromShadow(
-      std::shared_ptr<wind::dom::shadow::Button> uiElement,
-      std::shared_ptr<wind::dom::Button> domElement
-    ) {
-      if (!uiElement || !domElement) {
-        return;
-      }
-      domElement->attributes = uiElement->attributes;
-    };
-    static void updateElementFromShadow(
-      std::shared_ptr<wind::dom::shadow::Image> uiElement,
-      std::shared_ptr<wind::dom::Image> domElement
-    ) {
-      if (!uiElement || !domElement) {
-        return;
-      }
-      domElement->attributes = uiElement->attributes;
-    };
-    static void updateElementFromShadow(
-      std::shared_ptr<wind::dom::shadow::Text> uiElement,
-      std::shared_ptr<wind::dom::Text> domElement
-    ) {
-      if (!uiElement || !domElement) {
-        return;
-      }
-      domElement->attributes = uiElement->attributes;
-    };
-    static void updateElementFromShadow(
-      std::shared_ptr<wind::dom::shadow::Input> uiElement,
-      std::shared_ptr<wind::dom::Input> domElement
-    ) {
-      if (!uiElement || !domElement) {
-        return;
-      }
-      domElement->attributes = uiElement->attributes;
-    };
-    static void updateElementFromShadow(
-      std::shared_ptr<wind::dom::shadow::Checkbox> uiElement,
-      std::shared_ptr<wind::dom::Checkbox> domElement
-    ) {
-      if (!uiElement || !domElement) {
-        return;
-      }
-      domElement->attributes = uiElement->attributes;
-    };
-    static void updateElementFromShadow(
-      std::shared_ptr<wind::dom::shadow::Div> uiElement,
-      std::shared_ptr<wind::dom::Div> domElement
-    ) {
-      if (!uiElement || !domElement) {
-        return;
-      }
-      domElement->attributes = uiElement->attributes;
-    };
-    static void updateElementFromShadow(
-      std::shared_ptr<wind::dom::shadow::Select> uiElement,
-      std::shared_ptr<wind::dom::Select> domElement
-    ) {
-      if (!uiElement || !domElement) {
-        return;
-      }
-      domElement->attributes = uiElement->attributes;
-    };
-  };
+  //   static void updateElementFromShadow(
+  //     std::shared_ptr<wind::dom::shadow::Root> uiElement,
+  //     std::shared_ptr<wind::dom::Root> domElement
+  //   ) {
+  //     if (!uiElement || !domElement) {
+  //       return;
+  //     }
+  //     domElement->attributes = uiElement->attributes;
+  //   };
+  //   static void updateElementFromShadow(
+  //     std::shared_ptr<wind::dom::shadow::Button> uiElement,
+  //     std::shared_ptr<wind::dom::Button> domElement
+  //   ) {
+  //     if (!uiElement || !domElement) {
+  //       return;
+  //     }
+  //     domElement->attributes = uiElement->attributes;
+  //   };
+  //   static void updateElementFromShadow(
+  //     std::shared_ptr<wind::dom::shadow::Image> uiElement,
+  //     std::shared_ptr<wind::dom::Image> domElement
+  //   ) {
+  //     if (!uiElement || !domElement) {
+  //       return;
+  //     }
+  //     domElement->attributes = uiElement->attributes;
+  //   };
+  //   static void updateElementFromShadow(
+  //     std::shared_ptr<wind::dom::shadow::Text> uiElement,
+  //     std::shared_ptr<wind::dom::Text> domElement
+  //   ) {
+  //     if (!uiElement || !domElement) {
+  //       return;
+  //     }
+  //     domElement->attributes = uiElement->attributes;
+  //   };
+  //   static void updateElementFromShadow(
+  //     std::shared_ptr<wind::dom::shadow::Input> uiElement,
+  //     std::shared_ptr<wind::dom::Input> domElement
+  //   ) {
+  //     if (!uiElement || !domElement) {
+  //       return;
+  //     }
+  //     domElement->attributes = uiElement->attributes;
+  //   };
+  //   static void updateElementFromShadow(
+  //     std::shared_ptr<wind::dom::shadow::Checkbox> uiElement,
+  //     std::shared_ptr<wind::dom::Checkbox> domElement
+  //   ) {
+  //     if (!uiElement || !domElement) {
+  //       return;
+  //     }
+  //     domElement->attributes = uiElement->attributes;
+  //   };
+  //   static void updateElementFromShadow(
+  //     std::shared_ptr<wind::dom::shadow::Div> uiElement,
+  //     std::shared_ptr<wind::dom::Div> domElement
+  //   ) {
+  //     if (!uiElement || !domElement) {
+  //       return;
+  //     }
+  //     domElement->attributes = uiElement->attributes;
+  //   };
+  //   static void updateElementFromShadow(
+  //     std::shared_ptr<wind::dom::shadow::Select> uiElement,
+  //     std::shared_ptr<wind::dom::Select> domElement
+  //   ) {
+  //     if (!uiElement || !domElement) {
+  //       return;
+  //     }
+  //     domElement->attributes = uiElement->attributes;
+  //   };
+  // };
 
   void addDiffChildren(
     std::shared_ptr<wind::dom::shadow::UIElement> element,
@@ -417,12 +424,12 @@ namespace wind::dom::shadow {
       // if (!factory)
       //   continue;
 
-      wind::dom::UIElement::Ptr domElement =
-        DiffSystemUtils::createElementFromShadow(element);
-      if (!domElement)
-        continue;
-      // factory(element);
-      elementParent->appendChild(domElement);
+      // wind::dom::UIElement::Ptr domElement =
+      //   DiffSystemUtils::createElementFromShadow(element);
+      // if (!domElement)
+      //   continue;
+      // // factory(element);
+      // elementParent->appendChild(domElement);
     }
 
     for (auto&& element : diff.removed) {
@@ -452,7 +459,7 @@ namespace wind::dom::shadow {
       //   continue;
 
       // updateFactory(element, domElement);
-      DiffSystemUtils::updateElementFromShadow(element, domElement);
+      // DiffSystemUtils::updateElementFromShadow(element, domElement);
     }
 
     // for (auto&& replace : diff.replaced) {

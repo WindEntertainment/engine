@@ -3,14 +3,19 @@
 #include "element.hpp"
 
 namespace wind::dom::shadow {
-  class Image : public UIElement, public std::enable_shared_from_this<Image> {
+  class Image : public UIElementCRTP<Image, dom::Image, attributes::Image>,
+                public std::enable_shared_from_this<Image> {
   public:
     Image();
     Image(const unsigned int id);
 
-    DEEP_COPY(Image, attributes::Image);
-    GET_PTR();
-    COMPARE(Image);
-    ATTRIBUTES(Image, defaultImageAttributes);
+    // DEEP_COPY(Image, attributes::Image);
+    GET_PTR(Image);
+    // COMPARE(Image);
+    // ATTRIBUTES(Image, defaultImageAttributes);
+
+    // dom::UIElement::Ptr toReal() {};
+    // void updateReal(dom::UIElement::Ptr element) {};
+    // std::shared_ptr<attributes::Image> mergeAttributes();
   };
 } // namespace wind::dom::shadow

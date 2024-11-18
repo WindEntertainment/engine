@@ -5,14 +5,13 @@
 namespace wind::dom {
   class Button : public UIElement, public std::enable_shared_from_this<Button> {
   public:
-    Button(unsigned int id, attributes::Button attributes);
+    Button(unsigned int id, const attributes::Button& attributes);
 
-    GET_PTR();
+    GET_ELEMENT_PTR();
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
-    void reset() override;
 
-    attributes::Button attributes = attributes::defaultButtonAttributes;
+    std::shared_ptr<attributes::Button> attributes;
   };
 } // namespace wind::dom

@@ -6,9 +6,9 @@ namespace wind::dom::attributes {
   struct Div : public attributes::Base {
     bool tmp = {false};
 
-    bool compare(const attributes::Base& attributes) override {
-      const attributes::Div* attrs =
-        dynamic_cast<const attributes::Div*>(&attributes);
+    bool compare(const std::shared_ptr<attributes::Base> attributes) override {
+      const std::shared_ptr<attributes::Div> attrs =
+        std::dynamic_pointer_cast<attributes::Div>(attributes);
       if (!attrs) {
         return false;
       }

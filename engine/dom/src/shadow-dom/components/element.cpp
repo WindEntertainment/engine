@@ -6,18 +6,21 @@ namespace wind::dom::shadow {
   UIElement::UIElement() : id(nextId++) { children.reserve(3); }
   UIElement::UIElement(unsigned int id) : id(id) { children.reserve(3); }
 
-  void UIElement::appendChild(Ptr child) {
+  void UIElement::appendChild(std::shared_ptr<UIElement> child) {
     if (child) {
-      child->parent = this->getPtr();
+      // child->parent = this->getPtr();
       children.push_back(child);
       // child->root = root;
     }
   }
 
   void UIElement::removeChild(unsigned int childId) {
-    auto it = std::ranges::find_if(children, [&](const Ptr& item) {
-      return item->id == childId;
-    });
+    auto it = std::ranges::find_if(
+      children,
+      [&](const std::shared_ptr<UIElement>& item) {
+        return item->id == childId;
+      }
+    );
 
     if (it == children.end())
       return;

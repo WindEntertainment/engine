@@ -5,3 +5,10 @@ namespace wind::dom::shadow {
   Button::Button(const unsigned int id) : UIElement(id) {};
 
 } // namespace wind::dom::shadow
+
+// namespace wind::dom::shadow {
+//   Button::Button() : UIElementCRTP(attributes::defaultButtonAttributes) {};
+//   Button::Button(const unsigned int id)
+//       : UIElementCRTP(attributes::defaultButtonAttributes, id) {};
+
+// } // namespace wind::dom::shadow

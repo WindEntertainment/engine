@@ -1,5 +1,4 @@
 #pragma once
-#include "shared.hpp"
 #include "wind/dom/dom/components/index.hpp"
 
 namespace wind::dom {

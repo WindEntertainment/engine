@@ -5,10 +5,11 @@
 
 namespace wind::dom::shadow {
   struct Diff {
-    std::vector<UIElement::Ptr> removed;
-    std::vector<UIElement::Ptr> added;
-    std::vector<UIElement::Ptr> updated;
-    std::vector<std::pair<const unsigned int, UIElement::Ptr>> replaced;
+    std::vector<std::shared_ptr<UIElement>> removed;
+    std::vector<std::shared_ptr<UIElement>> added;
+    std::vector<std::shared_ptr<UIElement>> updated;
+    std::vector<std::pair<const unsigned int, std::shared_ptr<UIElement>>>
+      replaced;
   };
 
   void addDiffChildren(

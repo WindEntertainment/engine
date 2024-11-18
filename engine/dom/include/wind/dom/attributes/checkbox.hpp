@@ -8,9 +8,9 @@ namespace wind::dom::attributes {
 
     std::function<void()> onChange;
 
-    bool compare(const attributes::Base& attributes) override {
-      const attributes::Checkbox* attrs =
-        dynamic_cast<const attributes::Checkbox*>(&attributes);
+    bool compare(const std::shared_ptr<attributes::Base> attributes) override {
+      const std::shared_ptr<attributes::Checkbox> attrs =
+        std::dynamic_pointer_cast<attributes::Checkbox>(attributes);
       if (!attrs) {
         return false;
       }

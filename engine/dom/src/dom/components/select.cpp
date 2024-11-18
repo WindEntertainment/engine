@@ -1,13 +1,12 @@
 #include "wind/dom/dom/components/select.hpp"
 
 namespace wind::dom {
-  Select::Select(unsigned int id, attributes::Select attributes)
-      : UIElement(id), attributes(std::move(attributes)) {};
+  Select::Select(unsigned int id, const attributes::Select& attributes)
+      : UIElement(id),
+        attributes(std::make_shared<attributes::Select>(attributes)) {};
   void Select::render(wind::CommandBuffer& renderer) {
     std::cout << "I'm RichText";
   };
-
-  void Select::reset() { attributes = attributes::defaultSelectAttributes; };
 
   void Select::update() {};
 } // namespace wind::dom
