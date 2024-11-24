@@ -7,7 +7,7 @@ namespace wind::dom {
   public:
     Image(unsigned int id, attributes::Image attributes);
 
-    GET_PTR();
+    GET_REAL_PTR();
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;

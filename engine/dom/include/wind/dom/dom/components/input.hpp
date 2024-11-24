@@ -8,7 +8,7 @@ namespace wind::dom {
   public:
     Input(unsigned int id, attributes::Input attributes);
 
-    GET_PTR();
+    GET_REAL_PTR();
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;

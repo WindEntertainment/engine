@@ -1,6 +1,7 @@
 #include "wind/dom/shadow-dom/components/select.hpp"
 
 namespace wind::dom::shadow {
-  Select::Select() {};
-  Select::Select(const unsigned int id) : UIElement(id) {};
+  Select::Select() : UIElement(attributes::defaultSelectAttributes) {};
+  Select::Select(const unsigned int id)
+      : UIElement(attributes::defaultSelectAttributes, id) {};
 } // namespace wind::dom::shadow

@@ -13,7 +13,7 @@ namespace wind::dom {
     virtual Ptr getPtr() = 0;
     virtual void render(wind::CommandBuffer& renderer) = 0;
 
-    void appendChild(Ptr child);
+    void appendChild(Ptr child, Ptr parent);
     void display(wind::CommandBuffer& renderer);
     void removeChild(unsigned int childId);
 

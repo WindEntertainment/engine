@@ -1,6 +1,7 @@
 #include "wind/dom/shadow-dom/components/checkbox.hpp"
 
 namespace wind::dom::shadow {
-  Checkbox::Checkbox() {};
-  Checkbox::Checkbox(const unsigned int id) : UIElement(id) {};
+  Checkbox::Checkbox() : UIElement(attributes::defaultCheckboxAttributes) {};
+  Checkbox::Checkbox(const unsigned int id)
+      : UIElement(attributes::defaultCheckboxAttributes, id) {};
 } // namespace wind::dom::shadow

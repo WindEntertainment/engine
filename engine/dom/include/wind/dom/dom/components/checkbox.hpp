@@ -9,7 +9,7 @@ namespace wind::dom {
   public:
     Checkbox(unsigned int id, attributes::Checkbox attributes);
 
-    GET_PTR();
+    GET_REAL_PTR();
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;

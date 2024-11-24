@@ -7,7 +7,7 @@ namespace wind::dom {
   public:
     Button(unsigned int id, attributes::Button attributes);
 
-    GET_PTR();
+    GET_REAL_PTR();
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;

@@ -7,7 +7,7 @@ namespace wind::dom {
   public:
     Select(unsigned int id, attributes::Select attributes);
 
-    GET_PTR();
+    GET_REAL_PTR();
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;

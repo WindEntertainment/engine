@@ -21,8 +21,8 @@ namespace wind::dom::shadow {
     return attributes == element->attributes;                                  \
   }
 
-#define GET_PTR()                                                              \
-  Ptr getPtr() { return shared_from_this(); }
+#define GET_PTR(className)                                                     \
+  std::shared_ptr<className> getPtr() { return shared_from_this(); }
 
 #define DEEP_COPY(className, attributesName)                                   \
   Ptr deepCopy() override {                                                    \

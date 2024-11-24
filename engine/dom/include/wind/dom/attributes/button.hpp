@@ -4,6 +4,9 @@
 
 namespace wind::dom::attributes {
   struct Button : public attributes::Base {
+    // std::function<void(wind::dom::Button)> onClick = {};
+    // std::function<void(wind::dom::Button)> onHover = {};
+
     bool tmp = {false};
 
     bool compare(const attributes::Base& attributes) override {

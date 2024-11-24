@@ -7,7 +7,7 @@ namespace wind::dom {
   public:
     Text(unsigned int id, attributes::Text attributes);
 
-    GET_PTR();
+    GET_REAL_PTR();
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;

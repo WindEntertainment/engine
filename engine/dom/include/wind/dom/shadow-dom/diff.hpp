@@ -5,20 +5,17 @@
 
 namespace wind::dom::shadow {
   struct Diff {
-    std::vector<UIElement::Ptr> removed;
-    std::vector<UIElement::Ptr> added;
-    std::vector<UIElement::Ptr> updated;
-    std::vector<std::pair<const unsigned int, UIElement::Ptr>> replaced;
+    std::vector<Element> removed;
+    std::vector<Element> added;
+    std::vector<Element> updated;
+    std::vector<std::pair<const unsigned int, Element>> replaced;
   };
 
-  void addDiffChildren(
-    std::shared_ptr<wind::dom::shadow::UIElement> element,
-    Diff& diff
-  );
+  void addDiffChildren(const Element& element, Diff& diff);
 
   void getDiff(
-    std::shared_ptr<UIElement> prevElement,
-    std::shared_ptr<UIElement> newElement,
+    std::optional<Element> prevElement,
+    std::optional<Element> newElement,
     Diff& diff
   );
 
