@@ -10,7 +10,7 @@ namespace wind::dom {
 
     virtual void reset() {};
     virtual void update() = 0;
-    virtual Ptr getPtr() = 0;
+    // virtual Ptr getPtr() = 0;
     virtual void render(wind::CommandBuffer& renderer) = 0;
 
     void appendChild(Ptr child, Ptr parent);

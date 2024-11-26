@@ -7,7 +7,9 @@ namespace wind::dom {
   public:
     Div(unsigned int id, attributes::Div attributes);
 
-    GET_REAL_PTR();
+    GET_REAL_PTR(Div);
+
+    bool innerIsHovered = false;
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;

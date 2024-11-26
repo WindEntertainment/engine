@@ -7,7 +7,9 @@ namespace wind::dom {
   public:
     Text(unsigned int id, attributes::Text attributes);
 
-    GET_REAL_PTR();
+    GET_REAL_PTR(Text);
+
+    bool innerIsHovered = false;
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
@@ -15,5 +17,4 @@ namespace wind::dom {
 
     attributes::Text attributes = attributes::defaultTextAttributes;
   };
-
 } // namespace wind::dom

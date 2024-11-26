@@ -2,6 +2,7 @@
 #include "shared.hpp"
 #include "wind/dom/shadow-dom/components/index.hpp"
 #include "wind/dom/dom/components/index.hpp"
+#include "wind/dom/shadow-dom/shadow-dom.hpp"
 
 namespace wind::dom::shadow {
   struct Diff {

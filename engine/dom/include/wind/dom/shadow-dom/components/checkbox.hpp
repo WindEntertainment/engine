@@ -1,22 +1,39 @@
 #pragma once
 #include <wind/dom/shadow-dom/shared.hpp>
-#include "element.hpp"
+#include <wind/dom/shadow-dom/pool-manager.hpp>
 
 namespace wind::dom::shadow {
-  class Checkbox
-      : public UIElement<Checkbox, dom::Checkbox, attributes::Checkbox>,
-        public std::enable_shared_from_this<Checkbox> {
+  struct Checkbox : public std::enable_shared_from_this<Checkbox> {
   public:
     Checkbox();
-    Checkbox(const unsigned int id);
+    Checkbox(unsigned int id);
 
-    // DEEP_COPY(Checkbox, attributes::Checkbox);
-    GET_PTR(Checkbox);
-    // COMPARE(Checkbox);
-    // ATTRIBUTES(Checkbox, defaultCheckboxAttributes);
+    void destroy() {
+      parent = std::nullopt;
+      for (const auto& child : children) {
+        // std::visit([](auto c) { c->destroy(); }, child);
+      }
+      reset();
+      PoolManager::releaseFromPool(shared_from_this());
+    }
 
-    // dom::UIElement::Ptr toReal() {};
-    // void updateReal(dom::UIElement::Ptr element) {};
-    // std::shared_ptr<attributes::Checkbox> mergeAttributes();
+    void reset() {
+      // id = 0;
+      // children = {};
+      // children.reserve(3);
+    };
+
+    unsigned int id;
+
+    bool operator==(Checkbox& element) {
+      return attributes == element.attributes;
+    };
+
+    Elements children = {};
+    std::optional<Element> parent = std::nullopt;
+
+    attributes::Checkbox attributes;
+    attributes::Checkbox hoverAttributes;
+    attributes::Checkbox clickAttributes;
   };
 } // namespace wind::dom::shadow

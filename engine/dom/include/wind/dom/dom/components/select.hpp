@@ -7,7 +7,9 @@ namespace wind::dom {
   public:
     Select(unsigned int id, attributes::Select attributes);
 
-    GET_REAL_PTR();
+    GET_REAL_PTR(Select);
+
+    bool innerIsHovered = false;
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
@@ -15,5 +17,4 @@ namespace wind::dom {
 
     attributes::Select attributes = attributes::defaultSelectAttributes;
   };
-
 } // namespace wind::dom

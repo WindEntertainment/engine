@@ -2,9 +2,15 @@
 #include <wind/utils/utils.hpp>
 #include "base.hpp"
 
+namespace wind::dom {
+  class Text;
+};
+
 namespace wind::dom::attributes {
   struct Text : public attributes::Base {
     bool tmp = {false};
+
+    std::function<void(std::shared_ptr<::wind::dom::Text>)> onHover = {};
 
     bool compare(const attributes::Base& attributes) override {
       const attributes::Text* attrs =

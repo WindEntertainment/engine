@@ -3,12 +3,13 @@
 #include "element.hpp"
 
 namespace wind::dom {
-
   class Input : public UIElement, public std::enable_shared_from_this<Input> {
   public:
     Input(unsigned int id, attributes::Input attributes);
 
-    GET_REAL_PTR();
+    GET_REAL_PTR(Input);
+
+    bool innerIsHovered = false;
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;

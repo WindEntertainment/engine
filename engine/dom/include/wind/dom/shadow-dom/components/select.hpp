@@ -1,21 +1,39 @@
 #pragma once
 #include <wind/dom/shadow-dom/shared.hpp>
-#include "element.hpp"
+#include <wind/dom/shadow-dom/pool-manager.hpp>
 
 namespace wind::dom::shadow {
-  class Select : public UIElement<Select, dom::Select, attributes::Select>,
-                 public std::enable_shared_from_this<Select> {
+  struct Select : public std::enable_shared_from_this<Select> {
   public:
     Select();
-    Select(const unsigned int id);
+    Select(unsigned int id);
 
-    // DEEP_COPY(Select, attributes::Select);
-    GET_PTR(Select);
-    // COMPARE(Select);
-    // ATTRIBUTES(Select, defaultSelectAttributes);
+    void destroy() {
+      parent = std::nullopt;
+      for (const auto& child : children) {
+        // std::visit([](auto c) { c->destroy(); }, child);
+      }
+      reset();
+      PoolManager::releaseFromPool(shared_from_this());
+    }
 
-    // dom::UIElement::Ptr toReal() {};
-    // void updateReal(dom::UIElement::Ptr element) {};
-    // std::shared_ptr<attributes::Select> mergeAttributes();
+    void reset() {
+      // id = 0;
+      // children = {};
+      // children.reserve(3);
+    };
+
+    unsigned int id;
+
+    bool operator==(Select& element) {
+      return attributes == element.attributes;
+    };
+
+    Elements children = {};
+    std::optional<Element> parent = std::nullopt;
+
+    attributes::Select attributes;
+    attributes::Select hoverAttributes;
+    attributes::Select clickAttributes;
   };
 } // namespace wind::dom::shadow

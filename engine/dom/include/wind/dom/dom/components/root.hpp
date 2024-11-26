@@ -7,7 +7,7 @@ namespace wind::dom {
   public:
     Root(unsigned int id, attributes::Root attributes);
 
-    GET_REAL_PTR();
+    GET_REAL_PTR(Root);
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;

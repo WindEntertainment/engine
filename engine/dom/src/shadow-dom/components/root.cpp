@@ -1,18 +1,6 @@
-// #include "wind/dom/shadow-dom/components/root.hpp"
-#include "wind/dom/shadow-dom/components/element.hpp"
+#include "wind/dom/shadow-dom/components/root.hpp"
 
 namespace wind::dom::shadow {
-  // Root::Root() : UIElement(attributes::defaultRootAttributes) {};
-  // Root::Root(const unsigned int id)
-  //     : UIElement(attributes::defaultRootAttributes, id) {};
-  // Root::Root() {};
-  // Root::Root(const unsigned int id) {};
-  // attributes::Root Root::mergeAttributes() const { return attributes; };
-
+  Root::Root() : id(++nextId) {};
+  Root::Root(unsigned int id) : id(id) {};
 } // namespace wind::dom::shadow
-
-// namespace wind::dom::shadow {
-//   Root::Root() : UIElement(attributes::defaultRootAttributes) {};
-//   Root::Root(const unsigned int id)
-//       : UIElement(attributes::defaultRootAttributes, id) {};
-// } // namespace wind::dom::shadow

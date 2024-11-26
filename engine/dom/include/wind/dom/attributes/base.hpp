@@ -6,7 +6,6 @@ namespace wind::dom::attributes {
   struct Base {
     bool disabled = {false};
     std::function<void()> onClick = {};
-    std::function<void()> onHover = {};
     std::function<void()> onDragStart = {};
     std::function<void()> onDrag = {};
     std::function<void()> onDragEnd = {};

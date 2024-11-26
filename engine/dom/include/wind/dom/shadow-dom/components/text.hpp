@@ -1,23 +1,37 @@
 #pragma once
 #include <wind/dom/shadow-dom/shared.hpp>
-#include "element.hpp"
+#include <wind/dom/shadow-dom/pool-manager.hpp>
 
 namespace wind::dom::shadow {
-  class Text : public UIElement<Text, dom::Text, attributes::Text>,
-               public std::enable_shared_from_this<Text> {
+  struct Text : public std::enable_shared_from_this<Text> {
   public:
     Text();
-    Text(const unsigned int id);
+    Text(unsigned int id);
 
-    // DEEP_COPY(Text, attributes::Text);
-    GET_PTR(Text);
-    // COMPARE(Text);
-    // ATTRIBUTES(Text, defaultTextAttributes);
-    // TO_REAL(Text);
-    // dom::UIElement::Ptr toReal() {
-    //   return wind::share(wind::dom::Checkbox(this -> id, this->attributes))
-    // };
-    // void updateReal(dom::UIElement::Ptr element) {};
-    // std::shared_ptr<attributes::Text> mergeAttributes() override {}
+    void destroy() {
+      parent = std::nullopt;
+      for (const auto& child : children) {
+        // std::visit([](auto c) { c->destroy(); }, child);
+      }
+      reset();
+      PoolManager::releaseFromPool(shared_from_this());
+    }
+
+    void reset() {
+      // id = 0;
+      // children = {};
+      // children.reserve(3);
+    };
+
+    unsigned int id;
+
+    bool operator==(Text& element) { return attributes == element.attributes; };
+
+    Elements children = {};
+    std::optional<Element> parent = std::nullopt;
+
+    attributes::Text attributes;
+    attributes::Text hoverAttributes;
+    attributes::Text clickAttributes;
   };
 } // namespace wind::dom::shadow
