@@ -10,6 +10,7 @@ namespace wind::dom {
     GET_REAL_PTR(Text);
 
     bool innerIsHovered = false;
+    std::shared_ptr<wind::TextMesh> mesh = std::make_shared<wind::TextMesh>();
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;

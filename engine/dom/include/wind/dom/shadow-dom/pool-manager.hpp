@@ -50,7 +50,7 @@ namespace wind::dom::shadow {
       }
     }
 
-  private:
+    // private:
     void prefill(size_t size) {
       reserved.reserve(size);
       for (size_t i = 0; i < size; ++i) {

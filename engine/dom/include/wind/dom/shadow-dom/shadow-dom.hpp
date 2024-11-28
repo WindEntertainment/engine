@@ -28,6 +28,13 @@ namespace wind::dom::shadow {
   std::shared_ptr<dom::Checkbox> toReal(std::shared_ptr<Checkbox> shadow);
   std::shared_ptr<dom::Select> toReal(std::shared_ptr<Select> shadow);
 
+  void destroy(std::shared_ptr<Root> shadow);
+  void destroy(std::shared_ptr<Div> shadow);
+  void destroy(std::shared_ptr<Text> shadow);
+  void destroy(std::shared_ptr<Input> shadow);
+  void destroy(std::shared_ptr<Checkbox> shadow);
+  void destroy(std::shared_ptr<Select> shadow);
+
   void
   updateReal(std::shared_ptr<dom::Root> real, std::shared_ptr<Root> shadow);
   void updateReal(std::shared_ptr<dom::Div> real, std::shared_ptr<Div> shadow);
@@ -42,17 +49,18 @@ namespace wind::dom::shadow {
   void
   updateReal(std::shared_ptr<dom::Select> real, std::shared_ptr<Select> shadow);
 
-  std::shared_ptr<Root> init();
+  std::shared_ptr<Root> init(std::shared_ptr<wind::dom::Root> realRoot);
 
   template <typename T>
   std::shared_ptr<T> createElement() {
     auto pool = PoolManager::getInstance().getPool<T>();
-    if (!pool)
-      nullptr;
+    if (!pool) {
+      spdlog::warn("Trying to create element that is not registered in pool");
+      return nullptr;
+    }
 
     auto element = pool->get();
     element->id = ++wind::dom::shadow::nextId;
     return element;
   }
-
 } // namespace wind::dom::shadow

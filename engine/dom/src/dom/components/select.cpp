@@ -4,18 +4,7 @@ namespace wind::dom {
   Select::Select(unsigned int id, attributes::Select attributes)
       : UIElement(id), attributes(std::move(attributes)) {};
 
-  void Select::render(wind::CommandBuffer& renderer) {
-    renderer.drawRect(
-      attributes.position,
-      attributes.size,
-      attributes.backgroundColor,
-      attributes.texture,
-      attributes.angle,
-      attributes.borderRadius,
-      attributes.borderWidth,
-      attributes.borderColor
-    );
-  };
+  void Select::render(wind::CommandBuffer& renderer) {};
 
   void Select::reset() { attributes = attributes::defaultSelectAttributes; };
 
@@ -34,13 +23,13 @@ namespace wind::dom {
 
     if (isHovered && !innerIsHovered) {
       innerIsHovered = true;
-      if (attributes.onHover) {
-        attributes.onHover(getPtr());
+      if (attributes.onHover.has_value()) {
+        attributes.onHover.value()(getPtr());
       }
     }
 
-    if (isClicked && attributes.onClick) {
-      attributes.onClick();
+    if (isClicked && attributes.onClick.has_value()) {
+      attributes.onClick.value()(getPtr());
     }
   };
 } // namespace wind::dom

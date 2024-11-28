@@ -115,6 +115,96 @@ namespace wind::dom::shadow {
     return wind::share(dom::Select(shadow->id, mergeAttributes(shadow)));
   };
 
+  void destroy(std::shared_ptr<Root> shadow) {
+    shadow->id = 0;
+    shadow->parent = std::nullopt;
+    for (const auto& child : shadow->children) {
+      std::visit([](auto c) { destroy(c); }, child);
+    }
+    shadow->children.clear();
+    shadow->children.reserve(3);
+    shadow->attributes = {};
+    shadow->attributes.position = {0, 0};
+    shadow->clickAttributes = {};
+    shadow->hoverAttributes = {};
+    // PoolManager::releaseFromPool(shadow);
+  };
+
+  void destroy(std::shared_ptr<Div> shadow) {
+    shadow->id = 0;
+    shadow->parent = std::nullopt;
+    for (const auto& child : shadow->children) {
+      std::visit([](auto c) { destroy(c); }, child);
+    }
+    shadow->children.clear();
+    shadow->children.reserve(3);
+    shadow->attributes = {};
+    shadow->attributes.position = {0, 0};
+    shadow->clickAttributes = {};
+    shadow->hoverAttributes = {};
+    PoolManager::releaseFromPool(shadow);
+  };
+
+  void destroy(std::shared_ptr<Text> shadow) {
+    shadow->id = 0;
+    shadow->parent = std::nullopt;
+    for (const auto& child : shadow->children) {
+      std::visit([](auto c) { destroy(c); }, child);
+    }
+    shadow->children.clear();
+    shadow->children.reserve(3);
+    shadow->attributes = {};
+    shadow->attributes.position = {0, 0};
+    shadow->clickAttributes = {};
+    shadow->hoverAttributes = {};
+    PoolManager::releaseFromPool(shadow);
+  };
+
+  void destroy(std::shared_ptr<Input> shadow) {
+    shadow->id = 0;
+    shadow->parent = std::nullopt;
+    for (const auto& child : shadow->children) {
+      std::visit([](auto c) { destroy(c); }, child);
+    }
+    shadow->children.clear();
+    shadow->children.reserve(3);
+    shadow->attributes = {};
+    shadow->attributes.position = {0, 0};
+    shadow->clickAttributes = {};
+    shadow->hoverAttributes = {};
+    PoolManager::releaseFromPool(shadow);
+  };
+
+  void destroy(std::shared_ptr<Checkbox> shadow) {
+    shadow->id = 0;
+    shadow->parent = std::nullopt;
+    for (const auto& child : shadow->children) {
+      std::visit([](auto c) { destroy(c); }, child);
+    }
+    shadow->children.clear();
+    shadow->children.reserve(3);
+    shadow->attributes = {};
+    shadow->attributes.position = {0, 0};
+    shadow->clickAttributes = {};
+    shadow->hoverAttributes = {};
+    PoolManager::releaseFromPool(shadow);
+  };
+
+  void destroy(std::shared_ptr<Select> shadow) {
+    shadow->id = 0;
+    shadow->parent = std::nullopt;
+    for (const auto& child : shadow->children) {
+      std::visit([](auto c) { destroy(c); }, child);
+    }
+    shadow->children.clear();
+    shadow->children.reserve(3);
+    shadow->attributes = {};
+    shadow->attributes.position = {0, 0};
+    shadow->clickAttributes = {};
+    shadow->hoverAttributes = {};
+    PoolManager::releaseFromPool(shadow);
+  };
+
   void
   updateReal(std::shared_ptr<dom::Root> real, std::shared_ptr<Root> shadow) {
     real->attributes = mergeAttributes(shadow);
@@ -146,7 +236,7 @@ namespace wind::dom::shadow {
     real->attributes = mergeAttributes(shadow);
   };
 
-  std::shared_ptr<Root> init() {
+  std::shared_ptr<Root> init(std::shared_ptr<wind::dom::Root> realRoot) {
     PoolManager::registerPool<Div>(150);
     PoolManager::registerPool<Text>(100);
     PoolManager::registerPool<Input>(20);
@@ -154,6 +244,8 @@ namespace wind::dom::shadow {
     PoolManager::registerPool<Select>(20);
 
     auto root = std::make_shared<Root>(1);
+    root->attributes.size = realRoot->attributes.size;
+    root->attributes.position = realRoot->attributes.position;
 
     return root;
   }

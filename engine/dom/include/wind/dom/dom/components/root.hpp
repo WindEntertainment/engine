@@ -9,6 +9,8 @@ namespace wind::dom {
 
     GET_REAL_PTR(Root);
 
+    bool innerIsHovered = false;
+
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
     void reset() override;

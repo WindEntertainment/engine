@@ -10,7 +10,17 @@ namespace wind::dom::attributes {
   struct Text : public attributes::Base {
     bool tmp = {false};
 
-    std::function<void(std::shared_ptr<::wind::dom::Text>)> onHover = {};
+    std::optional<std::shared_ptr<Font>> font;
+    std::optional<int> letterSpacing;
+    std::optional<int> lineSpacing;
+    std::optional<int> lineWidth;
+    std::optional<std::string> value;
+    std::optional<glm::vec2> scale;
+    std::optional<glm::vec4> color;
+    std::optional<std::function<void(std::shared_ptr<::wind::dom::Text>)>>
+      onHover;
+    std::optional<std::function<void(std::shared_ptr<::wind::dom::Text>)>>
+      onClick;
 
     bool compare(const attributes::Base& attributes) override {
       const attributes::Text* attrs =

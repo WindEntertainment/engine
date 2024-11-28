@@ -8,19 +8,19 @@ namespace wind::dom::shadow {
     Root();
     Root(unsigned int id);
 
-    void destroy() {
-      parent = std::nullopt;
-      for (const auto& child : children) {
-        // std::visit([](auto c) { c->destroy(); }, child);
-      }
-      reset();
-    }
+    // void destroy() {
+    //   parent = std::nullopt;
+    //   for (const auto& child : children) {
+    //     // std::visit([](auto c) { c->destroy(); }, child);
+    //   }
+    //   reset();
+    // }
 
-    void reset() {
-      // id = 0;
-      // children = {};
-      // children.reserve(3);
-    };
+    // void reset() {
+    //   // id = 0;
+    //   // children = {};
+    //   // children.reserve(3);
+    // };
 
     unsigned int id;
 

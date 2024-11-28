@@ -8,20 +8,20 @@ namespace wind::dom::shadow {
     Input();
     Input(unsigned int id);
 
-    void destroy() {
-      parent = std::nullopt;
-      for (const auto& child : children) {
-        // std::visit([](auto c) { c->destroy(); }, child);
-      }
-      reset();
-      PoolManager::releaseFromPool(shared_from_this());
-    }
+    // void destroy() {
+    //   parent = std::nullopt;
+    //   for (const auto& child : children) {
+    //     // std::visit([](auto c) { c->destroy(); }, child);
+    //   }
+    //   reset();
+    //   PoolManager::releaseFromPool(shared_from_this());
+    // }
 
-    void reset() {
-      // id = 0;
-      // children = {};
-      // children.reserve(3);
-    };
+    // void reset() {
+    //   // id = 0;
+    //   // children = {};
+    //   // children.reserve(3);
+    // };
 
     unsigned int id;
 
