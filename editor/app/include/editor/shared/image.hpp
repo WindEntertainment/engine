@@ -8,14 +8,14 @@ namespace editor::components {
   class Image {
   public:
     std::string id;
-    ImTextureID texture;
+    // ImTextureID texture;
     glm::vec2 topLeft;
     glm::vec2 bottomRight;
     std::shared_ptr<spriteSheetManager::BehaviorManager<Image>> behaviorManager;
 
     Image(
       std::string id,
-      ImTextureID texture,
+      // ImTextureID texture,
       glm::vec2 topLeft,
       glm::vec2 bottomRight,
       std::shared_ptr<spriteSheetManager::BehaviorManager<Image>> behaviorManager

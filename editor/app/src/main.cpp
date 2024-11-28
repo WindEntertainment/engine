@@ -1,8 +1,7 @@
 #include "wind/dom/dom/index.hpp"
 #include "wind/dom/shadow-dom/index.hpp"
-#include <editor/editor.hpp>
-#include <editor/main.hpp>
-
+#include <wind/utils/utils.hpp>
+#include "wind/wind.hpp"
 #include "wind/asset-pipeline/asset-manager.hpp"
 
 #include "wind/renderer/command-buffer.hpp"
@@ -11,18 +10,27 @@
 #include "wind/input-system/input-system.hpp"
 
 namespace editor {
+  using namespace wind::dom::shadow;
+  namespace dom = wind::dom;
+
+  template <typename T>
+  using shared = std::shared_ptr<T>;
+
   class Editor : public wind::Game {
-    std::shared_ptr<wind::dom::Root> root;
-    std::shared_ptr<wind::dom::shadow::Root> shadowRoot =
-      wind::dom::shadow::init();
-    std::shared_ptr<wind::dom::shadow::Root> prevShadowRoot =
-      std::make_shared<wind::dom::shadow::Root>(shadowRoot->id);
+    shared<dom::Root> root;
+    shared<Root> shadowRoot;
+    shared<Root> prevShadowRoot;
+
+    shared<wind::Font> font = nullptr;
 
     bool isButtonsVisible = false;
 
   public:
     void start() override {
       wind::Engine::setTargetFPS(60);
+
+      wind::AssetManager::loadBundle("res/main.bundle");
+
       auto window = wind::Engine::getMainWindow();
       auto rendererContext = wind::Engine::getMainRenderContext();
 
@@ -38,7 +46,17 @@ namespace editor {
         )
       );
 
-      root = wind::dom::init(window->size());
+      root = dom::init(window->size());
+      shadowRoot = init(root);
+      prevShadowRoot = std::make_shared<Root>(shadowRoot->id);
+
+      font = wind::AssetManager::getAsset<wind::Font>(
+        "main/fonts/SourGummy-VariableFont.ttf"
+      );
+
+      auto example = createElement<Div>();
+
+      mergeAttributes2(example);
     };
 
     void handleEvent(SDL_Event& event) override {
@@ -49,46 +67,51 @@ namespace editor {
       wind::CommandBuffer render(wind::Engine::getMainRenderContext());
       render.clear({0.0f, 0.0f, 0.05f, 1.f});
 
-      wind::dom::shadow::nextId = 1;
+      nextId = 1;
 
-      std::shared_ptr<wind::dom::shadow::Div> button =
-        wind::dom::shadow::createElement<wind::dom::shadow::Div>();
-
+      auto button = createElement<Div>();
+      button->attributes.size = {100, 100};
       button->attributes.onClick = [&isButtonsVisible = isButtonsVisible,
-                                    &shadowRoot = shadowRoot]() mutable {
+                                    &shadowRoot = shadowRoot](auto) mutable {
         isButtonsVisible = shadowRoot->children.size() == 1;
       };
+      appendChild(button, shadowRoot);
 
-      auto a = wind::dom::shadow::Element(shadowRoot);
-      appendChild(button, a);
       if (isButtonsVisible) {
-        std::shared_ptr<wind::dom::shadow::Div> button2 =
-          wind::dom::shadow::createElement<wind::dom::shadow::Div>();
+        auto button2 = createElement<Div>();
         button2->attributes.position = {100, 100};
+        button2->attributes.size = {100, 100};
 
-        std::shared_ptr<wind::dom::shadow::Div> button3 =
-          wind::dom::shadow::createElement<wind::dom::shadow::Div>();
+        auto button3 = createElement<Div>();
         button3->attributes.position = {200, 200};
+        button3->attributes.size = {100, 100};
 
-        wind::dom::shadow::appendChild(button2, a);
-        wind::dom::shadow::appendChild(button3, a);
+        auto text = createElement<Text>();
+        text->attributes.value = "CHIKI BRIKI";
+        text->attributes.color = glm::vec4{1.f, 0.5f, 0.1f, 1.f};
+        text->attributes.font = font;
+
+        appendChild(text, button2);
+        appendChild(button2, shadowRoot);
+        appendChild(button3, shadowRoot);
       }
 
-      wind::dom::shadow::Diff diff = wind::dom::shadow::Diff();
-      wind::dom::shadow::getDiff(prevShadowRoot, shadowRoot, diff);
-      wind::dom::shadow::fromDiff(root, diff);
+      auto diff = Diff();
+      getDiff(prevShadowRoot, shadowRoot, diff);
+      fromDiff(root, diff);
+
+      destroy(prevShadowRoot);
       prevShadowRoot = shadowRoot;
 
       root->display(render);
-
       render.submit();
 
-      shadowRoot = std::make_shared<wind::dom::shadow::Root>(shadowRoot->id);
+      shadowRoot = std::make_shared<Root>(shadowRoot->id);
     };
 
     void quit() override {
-      shadowRoot->destroy();
-      prevShadowRoot->destroy();
+      destroy(shadowRoot);
+      destroy(prevShadowRoot);
     };
   };
 } // namespace editor
