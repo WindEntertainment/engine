@@ -69,6 +69,8 @@ namespace editor {
 
       nextId = 1;
 
+      shadowRoot->attributes.backgroundColor = glm::vec4{0.3f, 0.2f, 0.8f, 1.f};
+
       auto button = createElement<Div>();
       button->attributes.size = {100, 100};
       button->attributes.onClick = [&isButtonsVisible = isButtonsVisible,
@@ -100,13 +102,14 @@ namespace editor {
       getDiff(prevShadowRoot, shadowRoot, diff);
       fromDiff(root, diff);
 
-      destroy(prevShadowRoot);
-      prevShadowRoot = shadowRoot;
-
       root->display(render);
       render.submit();
 
+      destroy(prevShadowRoot);
+      prevShadowRoot = shadowRoot;
       shadowRoot = std::make_shared<Root>(shadowRoot->id);
+      shadowRoot->attributes.size = root->attributes.size;
+      shadowRoot->attributes.position = root->attributes.position;
     };
 
     void quit() override {

@@ -62,4 +62,23 @@ namespace wind::dom::utils {
       }(std::make_index_sequence<numFields>{});
   }
 
+  template <typename T, typename... Args>
+  void replaceOptionals(std::optional<T>& originalValue, Args&&... args) {
+    ((args.has_value() && (originalValue = args.value())), ...);
+  }
+
+  template <typename T>
+  static void replaceTuples(T& a, T& b, T& c) {
+    constexpr size_t numFields = std::tuple_size_v<T>;
+
+    [&]<std::size_t... FieldIndices>(std::index_sequence<FieldIndices...>) {
+      ((utils::replaceOptionals(
+         std::get<FieldIndices>(a),
+         std::get<FieldIndices>(b),
+         std::get<FieldIndices>(c)
+       )),
+       ...);
+    }(std::make_index_sequence<numFields>{});
+  }
+
 } // namespace wind::dom::utils

@@ -20,9 +20,21 @@ namespace wind::dom::attributes {
       onClick;
     std::optional<glm::vec2> position;
     std::optional<glm::vec2> size;
-    bool isHovered = false;
 
     auto asTuple() const {
+      return std::tie(
+        backgroundColor,
+        texture,
+        angle,
+        borderRadius,
+        borderWidth,
+        borderColor,
+        position,
+        size
+      );
+    }
+
+    auto asMutableTuple() {
       return std::tie(
         backgroundColor,
         texture,

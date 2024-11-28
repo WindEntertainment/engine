@@ -29,8 +29,8 @@ namespace wind::dom::shadow {
     Elements children = {};
     std::optional<Element> parent = std::nullopt;
 
-    attributes::Root attributes;
-    attributes::Root hoverAttributes;
-    attributes::Root clickAttributes;
+    attributes::Root attributes = attributes::getDefaultRootAttributes();
+    attributes::Root hoverAttributes = {};
+    attributes::Root clickAttributes = {};
   };
 } // namespace wind::dom::shadow

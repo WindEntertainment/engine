@@ -8,7 +8,6 @@ namespace wind::dom {
 
 namespace wind::dom::attributes {
   struct Select {
-    bool isHovered = false;
     std::optional<std::function<void(std::shared_ptr<::wind::dom::Select>)>>
       onHover;
     std::optional<glm::vec4> backgroundColor;
@@ -23,6 +22,19 @@ namespace wind::dom::attributes {
     std::optional<glm::vec2> size;
 
     auto asTuple() const {
+      return std::tie(
+        backgroundColor,
+        texture,
+        angle,
+        borderRadius,
+        borderWidth,
+        borderColor,
+        position,
+        size
+      );
+    }
+
+    auto asMutableTuple() {
       return std::tie(
         backgroundColor,
         texture,

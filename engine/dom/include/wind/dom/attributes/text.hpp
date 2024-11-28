@@ -8,7 +8,6 @@ namespace wind::dom {
 
 namespace wind::dom::attributes {
   struct Text {
-    bool isHovered = false;
     std::optional<std::shared_ptr<Font>> font;
     std::optional<int> letterSpacing;
     std::optional<int> lineSpacing;
@@ -24,6 +23,20 @@ namespace wind::dom::attributes {
     std::optional<glm::vec2> size;
 
     auto asTuple() const {
+      return std::tie(
+        font,
+        letterSpacing,
+        lineSpacing,
+        lineWidth,
+        value,
+        scale,
+        color,
+        position,
+        size
+      );
+    }
+
+    auto asMutableTuple() {
       return std::tie(
         font,
         letterSpacing,

@@ -32,9 +32,9 @@ namespace wind::dom::shadow {
     Elements children = {};
     std::optional<Element> parent = std::nullopt;
 
-    attributes::Div attributes;
-    attributes::Div hoverAttributes;
-    attributes::Div clickAttributes;
+    attributes::Div attributes = attributes::getDefaultDivAttributes();
+    attributes::Div hoverAttributes = {};
+    attributes::Div clickAttributes = {};
   };
 
   // constexpr std::array<std::pair<bool Div::*, const attributes::Div Div::*>,

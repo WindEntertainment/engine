@@ -68,27 +68,63 @@ namespace wind::dom::shadow {
   };
 
   attributes::Root mergeAttributes(std::shared_ptr<Root> shadow) {
-    return shadow->attributes;
+    auto attrs = shadow->attributes;
+    auto attrsTuple = attrs.asMutableTuple();
+    auto b = shadow->clickAttributes.asMutableTuple();
+    auto c = shadow->hoverAttributes.asMutableTuple();
+
+    utils::replaceTuples(attrsTuple, b, c);
+    return attrs;
   };
 
   attributes::Div mergeAttributes(std::shared_ptr<Div> shadow) {
-    return shadow->attributes;
+    auto attrs = shadow->attributes;
+    auto attrsTuple = attrs.asMutableTuple();
+    auto b = shadow->clickAttributes.asMutableTuple();
+    auto c = shadow->hoverAttributes.asMutableTuple();
+
+    utils::replaceTuples(attrsTuple, b, c);
+    return attrs;
   };
 
   attributes::Text mergeAttributes(std::shared_ptr<Text> shadow) {
-    return shadow->attributes;
+    auto attrs = shadow->attributes;
+    auto attrsTuple = attrs.asMutableTuple();
+    auto b = shadow->clickAttributes.asMutableTuple();
+    auto c = shadow->hoverAttributes.asMutableTuple();
+
+    utils::replaceTuples(attrsTuple, b, c);
+    return attrs;
   };
 
   attributes::Input mergeAttributes(std::shared_ptr<Input> shadow) {
-    return shadow->attributes;
+    auto attrs = shadow->attributes;
+    auto attrsTuple = attrs.asMutableTuple();
+    auto b = shadow->clickAttributes.asMutableTuple();
+    auto c = shadow->hoverAttributes.asMutableTuple();
+
+    utils::replaceTuples(attrsTuple, b, c);
+    return attrs;
   };
 
   attributes::Checkbox mergeAttributes(std::shared_ptr<Checkbox> shadow) {
-    return shadow->attributes;
+    auto attrs = shadow->attributes;
+    auto attrsTuple = attrs.asMutableTuple();
+    auto b = shadow->clickAttributes.asMutableTuple();
+    auto c = shadow->hoverAttributes.asMutableTuple();
+
+    utils::replaceTuples(attrsTuple, b, c);
+    return attrs;
   };
 
   attributes::Select mergeAttributes(std::shared_ptr<Select> shadow) {
-    return shadow->attributes;
+    auto attrs = shadow->attributes;
+    auto attrsTuple = attrs.asMutableTuple();
+    auto b = shadow->clickAttributes.asMutableTuple();
+    auto c = shadow->hoverAttributes.asMutableTuple();
+
+    utils::replaceTuples(attrsTuple, b, c);
+    return attrs;
   };
 
   std::shared_ptr<dom::Root> toReal(std::shared_ptr<Root> shadow) {

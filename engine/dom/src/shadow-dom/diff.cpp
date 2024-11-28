@@ -147,17 +147,18 @@ namespace wind::dom::shadow {
     for (auto&& elementVariant : diff.updated) {
       std::visit(
         [&dom, &diff](auto element) -> void {
-          if (!element->parent)
+          if (!element->parent && element->id != 1)
             return;
 
           auto domElement = dom->findElementById(dom, element->id);
           if (!domElement)
             return;
 
-          using T = std::decay_t<decltype(element)>;
+          using T = std::decay_t<decltype(*element)>;
 
           std::shared_ptr<wind::dom::Root> realRootElement =
             std::dynamic_pointer_cast<wind::dom::Root>(domElement);
+
           if constexpr (std::is_same_v<T, Root>) {
             if (realRootElement) {
               updateReal(realRootElement, element);

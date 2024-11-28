@@ -32,8 +32,9 @@ namespace wind::dom::shadow {
     Elements children = {};
     std::optional<Element> parent = std::nullopt;
 
-    attributes::Checkbox attributes;
-    attributes::Checkbox hoverAttributes;
-    attributes::Checkbox clickAttributes;
+    attributes::Checkbox attributes =
+      attributes::getDefaultCheckboxAttributes();
+    attributes::Checkbox hoverAttributes = {};
+    attributes::Checkbox clickAttributes = {};
   };
 } // namespace wind::dom::shadow

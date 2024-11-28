@@ -8,7 +8,6 @@ namespace wind::dom {
 
 namespace wind::dom::attributes {
   struct Root {
-    bool isHovered = false;
     std::optional<glm::vec4> backgroundColor;
     std::optional<std::shared_ptr<Texture>> texture;
     std::optional<float> angle;
@@ -23,6 +22,19 @@ namespace wind::dom::attributes {
     std::optional<glm::vec2> size;
 
     auto asTuple() const {
+      return std::tie(
+        backgroundColor,
+        texture,
+        angle,
+        borderRadius,
+        borderWidth,
+        borderColor,
+        position,
+        size
+      );
+    }
+
+    auto asMutableTuple() {
       return std::tie(
         backgroundColor,
         texture,
