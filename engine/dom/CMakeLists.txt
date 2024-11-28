@@ -1,7 +1,6 @@
 project(wind-dom)
 
 set(HEADERS
-    ./include/wind/dom/attributes/base.hpp
     ./include/wind/dom/attributes/div.hpp
     ./include/wind/dom/attributes/checkbox.hpp
     ./include/wind/dom/attributes/input.hpp

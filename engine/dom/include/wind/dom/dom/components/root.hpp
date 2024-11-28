@@ -13,7 +13,7 @@ namespace wind::dom {
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
-    void reset() override;
+    // void reset() override;
 
     UIElement::Ptr
     findElementById(const UIElement::Ptr& root, const unsigned int& id) {
@@ -32,6 +32,6 @@ namespace wind::dom {
       return nullptr;
     }
 
-    attributes::Root attributes = attributes::defaultRootAttributes;
+    attributes::Root attributes = attributes::getDefaultRootAttributes();
   };
 } // namespace wind::dom

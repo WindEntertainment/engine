@@ -123,8 +123,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = {};
-    shadow->attributes.position = {0, 0};
+    shadow->attributes = attributes::getDefaultRootAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     // PoolManager::releaseFromPool(shadow);
@@ -138,8 +137,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = {};
-    shadow->attributes.position = {0, 0};
+    shadow->attributes = attributes::getDefaultDivAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     PoolManager::releaseFromPool(shadow);
@@ -153,8 +151,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = {};
-    shadow->attributes.position = {0, 0};
+    shadow->attributes = attributes::getDefaultTextAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     PoolManager::releaseFromPool(shadow);
@@ -168,8 +165,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = {};
-    shadow->attributes.position = {0, 0};
+    shadow->attributes = attributes::getDefaultInputAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     PoolManager::releaseFromPool(shadow);
@@ -183,8 +179,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = {};
-    shadow->attributes.position = {0, 0};
+    shadow->attributes = attributes::getDefaultCheckboxAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     PoolManager::releaseFromPool(shadow);
@@ -198,8 +193,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = {};
-    shadow->attributes.position = {0, 0};
+    shadow->attributes = attributes::getDefaultSelectAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     PoolManager::releaseFromPool(shadow);

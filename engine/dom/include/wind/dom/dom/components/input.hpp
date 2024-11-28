@@ -13,8 +13,8 @@ namespace wind::dom {
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
-    void reset() override;
+    // void reset() override;
 
-    attributes::Input attributes = attributes::defaultInputAttributes;
+    attributes::Input attributes = attributes::getDefaultInputAttributes();
   };
 } // namespace wind::dom

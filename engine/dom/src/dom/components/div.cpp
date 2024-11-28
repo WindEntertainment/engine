@@ -20,7 +20,7 @@ namespace wind::dom {
     );
   };
 
-  void Div::reset() { attributes = attributes::defaultDivAttributes; };
+  // void Div::reset() { attributes = attributes::getDefaultDivAttributes(); };
 
   void Div::update() {
     auto context = wind::InputSystem::context;

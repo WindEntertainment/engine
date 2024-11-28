@@ -20,7 +20,7 @@ namespace wind::dom {
     );
   };
 
-  void Root::reset() { attributes = attributes::defaultRootAttributes; };
+  // void Root::reset() { attributes = attributes::getDefaultRootAttributes(); };
 
   void Root::update() {
     auto context = wind::InputSystem::context;

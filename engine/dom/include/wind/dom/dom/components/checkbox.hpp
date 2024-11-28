@@ -14,8 +14,9 @@ namespace wind::dom {
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
-    void reset() override;
+    // void reset() override;
 
-    attributes::Checkbox attributes = attributes::defaultCheckboxAttributes;
+    attributes::Checkbox attributes =
+      attributes::getDefaultCheckboxAttributes();
   };
 } // namespace wind::dom

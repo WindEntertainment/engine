@@ -14,8 +14,8 @@ namespace wind::dom {
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
-    void reset() override;
+    // void reset() override;
 
-    attributes::Text attributes = attributes::defaultTextAttributes;
+    attributes::Text attributes = attributes::getDefaultTextAttributes();
   };
 } // namespace wind::dom

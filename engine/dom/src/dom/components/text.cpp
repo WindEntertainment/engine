@@ -23,7 +23,7 @@ namespace wind::dom {
     );
   };
 
-  void Text::reset() { attributes = attributes::defaultTextAttributes; };
+  // void Text::reset() { attributes = attributes::getDefaultTextAttributes(); };
 
   void Text::update() {
     auto context = wind::InputSystem::context;

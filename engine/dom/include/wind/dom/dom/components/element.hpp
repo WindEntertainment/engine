@@ -8,7 +8,7 @@ namespace wind::dom {
 
     UIElement(unsigned int id);
 
-    virtual void reset() {};
+    // virtual void reset() {};
     virtual void update() = 0;
     // virtual Ptr getPtr() = 0;
     virtual void render(wind::CommandBuffer& renderer) = 0;

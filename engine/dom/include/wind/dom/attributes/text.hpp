@@ -1,15 +1,14 @@
 #pragma once
-#include <wind/utils/utils.hpp>
-#include "base.hpp"
+#include "wind/dom/utils/index.hpp"
+#include "wind/renderer/command-buffer.hpp"
 
 namespace wind::dom {
   class Text;
 };
 
 namespace wind::dom::attributes {
-  struct Text : public attributes::Base {
-    bool tmp = {false};
-
+  struct Text {
+    bool isHovered = false;
     std::optional<std::shared_ptr<Font>> font;
     std::optional<int> letterSpacing;
     std::optional<int> lineSpacing;
@@ -21,16 +20,37 @@ namespace wind::dom::attributes {
       onHover;
     std::optional<std::function<void(std::shared_ptr<::wind::dom::Text>)>>
       onClick;
+    std::optional<glm::vec2> position;
+    std::optional<glm::vec2> size;
 
-    bool compare(const attributes::Base& attributes) override {
-      const attributes::Text* attrs =
-        dynamic_cast<const attributes::Text*>(&attributes);
-      if (!attrs) {
-        return false;
-      }
-
-      return std::tie(this->tmp) == std::tie(attrs->tmp);
+    auto asTuple() const {
+      return std::tie(
+        font,
+        letterSpacing,
+        lineSpacing,
+        lineWidth,
+        value,
+        scale,
+        color,
+        position,
+        size
+      );
     }
+
+    bool operator==(const attributes::Text& element) {
+      auto a = asTuple();
+      auto b = element.asTuple();
+
+      return utils::compareTuples(a, b);
+    };
   };
-  static const attributes::Text defaultTextAttributes = {};
+
+  static auto getDefaultTextAttributes = []() {
+    auto attrs = attributes::Text();
+    attrs.position = {0, 0};
+    attrs.letterSpacing = 0;
+    attrs.lineSpacing = 12;
+    attrs.lineWidth = 250;
+    return attrs;
+  };
 } // namespace wind::dom::attributes

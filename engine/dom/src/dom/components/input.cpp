@@ -8,7 +8,8 @@ namespace wind::dom {
 
   };
 
-  void Input::reset() { attributes = attributes::defaultInputAttributes; };
+  // void Input::reset() { attributes = attributes::getDefaultInputAttributes();
+  // };
 
   void Input::update() {
     auto context = wind::InputSystem::context;

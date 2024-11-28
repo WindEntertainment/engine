@@ -6,7 +6,9 @@ namespace wind::dom {
 
   void Select::render(wind::CommandBuffer& renderer) {};
 
-  void Select::reset() { attributes = attributes::defaultSelectAttributes; };
+  // void Select::reset() {
+  //   attributes = attributes::getDefaultSelectAttributes();
+  // };
 
   void Select::update() {
     auto context = wind::InputSystem::context;

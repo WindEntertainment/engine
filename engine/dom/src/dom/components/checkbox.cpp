@@ -20,9 +20,9 @@ namespace wind::dom {
     );
   };
 
-  void Checkbox::reset() {
-    attributes = attributes::defaultCheckboxAttributes;
-  };
+  // void Checkbox::reset() {
+  //   attributes = attributes::getDefaultCheckboxAttributes();
+  // };
 
   void Checkbox::update() {
     auto context = wind::InputSystem::context;
