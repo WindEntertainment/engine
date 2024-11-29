@@ -36,8 +36,8 @@ namespace editor {
 
       wind::Engine::getMainRenderContext()->setCamera(
         std::make_shared<wind::Camera>(
-          glm::vec3{0, 0, 1},
-          glm::vec3{0, 0, 1},
+          glm::vec3{1, -1, -1},
+          glm::vec3{0, 0, -1},
           glm::vec3{0, 1, 0},
           glm::ivec2{
             wind::Engine::getMainWindow()->size().x,
@@ -90,6 +90,7 @@ namespace editor {
 
         auto text = createElement<Text>();
         text->attributes.value = "CHIKI BRIKI";
+        text->attributes.scale = glm::vec2{2.f, 2.f};
         text->attributes.color = glm::vec4{1.f, 0.5f, 0.1f, 1.f};
         text->attributes.font = font;
 

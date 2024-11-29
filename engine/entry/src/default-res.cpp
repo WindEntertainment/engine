@@ -54,12 +54,13 @@ namespace wind {
         layout (location = 1) in vec2 aTexCoords;
 
         uniform mat4 uModel;
+        uniform mat4 uView;
         uniform mat4 uProjection;
 
         out vec2 texCoord;
 
         void main() {
-            gl_Position = uProjection * uModel * vec4(aPos, 1.0);
+            gl_Position = uView * uProjection * uModel * vec4(aPos, 1.0);
             texCoord = aTexCoords;
         }
     )",
@@ -74,31 +75,31 @@ namespace wind {
         uniform float uBorderRadius;
         uniform vec4 uColor;
         uniform vec2 uSize;
-        uniform float uBorderWidth; 
+        uniform float uBorderWidth;
         uniform vec4 uBorderColor;
 
         void main() {
           vec2 pos = texCoord * uSize;
           vec2 halfSize = uSize * 0.5;
-          
+
           if (uBorderRadius == 0.0) {
             vec2 edgeDist = min(pos, uSize - pos);
             if (min(edgeDist.x, edgeDist.y) < uBorderWidth) {
               FragColor = uBorderColor;
             } else {
               FragColor = texture(tex0, texCoord) * uColor;
-            }   
-          } else { 
+            }
+          } else {
             vec2 cornerDist = abs(pos - halfSize) - (halfSize - uBorderRadius);
 
             float outside = max(cornerDist.x, cornerDist.y);
             float cornerDistSq = dot(max(cornerDist, 0.0), max(cornerDist, 0.0));
             if (outside > 0.0 && cornerDistSq > uBorderRadius * uBorderRadius) {
-                 discard;        
+                 discard;
             }
 
             float distFromBorder = uBorderRadius - sqrt(cornerDistSq);
-          
+
             if (distFromBorder < uBorderWidth && distFromBorder > 0.0) {
               FragColor = uBorderColor;
             } else {
@@ -121,13 +122,14 @@ namespace wind {
 
             uniform mat4 uModel;
             uniform mat4 uProjection;
+            uniform mat4 uView;
             uniform vec4 uColor;
 
             out vec2 texCoord;
             out vec4 color;
 
             void main() {
-                gl_Position = uProjection * uModel * vec4(aPos, 1.0);
+                gl_Position = uView * uProjection * uModel * vec4(aPos, 1.0);
                 texCoord = aTexCoords;
                 color = uColor;
             }

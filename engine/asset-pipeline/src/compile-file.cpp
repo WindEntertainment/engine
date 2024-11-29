@@ -48,7 +48,6 @@ namespace wind {
           return;
         }
 
-        spdlog::info("pipe->compile()");
         pipe->compile(fileSource, destination);
       } catch (std::exception& ex) {
         spdlog::error(

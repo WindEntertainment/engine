@@ -61,7 +61,10 @@ namespace wind {
       glBindVertexArray(mesh->id());
 
       glm::mat4 transform = glm::mat4(1);
-      transform = glm::translate(transform, {position, 0});
+      transform = glm::translate(
+        transform,
+        {glm::vec2{position.x + size.x / 2.f, -position.y - size.y / 2.f}, 0}
+      );
       transform = glm::rotate(transform, angle, {0.0f, 0.0f, 1.0f});
       transform = glm::scale(transform, {size, 1});
 
@@ -71,8 +74,9 @@ namespace wind {
       material->setVec4("uBorderColor", borderColor);
       material->setFloat("uBorderWidth", borderWidth);
       material->setMat4("uModel", transform);
-      material->setFloat("uBorderRadius", borderRadius/2);
+      material->setFloat("uBorderRadius", borderRadius / 2);
       material->setVec2("uSize", {1, 1});
+      material->setMat4("uView", context->getCamera()->getTransform());
       material->setMat4("uProjection", context->getCamera()->getProjection());
 
       glDrawElements(GL_TRIANGLES, mesh->length(), GL_UNSIGNED_INT, 0);
@@ -102,7 +106,7 @@ namespace wind {
       material->apply();
       material->setVec4("uColor", color);
       material->setFloat("uBorderRadius", 0.f);
-      material->setVec4("uBorderColor", { 0, 0, 0, 0 });
+      material->setVec4("uBorderColor", {0, 0, 0, 0});
       material->setFloat("uBorderWidth", 0.0f);
       material->setMat4("uModel", transform);
       material->setMat4("uProjection", context->getCamera()->getProjection());
@@ -141,15 +145,15 @@ namespace wind {
   ) {
     static std::shared_ptr<TextMesh> textMesh = std::make_shared<TextMesh>();
 
-     commands.emplace_back([=]() { 
-        textMesh->font = font;
-        textMesh->setText(text);
-        textMesh->letterSpacing = letterSpacing;
-        textMesh->lineSpacing = lineSpacing;
-        textMesh->lineWidth = lineWidth;
-     });
+    commands.emplace_back([=]() {
+      textMesh->font = font;
+      textMesh->setText(text);
+      textMesh->letterSpacing = letterSpacing;
+      textMesh->lineSpacing = lineSpacing;
+      textMesh->lineWidth = lineWidth;
+    });
 
-     drawText(textMesh, position, scale, color);
+    drawText(textMesh, position, scale, color);
   }
 
   void CommandBuffer::drawText(
@@ -163,7 +167,7 @@ namespace wind {
     static std::shared_ptr<Material> material =
       AssetManager::getAsset<Material>("default-text-material");
 
-    commands.emplace_back([=]() { 
+    commands.emplace_back([=]() {
       glBindVertexArray(rectMesh->id());
 
       glm::vec2 offset = {};
@@ -172,21 +176,25 @@ namespace wind {
         auto glyph = mesh->glyphs[i];
 
         glm::mat4 transform = glm::mat4(1);
-        
-        transform = glm::translate(transform, {
-          position.x + offset.x + glyph.size.x / 2 * scale.x + glyph.bearing.x * scale.x,
-          position.y + offset.y + glyph.size.y / 2 * scale.y - (glyph.size.y - glyph.bearing.y) * scale.y,
-          0
-        });
 
-        transform = glm::scale(transform, {
-          glyph.size.x * scale.x,
-          glyph.size.y * scale.y,
-          1
-        });
+        transform = glm::translate(
+          transform,
+          {position.x + offset.x +
+             scale.x * (glyph.size.x / 2 + glyph.bearing.x),
+
+           -position.y + offset.y +
+             scale.y * (glyph.bearing.y - 1.5 * glyph.size.y),
+
+           0}
+        );
+
+        transform = glm::scale(
+          transform, {glyph.size.x * scale.x, glyph.size.y * scale.y, 1}
+        );
 
         offset.x += ((glyph.advance.x >> 6) + mesh->letterSpacing) * scale.x;
-        if ((mesh->lineWidth != 0 && offset.x > mesh->lineWidth * scale.x) || glyph.character == '\n') {
+        if ((mesh->lineWidth != 0 && offset.x > mesh->lineWidth * scale.x) ||
+            glyph.character == '\n') {
           offset.x = 0;
           offset.y -= ((glyph.advance.y >> 6) + mesh->lineSpacing) * scale.y;
         }
@@ -198,6 +206,7 @@ namespace wind {
         material->apply();
         material->setVec4("uColor", color);
         material->setMat4("uModel", transform);
+        material->setMat4("uView", context->getCamera()->getTransform());
         material->setMat4("uProjection", context->getCamera()->getProjection());
 
         glDrawElements(GL_TRIANGLES, rectMesh->length(), GL_UNSIGNED_INT, 0);

@@ -74,6 +74,24 @@ namespace wind::dom::shadow {
     auto c = shadow->hoverAttributes.asMutableTuple();
 
     utils::replaceTuples(attrsTuple, b, c);
+
+    if (shadow->parent.has_value()) {
+      std::visit(
+        [&](const auto& parent) {
+          auto parentAttributes = parent->attributes;
+          if (parentAttributes.position.has_value() &&
+              attrs.position.has_value()) {
+            auto parentPosition = parentAttributes.position.value();
+            auto position = attrs.position.value();
+            attrs.position = {
+              parentPosition.x + position.x, parentPosition.y + position.y
+            };
+          }
+        },
+        shadow->parent.value()
+      );
+    }
+
     return attrs;
   };
 
@@ -84,6 +102,31 @@ namespace wind::dom::shadow {
     auto c = shadow->hoverAttributes.asMutableTuple();
 
     utils::replaceTuples(attrsTuple, b, c);
+
+    if (shadow->parent.has_value()) {
+      std::visit(
+        [&](const auto& parent) {
+          spdlog::info(
+            "{}:{} {}:{}",
+            attrs.position.value().x,
+            attrs.position.value().y,
+            parent->attributes.position.value().x,
+            parent->attributes.position.value().y
+          );
+          auto parentAttributes = parent->attributes;
+          if (parentAttributes.position.has_value() &&
+              attrs.position.has_value()) {
+            auto parentPosition = parentAttributes.position.value();
+            auto position = attrs.position.value();
+            attrs.position = {
+              parentPosition.x + position.x, parentPosition.y + position.y
+            };
+          }
+        },
+        shadow->parent.value()
+      );
+    }
+
     return attrs;
   };
 
@@ -94,6 +137,24 @@ namespace wind::dom::shadow {
     auto c = shadow->hoverAttributes.asMutableTuple();
 
     utils::replaceTuples(attrsTuple, b, c);
+
+    if (shadow->parent.has_value()) {
+      std::visit(
+        [&](const auto& parent) {
+          auto parentAttributes = parent->attributes;
+          if (parentAttributes.position.has_value() &&
+              attrs.position.has_value()) {
+            auto parentPosition = parentAttributes.position.value();
+            auto position = attrs.position.value();
+            attrs.position = {
+              parentPosition.x + position.x, parentPosition.y + position.y
+            };
+          }
+        },
+        shadow->parent.value()
+      );
+    }
+
     return attrs;
   };
 

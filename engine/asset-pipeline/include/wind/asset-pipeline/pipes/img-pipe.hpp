@@ -18,7 +18,6 @@ namespace wind {
     public:
       void
       compile(const fs::path& _source, const fs::path& _destination) override {
-        spdlog::info("image pipe compile!");
         int width, height, channels;
 
         unsigned char* image =
