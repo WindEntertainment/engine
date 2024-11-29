@@ -27,6 +27,9 @@
 #include <glm/glm.hpp>     // IWYU pragma: export
 #include <SDL2/SDL.h>      // IWYU pragma: export
 
+#include <ft2build.h>
+#include FT_FREETYPE_H      // IWYU pragma: export
+
 namespace fs = std::filesystem;
 
 // clang-format on

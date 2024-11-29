@@ -19,7 +19,7 @@ namespace wind {
 
     static float getDeltaTime();
     static int getFPS();
-    static void setFPS(int fps);
+    static void setTargetFPS(int fps);
 
   private:
     static std::shared_ptr<Window> mainWindow;

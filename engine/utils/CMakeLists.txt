@@ -24,3 +24,9 @@ target_link_libraries(${PROJECT_NAME} PUBLIC glm::glm)
 
 find_package(SDL2 REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC SDL2::SDL2)
+
+find_package(SDL2 REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC SDL2::SDL2)
+
+find_package(Freetype REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC Freetype::Freetype)

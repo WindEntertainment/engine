@@ -9,135 +9,197 @@
 #include <fstream>
 #include <yaml-cpp/yaml.h>
 
-#include <wind/asset-manager/asset-manager.hpp>
+#include <wind/asset-pipeline/asset-manager.hpp>
 
 namespace wind {
 
-  std::unordered_map<Key, Callbacks, KeyHash> InputSystem::keycodeTriggers;
-  std::map<std::string, Trigger*> InputSystem::groupedTriggers;
+  std::shared_ptr<InputSystemContext> InputSystem::context =
+    wind::share(InputSystemContext());
 
-  InputSystemContext* InputSystem::context = new InputSystemContext();
+  std::unordered_map<Key, Callbacks, KeyHash> InputSystem::keycodeTriggers;
+  std::map<std::string, std::shared_ptr<Trigger>> InputSystem::groupedTriggers;
+  int nextCallbackId = 0;
 
   inline void InputSystem::groupedEventToCycle(Key keycode) {
     if (keycodeTriggers.contains(keycode)) {
-      std::for_each(
-        keycodeTriggers[keycode].begin(),
-        keycodeTriggers[keycode].end(),
-        [](Callback* callback) { (*callback)(context); }
-      );
+      std::ranges::for_each(keycodeTriggers[keycode], [](Callback* callback) {
+        (*callback)(context);
+      });
     }
   }
 
-  // void InputSystem::init(GLFWwindow* window) {
-  //   glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode,
-  //   int action, int mods) {
-  //     auto mappedKey = mapGlfwKeyboardCodeToKey(key, action);
+  void InputSystem::handleKeyPress(
+    SDL_Keycode key,
+    int scancode,
+    int action,
+    int mods
+  ) {
+    Key mappedKey = mapSDLKeycodeToKey(key, action);
+    context->key = mappedKey;
+    switch (mappedKey.action) {
+      case KeyAction::Pressed:
+        context->keyboardContext.addPressedKey(mappedKey.keycode);
+        context->keyboardContext.removeHeldKey(mappedKey.keycode);
+        context->keyboardContext.removeReleasedKey(mappedKey.keycode);
+        break;
 
-  //     switch (mappedKey.action) {
-  //     case KeyAction::Pressed:
-  //       context->keyboardContext.addPressedKey(mappedKey.keycode);
-  //       context->keyboardContext.removeHeldKey(mappedKey.keycode);
-  //       context->keyboardContext.removeReleasedKey(mappedKey.keycode);
-  //       break;
+      case KeyAction::Held:
+        context->keyboardContext.addHeldKey(mappedKey.keycode);
+        context->keyboardContext.removePressedKey(mappedKey.keycode);
+        context->keyboardContext.removeReleasedKey(mappedKey.keycode);
+        break;
 
-  //     case KeyAction::Held:
-  //       context->keyboardContext.addHeldKey(mappedKey.keycode);
-  //       context->keyboardContext.removePressedKey(mappedKey.keycode);
-  //       context->keyboardContext.removeReleasedKey(mappedKey.keycode);
-  //       break;
+      case KeyAction::Released:
+        context->keyboardContext.addReleasedKey(mappedKey.keycode);
+        context->keyboardContext.removePressedKey(mappedKey.keycode);
+        context->keyboardContext.removeHeldKey(mappedKey.keycode);
+        break;
 
-  //     case KeyAction::Released:
-  //       context->keyboardContext.addReleasedKey(mappedKey.keycode);
-  //       context->keyboardContext.removePressedKey(mappedKey.keycode);
-  //       context->keyboardContext.removeHeldKey(mappedKey.keycode);
-  //       break;
+      default: break;
+    }
 
-  //     default:
-  //       break;
-  //     }
+    groupedEventToCycle(mappedKey);
+    groupedEventToCycle(
+      Key{.keycode = Keycode::K_AllKeys, .action = mappedKey.action}
+    );
+    groupedEventToCycle(
+      Key{.keycode = Keycode::AllEvents, .action = mappedKey.action}
+    );
+  }
 
-  //     groupedEventToCycle(mappedKey);
-  //     groupedEventToCycle(Key{Keycode::ALL_KEYBOARD_KEYS, mappedKey.action});
-  //     groupedEventToCycle(Key{Keycode::ALL_EVENTS, mappedKey.action});
-  //   });
+  void InputSystem::handleMousePress(uint button, int action, int mods) {
+    Key mappedButton = mapSDLMouseCodeToKey(button, action);
+    context->key = mappedButton;
+    switch (mappedButton.action) {
+      case KeyAction::Pressed:
+        context->mouseContext.addPressedButton(mappedButton.keycode);
+        context->mouseContext.removeHeldButton(mappedButton.keycode);
+        context->mouseContext.removeReleasedButton(mappedButton.keycode);
+        break;
 
-  //   glfwSetCursorPosCallback(window,
-  //     [](GLFWwindow*, double x, double y) {
-  //       context->mouseContext.moveCursor(x, y);
+      case KeyAction::Held:
+        context->mouseContext.addHeldButton(mappedButton.keycode);
+        context->mouseContext.removePressedButton(mappedButton.keycode);
+        context->mouseContext.removeReleasedButton(mappedButton.keycode);
+        break;
 
-  //       groupedEventToCycle(Key{Keycode::MOUSE_MOVE, KeyAction::UNKNOWN});
-  //       groupedEventToCycle(Key{Keycode::ALL_MOUSE_EVENTS,
-  //       KeyAction::UNKNOWN}); groupedEventToCycle(Key{Keycode::ALL_EVENTS,
-  //       KeyAction::UNKNOWN});
-  //     });
+      case KeyAction::Released:
+        context->mouseContext.addReleasedButton(mappedButton.keycode);
+        context->mouseContext.removePressedButton(mappedButton.keycode);
+        context->mouseContext.removeHeldButton(mappedButton.keycode);
+        break;
 
-  //   glfwSetMouseButtonCallback(window,
-  //     [](GLFWwindow*, int button, int action, int mods) {
-  //       auto mappedButton = mapSDLMouseCodeToKey(button, action);
+      default: break;
+    }
 
-  //       switch (mappedButton.action) {
-  //       case KeyAction::Pressed:
-  //         context->mouseContext.addPressedButton(mappedButton.keycode);
-  //         context->mouseContext.removeHeldButton(mappedButton.keycode);
-  //         context->mouseContext.removeReleasedButton(mappedButton.keycode);
-  //         break;
+    groupedEventToCycle(mappedButton);
+    groupedEventToCycle(
+      Key{.keycode = Keycode::M_AllKeys, .action = mappedButton.action}
+    );
+    groupedEventToCycle(
+      Key{.keycode = Keycode::M_AllEvents, .action = mappedButton.action}
+    );
+    groupedEventToCycle(
+      Key{.keycode = Keycode::AllEvents, .action = mappedButton.action}
+    );
+  }
 
-  //       case KeyAction::Held:
-  //         context->mouseContext.addHeldButton(mappedButton.keycode);
-  //         context->mouseContext.removePressedButton(mappedButton.keycode);
-  //         context->mouseContext.removeReleasedButton(mappedButton.keycode);
-  //         break;
+  void InputSystem::handleMouseMove(double x, double y) {
+    context->mouseContext.moveCursor(x, y);
+    context->key =
+      Key{.keycode = Keycode::M_Move, .action = KeyAction::Unknown};
+    groupedEventToCycle(
+      Key{.keycode = Keycode::M_Move, .action = KeyAction::Unknown}
+    );
+    groupedEventToCycle(
+      Key{.keycode = Keycode::M_AllEvents, .action = KeyAction::Unknown}
+    );
+    groupedEventToCycle(
+      Key{.keycode = Keycode::AllEvents, .action = KeyAction::Unknown}
+    );
+  }
 
-  //       case KeyAction::Released:
-  //         context->mouseContext.addReleasedButton(mappedButton.keycode);
-  //         context->mouseContext.removePressedButton(mappedButton.keycode);
-  //         context->mouseContext.removeHeldButton(mappedButton.keycode);
-  //         break;
+  void InputSystem::handleScroll(double x, double y) {
+    context->key =
+      Key{.keycode = Keycode::M_Scroll, .action = KeyAction::Unknown};
+    if (y > 0) {
+      groupedEventToCycle(
+        Key{.keycode = Keycode::M_ScrollDown, .action = KeyAction::Unknown}
+      );
+    }
 
-  //       default:
-  //         break;
-  //       }
+    if (y < 0) {
+      groupedEventToCycle(
+        Key{.keycode = Keycode::M_ScrollUp, .action = KeyAction::Unknown}
+      );
+    }
 
-  //       groupedEventToCycle(mappedButton);
-  //       groupedEventToCycle(Key{Keycode::ALL_MOUSE_KEYS,
-  //       mappedButton.action});
-  //       groupedEventToCycle(Key{Keycode::ALL_MOUSE_EVENTS,
-  //       mappedButton.action}); groupedEventToCycle(Key{Keycode::ALL_EVENTS,
-  //       mappedButton.action});
-  //     });
+    context->mouseContext.moveScroll(x, y);
 
-  //   glfwSetScrollCallback(window,
-  //     [](GLFWwindow*, double x, double y) {
-  //       if (y > 0) {
-  //         groupedEventToCycle(Key{Keycode::MOUSE_SCROLL_DOWN,
-  //         KeyAction::UNKNOWN});
-  //       }
+    groupedEventToCycle(
+      Key{.keycode = Keycode::M_Scroll, .action = KeyAction::Unknown}
+    );
 
-  //       if (y < 0) {
-  //         groupedEventToCycle(Key{Keycode::MOUSE_SCROLL_UP,
-  //         KeyAction::UNKNOWN});
-  //       }
+    groupedEventToCycle(
+      Key{.keycode = Keycode::M_AllEvents, .action = KeyAction::Unknown}
+    );
+    groupedEventToCycle(
+      Key{.keycode = Keycode::AllEvents, .action = KeyAction::Unknown}
+    );
 
-  //       context->mouseContext.moveScroll(x, y);
+    context->mouseContext.moveScroll(0, 0);
+  }
 
-  //       groupedEventToCycle(Key{Keycode::MOUSE_SCROLL, KeyAction::UNKNOWN});
+  void InputSystem::handleCharPress(uint codepoint) {
+    context->keyboardContext.setCodepoint(codepoint);
+    context->key =
+      Key{.keycode = Keycode::K_AllChars, .action = KeyAction::Unknown};
+    groupedEventToCycle(
+      Key{.keycode = Keycode::K_AllChars, .action = KeyAction::Unknown}
+    );
+    context->keyboardContext.removeCodepoint();
+  }
 
-  //       groupedEventToCycle(Key{Keycode::ALL_MOUSE_EVENTS,
-  //       KeyAction::UNKNOWN}); groupedEventToCycle(Key{Keycode::ALL_EVENTS,
-  //       KeyAction::UNKNOWN});
+  void InputSystem::handleEvent(SDL_Event& event) {
+    switch (event.type) {
+      case SDL_KEYDOWN:
+      case SDL_KEYUP:
+        handleKeyPress(
+          event.key.keysym.sym,
+          event.key.keysym.scancode,
+          event.type,
+          event.key.keysym.mod
+        );
+        break;
 
-  //       context->mouseContext.moveScroll(0, 0);
-  //     });
+      case SDL_MOUSEBUTTONDOWN:
+      case SDL_MOUSEBUTTONUP:
+        handleMousePress(event.button.button, event.type, event.button.clicks);
+        break;
 
-  //   glfwSetCharCallback(window, [](GLFWwindow* window, unsigned int
-  //   codepoint) {
-  //     context->keyboardContext.setCodepoint(codepoint);
-  //     groupedEventToCycle(Key{Keycode::ALL_KEYBOARD_CHARS,
-  //     KeyAction::UNKNOWN}); context->keyboardContext.removeCodepoint();
-  //   });
-  // }
+      case SDL_MOUSEMOTION:
+        handleMouseMove(
+          static_cast<double>(event.motion.x),
+          static_cast<double>(event.motion.y)
+        );
+        break;
+
+      case SDL_TEXTINPUT:
+        handleCharPress(static_cast<uint>(event.text.text[0]));
+        break;
+
+      case SDL_MOUSEWHEEL:
+        handleScroll(
+          static_cast<double>(event.wheel.x), static_cast<double>(event.wheel.y)
+        );
+        break;
+      default: break;
+    }
+  }
 
   //
+
+  void InputSystem::reset() { context->key = Key{}; }
 
   void InputSystem::createTriggersFromFile(fs::path path) {
     auto triggersData =
@@ -160,7 +222,7 @@ namespace wind {
     }
 
     for (const auto& triggerNode : config["triggers"]) {
-      std::string name = triggerNode["name"].as<std::string>();
+      auto name = triggerNode["name"].as<std::string>();
       Keys bindings;
 
       for (const auto& bindingNode : triggerNode["bindings"]) {
@@ -168,7 +230,7 @@ namespace wind {
         auto actionType =
           mapStringToKeyAction(bindingNode["action"].as<std::string>());
 
-        bindings.insert(Key{key, actionType});
+        bindings.insert(Key{.keycode = key, .action = actionType});
       }
 
       addTrigger(name, bindings);
@@ -293,7 +355,7 @@ namespace wind {
   };
   // , bool forced
   void InputSystem::removeTrigger(std::set<std::string> groupNames) {
-    std::for_each(groupNames.begin(), groupNames.end(), [](auto groupName) {
+    std::ranges::for_each(groupNames, [](auto groupName) {
       removeTrigger(groupName);
     });
   };

@@ -9,7 +9,7 @@ namespace wind {
 
   uint Texture::id() const { return texture_id; }
 
-  Texture::Texture(const unsigned char* pixels, const glm::ivec2 size) {
+  Texture::Texture(void* pixels, const glm::ivec2 size) {
     glGenTextures(1, &texture_id);
     glBindTexture(GL_TEXTURE_2D, texture_id);
 
@@ -18,7 +18,6 @@ namespace wind {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glBindTexture(GL_TEXTURE_2D, texture_id);
     glTexImage2D(
       GL_TEXTURE_2D,
       0,
@@ -31,7 +30,7 @@ namespace wind {
       pixels
     );
 
-    glGenerateMipmap(GL_TEXTURE_2D);
+    // glGenerateMipmap(GL_TEXTURE_2D);
   }
 
   Texture::~Texture() { glDeleteTextures(1, &texture_id); }
