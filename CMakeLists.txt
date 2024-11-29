@@ -10,6 +10,12 @@ include(${CMAKE_SOURCE_DIR}/cmake/wind.cmake)
 
 ###===================================================================================##
 
+import(compiler ON)
+message(STATUS "C Compiler: ${CMAKE_C_COMPILER} (${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION})")
+message(STATUS "C++ Compiler: ${CMAKE_CXX_COMPILER} (${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION})")
+
+###===================================================================================##
+
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}")
 
 set(CMAKE_CXX_STANDARD 23)
@@ -24,10 +30,6 @@ add_subdirectory(./engine/)
 add_subdirectory(./editor/)
 add_subdirectory(./asset-bundler/)
 add_subdirectory(./wdlang/)
-
-###===================================================================================##
-
-import(compiler ON)
 
 ###===================================================================================##
 
