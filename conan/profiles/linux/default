@@ -1,6 +1,6 @@
 [settings]
 arch=x86_64
-compiler=gcc
+compiler=clang
 compiler.cppstd=gnu23
 compiler.libcxx=libstdc++
 compiler.version=14
@@ -12,5 +12,5 @@ tools.system.package_manager:sudo=True
 tools.cmake.cmaketoolchain:generator=Unix Makefiles
 
 [buildenv]
-CC=gcc
-CXX=g++
+CC=clang
+CXX=clang++
