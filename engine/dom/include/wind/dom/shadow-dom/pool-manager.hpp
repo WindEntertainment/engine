@@ -3,6 +3,8 @@
 
 #include <algorithm>
 #include <typeindex>
+#include <memory_resource>
+
 #include <utility>
 
 namespace wind::dom::shadow {
@@ -16,6 +18,7 @@ namespace wind::dom::shadow {
   struct Checkbox;
   struct Select;
 
+  // TODO: should variant be shared_ptr?
   using Element = std::variant<
     std::shared_ptr<wind::dom::shadow::Div>,
     std::shared_ptr<wind::dom::shadow::Text>,
@@ -53,6 +56,7 @@ namespace wind::dom::shadow {
     // private:
     void prefill(size_t size) {
       reserved.reserve(size);
+      available.reserve(size);
       for (size_t i = 0; i < size; ++i) {
         available.push_back(std::make_shared<T>());
       }

@@ -3,6 +3,9 @@
 #include <wind/dom/shadow-dom/pool-manager.hpp>
 #include <wind/dom/dom/components/index.hpp>
 #include <wind/dom/shadow-dom/components/index.hpp>
+#include <chrono>
+#include <iostream>
+#include <memory_resource>
 
 namespace wind::dom::shadow {
   void appendChild(std::shared_ptr<Div> child, const Element& parent);

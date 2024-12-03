@@ -9,6 +9,7 @@ namespace wind::dom::shadow {
     std::vector<Element> removed;
     std::vector<Element> added;
     std::vector<Element> updated;
+    // TODO: should pair be shares_ptr?
     std::vector<std::pair<const unsigned int, Element>> replaced;
   };
 

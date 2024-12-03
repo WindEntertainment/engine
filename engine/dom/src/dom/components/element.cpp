@@ -1,7 +1,7 @@
 #include "wind/dom/dom/components/element.hpp"
 
 namespace wind::dom {
-  UIElement::UIElement(unsigned int id) : id(id) { children.reserve(3); }
+  UIElement::UIElement(unsigned int id) : id(id) {}
 
   void UIElement::appendChild(Ptr child, Ptr parent) {
     if (child) {

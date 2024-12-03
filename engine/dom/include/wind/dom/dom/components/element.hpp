@@ -18,7 +18,7 @@ namespace wind::dom {
     void removeChild(unsigned int childId);
 
     const unsigned int id;
-    std::vector<Ptr> children;
+    std::vector<Ptr> children = std::vector<Ptr>(3);
     Ptr parent = nullptr;
 
   protected:

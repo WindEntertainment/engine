@@ -54,9 +54,9 @@ namespace editor {
         "main/fonts/SourGummy-VariableFont.ttf"
       );
 
-      auto example = createElement<Div>();
+      // auto example = createElement<Div>();
 
-      mergeAttributes2(example);
+      // mergeAttributes2(example);
     };
 
     void handleEvent(SDL_Event& event) override {

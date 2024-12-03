@@ -29,7 +29,7 @@ namespace wind::dom::shadow {
       return attributes == element.attributes;
     };
 
-    Elements children = {};
+    Elements children = Elements(3);
     std::optional<Element> parent = std::nullopt;
 
     attributes::Input attributes = attributes::getDefaultInputAttributes();

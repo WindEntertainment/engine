@@ -26,7 +26,7 @@ namespace wind::dom::shadow {
 
     bool operator==(Root& element) { return attributes == element.attributes; };
 
-    Elements children = {};
+    Elements children = Elements(3);
     std::optional<Element> parent = std::nullopt;
 
     attributes::Root attributes = attributes::getDefaultRootAttributes();

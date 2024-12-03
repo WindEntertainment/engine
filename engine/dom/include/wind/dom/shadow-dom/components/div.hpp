@@ -29,7 +29,7 @@ namespace wind::dom::shadow {
 
     bool operator==(Div& element) { return attributes == element.attributes; };
 
-    Elements children = {};
+    Elements children = Elements(3);
     std::optional<Element> parent = std::nullopt;
 
     attributes::Div attributes = attributes::getDefaultDivAttributes();
