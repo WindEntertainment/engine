@@ -1,8 +1,7 @@
 #include "wind/dom/dom/index.hpp"
 #include "wind/dom/shadow-dom/index.hpp"
-#include <editor/editor.hpp>
-#include <editor/main.hpp>
-
+#include <wind/utils/utils.hpp>
+#include "wind/wind.hpp"
 #include "wind/asset-pipeline/asset-manager.hpp"
 
 #include "wind/renderer/command-buffer.hpp"
@@ -11,22 +10,34 @@
 #include "wind/input-system/input-system.hpp"
 
 namespace editor {
+  using namespace wind::dom::shadow;
+  namespace dom = wind::dom;
+
+  template <typename T>
+  using shared = std::shared_ptr<T>;
+
   class Editor : public wind::Game {
-    std::shared_ptr<wind::dom::shadow::Root> shadowRoot;
-    std::shared_ptr<wind::dom::shadow::Root> prevShadowRoot;
-    std::shared_ptr<wind::dom::Root> root;
-    // std::shared_ptr<projectManager::ProjectManager> projectManager;
+    shared<dom::Root> root;
+    shared<Root> shadowRoot;
+    shared<Root> prevShadowRoot;
+
+    shared<wind::Font> font = nullptr;
+
+    bool isButtonsVisible = false;
 
   public:
     void start() override {
       wind::Engine::setTargetFPS(60);
+
+      wind::AssetManager::loadBundle("res/main.bundle");
+
       auto window = wind::Engine::getMainWindow();
       auto rendererContext = wind::Engine::getMainRenderContext();
 
       wind::Engine::getMainRenderContext()->setCamera(
         std::make_shared<wind::Camera>(
-          glm::vec3{0, 0, 1},
-          glm::vec3{0, 0, 1},
+          glm::vec3{1, -1, -1},
+          glm::vec3{0, 0, -1},
           glm::vec3{0, 1, 0},
           glm::ivec2{
             wind::Engine::getMainWindow()->size().x,
@@ -35,35 +46,17 @@ namespace editor {
         )
       );
 
-      root = wind::dom::init(window->size());
-      shadowRoot = wind::dom::shadow::init(window->size());
-      auto prevShadowRoot2 = shadowRoot->deepCopy();
-      std::shared_ptr<wind::dom::shadow::Root> qwe =
-        std::dynamic_pointer_cast<wind::dom::shadow::Root>(prevShadowRoot2);
-      if (qwe) {
-        prevShadowRoot = qwe;
-      }
+      root = dom::init(window->size());
+      shadowRoot = init(root);
+      prevShadowRoot = std::make_shared<Root>(shadowRoot->id);
 
-      auto button2 =
-        wind::dom::shadow::createElement<wind::dom::shadow::Button>();
-      button2->attributes.position = {100, 100};
+      font = wind::AssetManager::getAsset<wind::Font>(
+        "main/fonts/SourGummy-VariableFont.ttf"
+      );
 
-      auto button =
-        wind::dom::shadow::createElement<wind::dom::shadow::Button>();
-      button->attributes.onClick =
-        [&button, &shadowRoot = shadowRoot, button2]() mutable {
-          spdlog::info(shadowRoot->children.size());
-          if (shadowRoot->children.size() == 1) {
-            shadowRoot->appendChild(button2);
-          } else {
-            shadowRoot->removeChild(button2->id);
-          }
-        };
-      button->attributes.onHover = [button = button]() mutable {
-        button->attributes.backgroundColor = glm::vec4{1.f, 0.f, 1.f, 1.f};
-      };
+      // auto example = createElement<Div>();
 
-      shadowRoot->appendChild(button);
+      // mergeAttributes2(example);
     };
 
     void handleEvent(SDL_Event& event) override {
@@ -74,25 +67,56 @@ namespace editor {
       wind::CommandBuffer render(wind::Engine::getMainRenderContext());
       render.clear({0.0f, 0.0f, 0.05f, 1.f});
 
-      root->display(render);
+      nextId = 1;
 
+      shadowRoot->attributes.backgroundColor = glm::vec4{0.3f, 0.2f, 0.8f, 1.f};
+
+      auto button = createElement<Div>();
+      button->attributes.size = {100, 100};
+      button->attributes.onClick = [&isButtonsVisible = isButtonsVisible,
+                                    &shadowRoot = shadowRoot](auto) mutable {
+        isButtonsVisible = shadowRoot->children.size() == 1;
+      };
+      appendChild(button, shadowRoot);
+
+      if (isButtonsVisible) {
+        auto button2 = createElement<Div>();
+        button2->attributes.position = {100, 100};
+        button2->attributes.size = {100, 100};
+
+        auto button3 = createElement<Div>();
+        button3->attributes.position = {200, 200};
+        button3->attributes.size = {100, 100};
+
+        auto text = createElement<Text>();
+        text->attributes.value = "CHIKI BRIKI";
+        text->attributes.scale = glm::vec2{2.f, 2.f};
+        text->attributes.color = glm::vec4{1.f, 0.5f, 0.1f, 1.f};
+        text->attributes.font = font;
+
+        appendChild(text, button2);
+        appendChild(button2, shadowRoot);
+        appendChild(button3, shadowRoot);
+      }
+
+      auto diff = Diff();
+      getDiff(prevShadowRoot, shadowRoot, diff);
+      fromDiff(root, diff);
+
+      root->display(render);
       render.submit();
 
-      wind::dom::shadow::Diff diff = wind::dom::shadow::Diff();
-
-      wind::dom::shadow::getDiff(prevShadowRoot, shadowRoot, diff);
-
-      wind::dom::shadow::fromDiff(root, diff);
-
-      auto prevShadowRoot2 = shadowRoot->deepCopy();
-      std::shared_ptr<wind::dom::shadow::Root> qwe =
-        std::dynamic_pointer_cast<wind::dom::shadow::Root>(prevShadowRoot2);
-      if (qwe) {
-        prevShadowRoot = qwe;
-      }
+      destroy(prevShadowRoot);
+      prevShadowRoot = shadowRoot;
+      shadowRoot = std::make_shared<Root>(shadowRoot->id);
+      shadowRoot->attributes.size = root->attributes.size;
+      shadowRoot->attributes.position = root->attributes.position;
     };
 
-    void quit() override {};
+    void quit() override {
+      destroy(shadowRoot);
+      destroy(prevShadowRoot);
+    };
   };
 } // namespace editor
 

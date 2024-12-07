@@ -7,12 +7,14 @@ namespace wind::dom {
   public:
     Div(unsigned int id, attributes::Div attributes);
 
-    GET_PTR();
+    GET_REAL_PTR(Div);
+
+    bool innerIsHovered = false;
 
     void render(wind::CommandBuffer& renderer) override;
     void update() override;
-    void reset() override;
+    // void reset() override;
 
-    attributes::Div attributes = attributes::defaultDivAttributes;
+    attributes::Div attributes = attributes::getDefaultDivAttributes();
   };
 } // namespace wind::dom

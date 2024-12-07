@@ -7,6 +7,8 @@
 
 #include "wind/input-system/input-system.hpp"
 
+#include "wind/language/language.hpp"
+
 #include <glm/ext/matrix_transform.hpp>
 
 using uint = unsigned int;
@@ -85,36 +87,36 @@ namespace game {
         wind::Key{
           .keycode = wind::Keycode::K_S, .action = wind::KeyAction::Pressed
         },
-        new std::function([&velocity=velocity, speed=speed](std::shared_ptr<wind::InputSystemContext> ctx) {
-          velocity = -speed;
-        })
+        new std::function([&velocity = velocity, speed = speed](
+                            std::shared_ptr<wind::InputSystemContext> ctx
+                          ) { velocity = -speed; })
       );
       wind::InputSystem::addTrigger(
         "player-move-down",
         wind::Key{
           .keycode = wind::Keycode::K_W, .action = wind::KeyAction::Pressed
         },
-        new std::function([&velocity = velocity, speed = speed](std::shared_ptr<wind::InputSystemContext> ctx) { 
-            velocity = speed;
-        })
+        new std::function([&velocity = velocity, speed = speed](
+                            std::shared_ptr<wind::InputSystemContext> ctx
+                          ) { velocity = speed; })
       );
       wind::InputSystem::addTrigger(
         "player-move-left",
         wind::Key{
           .keycode = wind::Keycode::K_A, .action = wind::KeyAction::Pressed
         },
-        new std::function([&angularVelocity = angularVelocity, speed = speed](std::shared_ptr<wind::InputSystemContext> ctx) {
-          angularVelocity = speed;
-         })
+        new std::function([&angularVelocity = angularVelocity, speed = speed](
+                            std::shared_ptr<wind::InputSystemContext> ctx
+                          ) { angularVelocity = speed; })
       );
       wind::InputSystem::addTrigger(
         "player-move-right",
         wind::Key{
           .keycode = wind::Keycode::K_D, .action = wind::KeyAction::Pressed
         },
-        new std::function([&angularVelocity = angularVelocity, speed = speed](std::shared_ptr<wind::InputSystemContext> ctx) {
-          angularVelocity = -speed;
-        })
+        new std::function([&angularVelocity = angularVelocity, speed = speed](
+                            std::shared_ptr<wind::InputSystemContext> ctx
+                          ) { angularVelocity = -speed; })
       );
     }
 
@@ -197,13 +199,12 @@ namespace game {
       render.submit();
 
       transform = glm::translate(
-        transform,
-        {0, velocity * wind::Engine::getDeltaTime(), 0.f}
+        transform, {0, velocity * wind::Engine::getDeltaTime(), 0.f}
       );
       transform = glm::rotate(
         transform, angularVelocity * wind::Engine::getDeltaTime(), {0, 0, 1}
       );
-      
+
       auto pos = transform * glm::vec4{0, 0, 0, 1};
       if (pos.x >= 400) {
         transform = glm::mat4(1);

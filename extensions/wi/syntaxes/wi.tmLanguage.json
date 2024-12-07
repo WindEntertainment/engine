@@ -1,0 +1,182 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "wi",
+  "scopeName": "source.wi",
+  "patterns": [
+    { "include": "#keywords" },
+    { "include": "#types" },
+    { "include": "#controlStructures" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#functions" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "match": "\\b(\\w+)\\s*\\b:\\b(\\w+)\\s*\\b{",
+          "captures": {
+            "1": {
+              "name": "entity.name.type.class"
+            }
+          }
+        },
+        {
+          "match": "\\bimport\\s+(\\w+)",
+          "name": "keyword.control",
+          "captures": {
+            "1": {
+              "name": "entity.name.type.class"
+            }
+          }
+        },
+        {
+          "match": "\\b(export)\\s+module\\s+(\\w+)",
+          "name": "keyword.control",
+          "captures": {
+            "2": {
+              "name": "entity.name.type.class"
+            }
+          }
+        },
+        {
+          "match": "\\b(\\w+)\\s*:\\s*(void|s|b|char|byte|i8|i16|i32|i64|i128|f8|f16|f32|f64|f128)",
+          "captures": {
+            "1": {
+              "name": "variable.parameter"
+            },
+            "2": {
+              "name": "storage.type"
+            }
+          }
+        },
+        {
+          "match": "\\b(\\w+)::(\\w+)\\s*\\(",
+          "captures": {
+            "1": {
+              "name": "entity.name.type.class"
+            },
+            "2": {
+              "name": "entity.name.function"
+            }
+          }
+        },
+        {
+          "match": "\\b(\\w+)::(\\w+)\\b",
+          "captures": {
+            "1": {
+              "name": "entity.name.type.class"
+            },
+            "2": {
+              "name": "variable.other.declaration"
+            }
+          }
+        },
+        {
+          "match": "\\blet\\s+(mut\\s+)?(\\w+)",
+          "name": "storage.type",
+          "captures": {
+            "2": {
+              "name": "variable.other.declaration"
+            }
+          }
+        },
+        {
+          "match": "\\bnew\\s+(\\w+)\\s*\\(",
+          "name": "keyword.control",
+          "captures": {
+            "1": {
+              "name": "entity.name.type.class"
+            }
+          }
+        },
+        {
+          "match": "\\b(\\w+)::",
+          "captures": {
+            "1": {
+              "name": "entity.name.type.class"
+            }
+          }
+        },
+        {
+          "match": "\\blet\\s+(\\w+)",
+          "name": "storage.type",
+          "captures": {
+            "1": {
+              "name": "variable.other.declaration"
+            }
+          }
+        },
+        {
+          "match": "\\b(class|struct)\\s+(\\w+)",
+          "name": "storage.type",
+          "captures": {
+            "2": {
+              "name": "entity.name.type.class"
+            }
+          }
+        },
+        {
+          "name": "entity.name.function",
+          "match": "\\b\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\("
+        },
+        {
+          "name": "constant.language",
+          "match": "\\b(true|false)\\b"
+        },
+        {
+          "name": "constant.numeric",
+          "match": "\\b\\d+(\\.\\d+)?\\b"
+        },
+        {
+          "name": "constant.character",
+          "match": "'([^'\\n]|\\.)'"
+        },
+        {
+          "name": "keyword.control",
+          "match": "\\b(if|else|for|while|continue|return|break|throw|new|await|export|import|module)\\b"
+        },
+        {
+          "name": "storage.modifier",
+          "match": "\\b(static|public|private|mut|async)\\b"
+        },
+        {
+          "name": "storage.type",
+          "match": "\\b(class|struct|let|void|s|b|char|byte|i8|i16|i32|i64|i128|f8|f16|f32|f64|f128)\\b"
+        },
+        { "name": "variable.language", "match": "\\b(this)\\b" },
+        {
+          "name": "constant.regexp.wi",
+          "match": "/([^/]|\\/)+/"
+        },
+        {
+          "name": "string.interpolated",
+          "begin": "`",
+          "end": "`",
+          "patterns": [
+            {
+              "name": "keyword.control",
+              "match": "\\{|\\}"
+            }
+          ]
+        },
+        {
+          "match": "[+\\-*/%&|^~<>!=]=?|&&|\\|\\||<<|>>",
+          "name": "keyword.operator"
+        },
+        {
+          "name": "string.quoted.double.wi",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.wi",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

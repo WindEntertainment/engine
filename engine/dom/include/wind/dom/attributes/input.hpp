@@ -1,20 +1,63 @@
 #pragma once
-#include <wind/utils/utils.hpp>
-#include "base.hpp"
+#include "wind/dom/utils/index.hpp"
+#include "wind/renderer/command-buffer.hpp"
+
+namespace wind::dom {
+  class Input;
+};
 
 namespace wind::dom::attributes {
-  struct Input : public attributes::Base {
-    bool tmp = {false};
+  struct Input {
+    std::optional<std::function<void(std::shared_ptr<::wind::dom::Input>)>>
+      onHover;
+    std::optional<glm::vec4> backgroundColor;
+    std::optional<std::shared_ptr<Texture>> texture;
+    std::optional<float> angle;
+    std::optional<float> borderRadius;
+    std::optional<float> borderWidth;
+    std::optional<glm::vec4> borderColor;
+    std::optional<std::function<void(std::shared_ptr<::wind::dom::Input>)>>
+      onClick;
+    std::optional<glm::vec2> position;
+    std::optional<glm::vec2> size;
 
-    bool compare(const attributes::Base& attributes) override {
-      const attributes::Input* attrs =
-        dynamic_cast<const attributes::Input*>(&attributes);
-      if (!attrs) {
-        return false;
-      }
-
-      return std::tie(this->tmp) == std::tie(attrs->tmp);
+    auto asTuple() const {
+      return std::tie(
+        backgroundColor,
+        texture,
+        angle,
+        borderRadius,
+        borderWidth,
+        borderColor,
+        position,
+        size
+      );
     }
+
+    auto asMutableTuple() {
+      return std::tie(
+        backgroundColor,
+        texture,
+        angle,
+        borderRadius,
+        borderWidth,
+        borderColor,
+        position,
+        size
+      );
+    }
+
+    bool operator==(const attributes::Input& element) {
+      auto a = asTuple();
+      auto b = element.asTuple();
+
+      return utils::compareTuples(a, b);
+    };
   };
-  static const attributes::Input defaultInputAttributes = {};
+
+  static auto getDefaultInputAttributes = []() {
+    auto attrs = attributes::Input();
+    attrs.position = {0, 0};
+    return attrs;
+  };
 } // namespace wind::dom::attributes

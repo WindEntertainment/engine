@@ -1,17 +1,39 @@
 #pragma once
 #include <wind/dom/shadow-dom/shared.hpp>
-#include "element.hpp"
+#include <wind/dom/shadow-dom/pool-manager.hpp>
 
 namespace wind::dom::shadow {
-  class Select : public UIElement, public std::enable_shared_from_this<Select> {
+  struct Select : public std::enable_shared_from_this<Select> {
   public:
     Select();
-    Select(const unsigned int id);
+    Select(unsigned int id);
 
-    DEEP_COPY(Select, attributes::Select);
-    GET_PTR();
-    COMPARE(Select);
+    // void destroy() {
+    //   parent = std::nullopt;
+    //   for (const auto& child : children) {
+    //     // std::visit([](auto c) { c->destroy(); }, child);
+    //   }
+    //   reset();
+    //   PoolManager::releaseFromPool(shared_from_this());
+    // }
 
-    attributes::Select attributes = attributes::defaultSelectAttributes;
+    // void reset() {
+    //   // id = 0;
+    //   // children = {};
+    //   // children.reserve(3);
+    // };
+
+    unsigned int id;
+
+    bool operator==(Select& element) {
+      return attributes == element.attributes;
+    };
+
+    Elements children = Elements(3);
+    std::optional<Element> parent = std::nullopt;
+
+    attributes::Select attributes = attributes::getDefaultSelectAttributes();
+    attributes::Select hoverAttributes = {};
+    attributes::Select clickAttributes = {};
   };
 } // namespace wind::dom::shadow

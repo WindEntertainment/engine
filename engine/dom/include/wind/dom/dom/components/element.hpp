@@ -8,18 +8,18 @@ namespace wind::dom {
 
     UIElement(unsigned int id);
 
-    virtual void reset() {};
+    // virtual void reset() {};
     virtual void update() = 0;
-    virtual Ptr getPtr() = 0;
+    // virtual Ptr getPtr() = 0;
     virtual void render(wind::CommandBuffer& renderer) = 0;
 
-    void appendChild(Ptr child);
+    void appendChild(Ptr child, Ptr parent);
     void display(wind::CommandBuffer& renderer);
     void removeChild(unsigned int childId);
 
     const unsigned int id;
-    std::vector<Ptr> children;
-    std::shared_ptr<UIElement> parent = nullptr;
+    std::vector<Ptr> children = std::vector<Ptr>(3);
+    Ptr parent = nullptr;
 
   protected:
   };

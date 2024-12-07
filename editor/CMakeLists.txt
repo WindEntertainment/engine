@@ -1,8 +1,8 @@
 project(editor)
 
 set(HEADERS
-  ./app/include/editor/editor.hpp
-  ./app/include/editor/main.hpp
+  # ./app/include/editor/editor.hpp
+  # ./app/include/editor/main.hpp
   # ./app/include/editor/shared/file-picker.hpp
   # ./app/include/editor/shared/menu/menu-item.hpp
   # ./app/include/editor/shared/menu/menu-bar.hpp
@@ -55,10 +55,6 @@ set(SOURCES
 
 add_wind_game(${PROJECT_NAME} "main;" ${HEADERS} ${SOURCES} ${BINDINGS})
 
-find_package(imgui REQUIRED)
 find_package(spdlog REQUIRED)
-
-target_link_libraries(${PROJECT_NAME} PUBLIC imgui::imgui spdlog::spdlog)
-target_link_libraries(${PROJECT_NAME} PUBLIC wind ImGuiFileDialog)
 
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ./app/include/)
