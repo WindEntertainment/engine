@@ -1,7 +1,8 @@
+#pragma once
 #include "wind/utils/utils.hpp"
 
 namespace wind {
-  namespace wdlang {
+  namespace wi {
 
     class Tokenizer {
       friend class TokenStream;
@@ -62,9 +63,7 @@ namespace wind {
         cPos = 0;
       }
 
-      TokenStream& getStream() { 
-        return stream;
-      }
+      TokenStream& getStream() { return stream; }
 
     private:
       TokenStream stream;
@@ -203,5 +202,5 @@ namespace wind {
       }
     };
 
-  } // namespace wdlang
+  } // namespace wi
 } // namespace wind
