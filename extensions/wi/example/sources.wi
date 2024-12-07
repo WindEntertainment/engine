@@ -1,0 +1,72 @@
+import math
+
+export module program
+
+export program {
+  class Player : Container, A, B {
+  public:
+    let mut x: i32 = 3
+
+    i32 add(a: i32, b: i32, c: i32 = 5) => a + b + c
+
+    void update() {
+      let y: i8 = 255
+      let z: f32 = 100
+
+      let response = await math::asyncAdd(1, 2)
+
+      if !response {
+        throw new Error()
+      }
+
+      x = x * (y - z) / -(100 + x)
+    }
+
+  private:
+    let canMove: b = false
+    let string: s = "LOONG STRING \n"
+
+    s getName() {
+      return "NeutrinoZh"
+    }
+  }
+
+  struct Board : Container, A, B {
+    void example(a: b) {
+      for let i = 0; i < 10; ++1 {
+        i += 1
+      }
+
+      while false || (true && a) {
+        i = 10
+        if false {
+          break
+        } else {
+          continue
+        }
+      }
+
+      if false {
+        let b: b = true
+        let c: b = true
+        return b
+      }
+
+      if true {
+        return true
+      }
+    }
+  }
+
+  i32 add(a: i32, b: i32, c: i32 = 5) {
+    return 132
+  }
+
+  let c = new Player()
+  let s = new Board()
+}
+
+
+export s outerFunction(a: i32, b: i32, c: i32 = 5) {
+  return `SUM: {a + b + c}`
+}
