@@ -26,7 +26,7 @@ jobs:
           - {
               name: 'Ubuntu',
               wasm: 'false',
-              projectRoot: '/home/runner/work/ideal-engine/ideal-engine',
+              projectRoot: '/home/runner/work/engine/engine',
               artifact: '${{ github.event.pull_request.title }}',
               os: 'ubuntu-latest',
               conanBuildType: 'Debug',
@@ -60,7 +60,7 @@ jobs:
           - {
               name: 'MacOS',
               wasm: 'false',
-              projectRoot: '/Users/runner/work/ideal-engine/ideal-engine',
+              projectRoot: '/Users/runner/work/engine/engine',
               artifact: '${{ github.event.pull_request.title }}',
               os: 'macos-14',
               conanBuildType: 'Debug',
@@ -100,7 +100,7 @@ jobs:
           - {
               name: 'Windows',
               wasm: 'false',
-              projectRoot: 'D:/a/ideal-engine',
+              projectRoot: 'D:/a/engine',
               artifact: '${{ github.event.pull_request.title }}',
               os: 'windows-latest',
               conanBuildType: 'Release',
@@ -111,7 +111,7 @@ jobs:
           - {
               name: 'Ubuntu',
               wasm: 'false',
-              projectRoot: '/home/runner/work/ideal-engine/ideal-engine',
+              projectRoot: '/home/runner/work/engine/engine',
               artifact: '${{ github.event.pull_request.title }}',
               os: 'ubuntu-latest',
               conanBuildType: 'Release',
@@ -122,7 +122,7 @@ jobs:
           - {
               name: 'MacOS',
               wasm: 'false',
-              projectRoot: '/Users/runner/work/ideal-engine/ideal-engine',
+              projectRoot: '/Users/runner/work/engine/engine',
               artifact: '${{ github.event.pull_request.title }}',
               os: 'macos-14',
               conanBuildType: 'Release',
@@ -174,7 +174,7 @@ jobs:
           - {
               wasm: 'true',
               name: 'Windows',
-              projectRoot: 'D:/a/ideal-engine',
+              projectRoot: 'D:/a/engine',
               artifact: 'dreich-windows',
               os: 'windows-latest',
               conanBuildType: 'Debug',
@@ -185,7 +185,7 @@ jobs:
           - {
               wasm: 'true',
               name: 'Ubuntu',
-              projectRoot: '/home/runner/work/ideal-engine/ideal-engine',
+              projectRoot: '/home/runner/work/engine/engine',
               artifact: 'dreich-linux',
               os: 'ubuntu-latest',
               conanBuildType: 'Debug',
@@ -196,7 +196,7 @@ jobs:
           - {
               wasm: 'true',
               name: 'MacOS',
-              projectRoot: '/Users/runner/work/ideal-engine/ideal-engine',
+              projectRoot: '/Users/runner/work/engine/engine',
               artifact: 'dreich-macos',
               os: 'macos-14',
               conanBuildType: 'Debug',
