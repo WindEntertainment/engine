@@ -27,7 +27,9 @@ namespace wind::dom::shadow {
 
     unsigned int id;
 
-    bool operator==(Div& element) { return attributes == element.attributes; };
+    bool operator==(const Div& element) {
+      return attributes == element.attributes;
+    };
 
     Elements children = {};
     std::optional<Element> parent = std::nullopt;

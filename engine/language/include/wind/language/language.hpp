@@ -4,703 +4,695 @@
 namespace wind {
   class LangImpl;
 
-	namespace wdlang {
-		struct Node {
+  namespace wdlang {
+    struct Node {
       virtual void execute(LangImpl*) = 0;
     };
 
-		template <typename Derived> 
-		struct NodeCRTP : public Node {
-			void execute(LangImpl* executor) override;
-		};
+    template <typename Derived>
+    struct NodeCRTP : public Node {
+      void execute(LangImpl* executor) override;
+    };
 
-		template <typename Derived>
+    template <typename Derived>
     struct Expression : public NodeCRTP<Derived> {};
 
-		struct Value : public Expression<Value> {
-			enum ValueType {
-				Number,
-				Char,
-				String,
-			};
+    struct Value : public Expression<Value> {
+      enum ValueType {
+        Number,
+        Char,
+        String,
+      };
 
-			ValueType type;
+      ValueType type;
       std::string value;
-		};
+    };
 
     struct Identifier : public Expression<Identifier> {
       std::string name;
 
-			Identifier(std::string&& name) : name(name) {}
-		};
-    
-		struct BinaryOperation : public Expression<BinaryOperation> {
-			enum OperationType {
-				Add, 
-				Sub, 
-				Mul,
-				Div,
-				Equal,
-				NotEqual,
-				Greater,
-				Less,
+      Identifier(std::string&& name) : name(name) {}
+    };
+
+    struct BinaryOperation : public Expression<BinaryOperation> {
+      enum OperationType {
+        Add,
+        Sub,
+        Mul,
+        Div,
+        Equal,
+        NotEqual,
+        Greater,
+        Less,
         GreaterOrEqual,
-				LessOrEqual,
-				And,
-				Or
+        LessOrEqual,
+        And,
+        Or
       };
 
-			OperationType type;
+      OperationType type;
       Node* lhs;
       Node* rhs;
-		};
+    };
 
     struct UnaryOperation : public Expression<UnaryOperation> {
-			enum OperationType {
-				NEGATE
-			};
+      enum OperationType { NEGATE };
 
-			OperationType type;
+      OperationType type;
       Node* operand;
-		};
+    };
 
-		struct AssignStatement : public NodeCRTP<AssignStatement> {
-			std::string name;
-			Node* value;
-		};
+    struct AssignStatement : public NodeCRTP<AssignStatement> {
+      std::string name;
+      Node* value;
+    };
 
-		struct VariableStatement : public NodeCRTP<VariableStatement> {
-			bool isMutable;
-			std::string type;
-			std::string name;
-			Node* value;
-		};
+    struct VariableStatement : public NodeCRTP<VariableStatement> {
+      bool isMutable;
+      std::string type;
+      std::string name;
+      Node* value;
+    };
 
-		struct ClassMember : public NodeCRTP<ClassMember> {
-			enum AccessModifier {
-				Private,
-				Public
-			};
+    struct ClassMember : public NodeCRTP<ClassMember> {
+      enum AccessModifier { Private, Public };
 
-			AccessModifier access;
-			Node* member;
-		};
+      AccessModifier access;
+      Node* member;
+    };
 
-		struct ClassStatement : public NodeCRTP<ClassStatement> {
-			std::string name;
-			std::string parent;
-			std::list<std::string> interfaces;
-			std::list<ClassMember*> members;
-		};
+    struct ClassStatement : public NodeCRTP<ClassStatement> {
+      std::string name;
+      std::string parent;
+      std::list<std::string> interfaces;
+      std::list<ClassMember*> members;
+    };
 
-		struct FunctionArgumentStatement : public NodeCRTP<FunctionArgumentStatement> {
-			std::string name;
-			std::string type;
-			Node* defaultValue;
-		};
+    struct FunctionArgumentStatement
+        : public NodeCRTP<FunctionArgumentStatement> {
+      std::string name;
+      std::string type;
+      Node* defaultValue;
+    };
 
-		struct FunctionStatement : public NodeCRTP<FunctionStatement> {
-			std::string type;
-			std::string name;
-			std::list<FunctionArgumentStatement*> args;
-			std::list<Node*> body;
-		};
-	
-		struct ReturnStatement : public NodeCRTP<ReturnStatement> {
-			Node* value;
-		};
+    struct FunctionStatement : public NodeCRTP<FunctionStatement> {
+      std::string type;
+      std::string name;
+      std::list<FunctionArgumentStatement*> args;
+      std::list<Node*> body;
+    };
 
-		class AST {
-			using Token = Tokenizer::Token;
+    struct ReturnStatement : public NodeCRTP<ReturnStatement> {
+      Node* value;
+    };
+
+    class AST {
+      using Token = Tokenizer::Token;
+
     public:
-			struct Error {
+      struct Error {
         int position;
         int line;
         std::string message;
-				Tokenizer::Token token;
-			};
+        Tokenizer::Token token;
+      };
 
-			AST(Tokenizer::TokenStream& tokenStream): tokenStream(tokenStream) {
-          parse();
-			};
+      AST(Tokenizer::TokenStream& tokenStream) : tokenStream(tokenStream) {
+        parse();
+      };
 
-			std::queue<Error> getErrors() const {
-        return errorStack;
-			}
+      std::queue<Error> getErrors() const { return errorStack; }
 
-			std::vector<Node*> getRoot() const {
-				return ast;
-			}
+      std::vector<Node*> getRoot() const { return ast; }
 
     private:
-			std::queue<Error> errorStack;
-			
-			std::vector<Node*> ast;
-			std::vector<Token> tokens;
-			Tokenizer::TokenStream& tokenStream;
+      std::queue<Error> errorStack;
 
-			int currentPosition = 0;
+      std::vector<Node*> ast;
+      std::vector<Token> tokens;
+      Tokenizer::TokenStream& tokenStream;
 
-			enum class Scope {
-				Global,
-				InNamespace,
-				InClass,
-				InFunction
-			};
+      int currentPosition = 0;
 
-			Scope currentScope;
+      enum class Scope { Global, InNamespace, InClass, InFunction };
 
-			//===========================================//
-			// Utils
+      Scope currentScope;
 
-			Token& get(unsigned int relativePosition = 0) {
+      //===========================================//
+      // Utils
+
+      Token& get(unsigned int relativePosition = 0) {
         int pos = currentPosition + relativePosition;
 
-				while (pos >= tokens.size()) {
+        while (pos >= tokens.size()) {
           auto token = tokenStream.get();
           if (token.type == Token::Unknown)
-						errorStack.push(Error{
-						 	.position = tokenStream.position,
-							.line = tokenStream.line, 
-							.message = "Unknown symbol",
-							.token = token
-						});
+            errorStack.push(Error{
+              .position = tokenStream.position,
+              .line = tokenStream.line,
+              .message = "Unknown symbol",
+              .token = token
+            });
 
-					tokens.emplace_back(token);
-				}
+          tokens.emplace_back(token);
+        }
 
-				return tokens[pos];
-			}
+        return tokens[pos];
+      }
 
-			Token& shift(unsigned int step = 1) {
-				currentPosition += step;
+      Token& shift(unsigned int step = 1) {
+        currentPosition += step;
         return get(0);
-			}
+      }
 
-			Token& consume() { 
+      Token& consume() {
         shift();
-				return get(-1);
-			}
+        return get(-1);
+      }
 
-			bool isType(Token::TokenType type, int relativePosition = 0) { 
-				auto res = get(relativePosition).type == type;
-				
-				if (res)
-					shift();
+      bool isType(Token::TokenType type, int relativePosition = 0) {
+        auto res = get(relativePosition).type == type;
 
-				return res;
-			}
+        if (res)
+          shift();
 
-			bool isEqual(Token::TokenType type, std::string&& value, int relativePosition = 0) {
-				auto token = get(relativePosition);
-				auto res = token.type == type && token.value == value;
+        return res;
+      }
 
-				if (res)
-					shift();
+      bool isEqual(
+        Token::TokenType type,
+        std::string&& value,
+        int relativePosition = 0
+      ) {
+        auto token = get(relativePosition);
+        auto res = token.type == type && token.value == value;
 
-				return res;
-			}
+        if (res)
+          shift();
 
-			void except(Token::TokenType type, std::string&& value) {
+        return res;
+      }
+
+      void except(Token::TokenType type, std::string&& value) {
         if (isEqual(type, std::move(value)))
-					return;
+          return;
 
-				push(fmt::format("Syntax Error: Except '{}'. Unexcepted sybmol.", value));
-			}
+        push(fmt::format("Syntax Error: Except '{}'. Unexcepted sybmol.", value)
+        );
+      }
 
-			void except(Token::TokenType type) {
+      void except(Token::TokenType type) {
         if (isType(type))
-					return;
+          return;
 
-				push("Syntax Error: Unexcepted sybmol");
-			}
+        push("Syntax Error: Unexcepted sybmol");
+      }
 
-			void push(const std::string&& message) {
+      void push(const std::string&& message) {
         errorStack.push(Error{
           .position = tokenStream.position,
           .line = tokenStream.line,
           .message = message,
           .token = get(-1)
         });
-			}
+      }
 
-			//===========================================//
-			// Parsing
+      //===========================================//
+      // Parsing
 
-			void parse() {
-				while (get(0).type != Token::T_EOF) {
-					currentScope = Scope::Global;
-					ast.emplace_back(statement());
-				}
-			}
+      void parse() {
+        while (get(0).type != Token::T_EOF) {
+          currentScope = Scope::Global;
+          ast.emplace_back(statement());
+        }
+      }
 
-			Node* statement() { 
-				return classS();
-			}
+      Node* statement() { return classS(); }
 
-			Node* classS() { 
-				if (isEqual(Token::Word, "class")) {
-					
-					except(Token::Word);
+      Node* classS() {
+        if (isEqual(Token::Word, "class")) {
+          except(Token::Word);
           auto name = get(-1).value;
 
           std::string parent = "";
-					if (isEqual(Token::Word, "extends")) {
+          if (isEqual(Token::Word, "extends")) {
             except(Token::Word);
-						parent = get(-1).value;
-					}
+            parent = get(-1).value;
+          }
 
-					std::list<std::string> interfaces = {};
+          std::list<std::string> interfaces = {};
           if (isEqual(Token::Word, "implements")) {
-						if (get().type != Token::Word) {
-              push("Syntax Error: Excepted interface to implements. Unexcepted symbol. ");
-							return nullptr;
-						}
+            if (get().type != Token::Word) {
+              push("Syntax Error: Excepted interface to implements. Unexcepted "
+                   "symbol. ");
+              return nullptr;
+            }
 
-						do {
+            do {
               interfaces.emplace_back(get().value);
 
               shift();
               if (!isEqual(Token::Operator, ","))
-								break;
+                break;
 
-						} while (get().type == Token::Word);                            
-					}
+            } while (get().type == Token::Word);
+          }
 
-					currentScope = Scope::InClass;
-					
-					std::list<ClassMember*> members = {};
-					ClassMember::AccessModifier currentAccess = ClassMember::Private;
+          currentScope = Scope::InClass;
 
-					except(Token::Operator, "{");
-					while (!isEqual(Token::Operator, "}")) {
-						
-						if (isEqual(Token::Word, "public")) {
-							except(Token::Operator, ":");
-							currentAccess = ClassMember::Public;
-							continue;
-						}
+          std::list<ClassMember*> members = {};
+          ClassMember::AccessModifier currentAccess = ClassMember::Private;
 
-						if (isEqual(Token::Word, "private")) {
-							except(Token::Operator, ":");
-							currentAccess = ClassMember::Private;
-							continue;
-						}
+          except(Token::Operator, "{");
+          while (!isEqual(Token::Operator, "}")) {
+            if (isEqual(Token::Word, "public")) {
+              except(Token::Operator, ":");
+              currentAccess = ClassMember::Public;
+              continue;
+            }
 
-						auto member = new ClassMember();
-						member->access = currentAccess;
-						member->member = statement();
+            if (isEqual(Token::Word, "private")) {
+              except(Token::Operator, ":");
+              currentAccess = ClassMember::Private;
+              continue;
+            }
 
-						if (!member->member)
-							continue;
+            auto member = new ClassMember();
+            member->access = currentAccess;
+            member->member = statement();
 
-						members.emplace_back(member);
-					}
+            if (!member->member)
+              continue;
 
-					currentScope = Scope::Global;
+            members.emplace_back(member);
+          }
 
-					auto statement = new ClassStatement();
-					statement->name = name;
-					statement->parent = parent;
-					statement->interfaces = interfaces;
-					statement->members = members;
+          currentScope = Scope::Global;
 
-					return statement;
-				}
+          auto statement = new ClassStatement();
+          statement->name = name;
+          statement->parent = parent;
+          statement->interfaces = interfaces;
+          statement->members = members;
 
-				if (
-					currentScope == Scope::InClass ||
-					currentScope == Scope::InFunction
-				) {
+          return statement;
+        }
+
+        if (currentScope == Scope::InClass ||
+            currentScope == Scope::InFunction) {
           return variable();
-				}
+        }
 
-				shift();
-				push("Syntax Error: In global scope may be only class defination statements");
-				return nullptr;
-			}
+        shift();
+        push("Syntax Error: In global scope may be only class defination "
+             "statements");
+        return nullptr;
+      }
 
-			Node* variable() { 
-				if (isEqual(Token::Word, "let")) {
-					auto isMutable = isEqual(Token::Word, "mut");
-          
-					except(Token::Word);
+      Node* variable() {
+        if (isEqual(Token::Word, "let")) {
+          auto isMutable = isEqual(Token::Word, "mut");
+
+          except(Token::Word);
           auto name = get(-1).value;
 
-					except(Token::Operator, ":");
+          except(Token::Operator, ":");
 
           except(Token::Word);
           auto type = get(-1).value;
 
-					except(Token::Operator, "=");
+          except(Token::Operator, "=");
           auto value = expression();
 
-					auto statement = new VariableStatement();
-					statement->isMutable = isMutable;
-					statement->type = type;
-					statement->name = name;
-					statement->value = value;
+          auto statement = new VariableStatement();
+          statement->isMutable = isMutable;
+          statement->type = type;
+          statement->name = name;
+          statement->value = value;
 
-					return statement;
-				}
+          return statement;
+        }
 
-				return function();
-			}
+        return function();
+      }
 
-			Node* function() { 
-				if (
-					get(0).type == Token::Word &&
-					get(1).type == Token::Word &&
-					get(2).type == Token::Operator &&
-					get(2).value == "("
-				) {
-					auto type = consume().value;
-					auto name = consume().value;
+      Node* function() {
+        if (get(0).type == Token::Word && get(1).type == Token::Word &&
+            get(2).type == Token::Operator && get(2).value == "(") {
+          auto type = consume().value;
+          auto name = consume().value;
 
-					std::list<FunctionArgumentStatement*> args = {};
-					bool require = false;
-					bool first = true;
+          std::list<FunctionArgumentStatement*> args = {};
+          bool require = false;
+          bool first = true;
 
           except(Token::Operator, "(");
-					while (!isEqual(Token::Operator, ")")) {
-						if (get(0).type == Token::T_EOF) {
-							push("Syntax Error: Unexcepted end of file");
-							return nullptr;	
-						}
+          while (!isEqual(Token::Operator, ")")) {
+            if (get(0).type == Token::T_EOF) {
+              push("Syntax Error: Unexcepted end of file");
+              return nullptr;
+            }
 
-						if (!first)
-							except(Token::Operator, ",");
-						first = false;
+            if (!first)
+              except(Token::Operator, ",");
+            first = false;
 
-						auto arg = functionArg(require);
+            auto arg = functionArg(require);
 
-						if (!arg)
-							return nullptr;
-						
-						args.emplace_back(arg);
-					}
+            if (!arg)
+              return nullptr;
 
-					std::list<Node*> body = {};
+            args.emplace_back(arg);
+          }
 
-					if (isEqual(Token::Operator, "->")) {
-						auto returnS = new ReturnStatement();
-						returnS->value = expression();
+          std::list<Node*> body = {};
+
+          if (isEqual(Token::Operator, "->")) {
+            auto returnS = new ReturnStatement();
+            returnS->value = expression();
             body.emplace_back(returnS);
-					}
-					else {
-						except(Token::Operator, "{");
-						while (!isEqual(Token::Operator, "}")) {
-							if (get(0).type == Token::T_EOF) {
-								push("Syntax Error: Unexcepted end of file");
-								return nullptr;	
-							}
+          } else {
+            except(Token::Operator, "{");
+            while (!isEqual(Token::Operator, "}")) {
+              if (get(0).type == Token::T_EOF) {
+                push("Syntax Error: Unexcepted end of file");
+                return nullptr;
+              }
 
-							currentScope = Scope::InFunction;
-							auto part = statement();
+              currentScope = Scope::InFunction;
+              auto part = statement();
 
-							if (!part) 
-								continue;
+              if (!part)
+                continue;
 
-							body.emplace_back(part);
-						}
-						
-						currentScope = Scope::InClass;
-					}
+              body.emplace_back(part);
+            }
 
-					auto statement = new FunctionStatement();
-					statement->name = name;
-					statement->type = type;
-					statement->args = args;
-					statement->body = body;
+            currentScope = Scope::InClass;
+          }
 
-					return statement;
-				}
+          auto statement = new FunctionStatement();
+          statement->name = name;
+          statement->type = type;
+          statement->args = args;
+          statement->body = body;
 
-				if (currentScope == Scope::InFunction) {
-					return returnS();
-				}
+          return statement;
+        }
 
-				shift();
-				push("Syntax Error: In class scope may be only member defination statements");
-				return nullptr;
-			}
-	
-			Node* returnS() {
-				if (isEqual(Token::Word, "return")) {
-					Node* result = nullptr;
-					if (!isEqual(Token::Operator, ";")) 
-						result = expression();
+        if (currentScope == Scope::InFunction) {
+          return returnS();
+        }
 
-					auto statement = new ReturnStatement();
-					statement->value = result;
+        shift();
+        push("Syntax Error: In class scope may be only member defination "
+             "statements");
+        return nullptr;
+      }
 
-					return statement;
-				}
+      Node* returnS() {
+        if (isEqual(Token::Word, "return")) {
+          Node* result = nullptr;
+          if (!isEqual(Token::Operator, ";"))
+            result = expression();
 
-				return assign();
-			}
+          auto statement = new ReturnStatement();
+          statement->value = result;
 
-			FunctionArgumentStatement* functionArg(bool& requireDefaultParam) {
+          return statement;
+        }
+
+        return assign();
+      }
+
+      FunctionArgumentStatement* functionArg(bool& requireDefaultParam) {
         if (isType(Token::Word)) {
-					auto name = get(-1).value;
+          auto name = get(-1).value;
           except(Token::Operator, ":");
-					except(Token::Word);
+          except(Token::Word);
           auto type = get(-1).value;
-					Node* value = nullptr;
+          Node* value = nullptr;
 
-					if (requireDefaultParam) 
+          if (requireDefaultParam)
             except(Token::Operator, "=");
-					else if (isEqual(Token::Operator, "="))
-						requireDefaultParam = true;
-					
-					if (requireDefaultParam)
-						value = expression();
+          else if (isEqual(Token::Operator, "="))
+            requireDefaultParam = true;
 
-					auto statement = new FunctionArgumentStatement();
-					statement->defaultValue = value;
-					statement->name = name;
-					statement->type = type;
+          if (requireDefaultParam)
+            value = expression();
 
-					return statement;
-				}
+          auto statement = new FunctionArgumentStatement();
+          statement->defaultValue = value;
+          statement->name = name;
+          statement->type = type;
 
-				shift(1);
+          return statement;
+        }
+
+        shift(1);
         push("Syntax Error: Excepted parameter name. Unexcepted symbol.");
-				return nullptr;
-			}
+        return nullptr;
+      }
 
-			Node* assign() { 
-				if (isType(Token::Word) && isEqual(Token::Operator, "=")) {
-					auto name = get(-2).value;
+      Node* assign() {
+        if (isType(Token::Word) && isEqual(Token::Operator, "=")) {
+          auto name = get(-2).value;
           auto value = expression();
 
-					auto statement = new AssignStatement();
-					statement->name = name;
-					statement->value = value;
+          auto statement = new AssignStatement();
+          statement->name = name;
+          statement->value = value;
 
-					return statement;
-				}
+          return statement;
+        }
 
-				shift();
-				push("Syntax error: Unexcepted symbol");
-				return nullptr;
-			}
+        shift();
+        push("Syntax error: Unexcepted symbol");
+        return nullptr;
+      }
 
-			Node* expression() {
-				return binaryPriority0();
-			}
+      Node* expression() { return binaryPriority0(); }
 
-			Node* binaryPriority0() {
+      Node* binaryPriority0() {
         auto result = binaryPriority1();
 
-				if (!result)
-					return nullptr;
+        if (!result)
+          return nullptr;
 
-				while (true) {
-					auto token = get();
-					if (token.type == Token::Operator && (
-						token.value == "&&"  ||
-						token.value == "||"
-					)) {
+        while (true) {
+          auto token = get();
+          if (token.type == Token::Operator &&
+              (token.value == "&&" || token.value == "||")) {
             shift();
 
-						auto binaryEx = new BinaryOperation();
-						binaryEx->lhs = result;
-						binaryEx->rhs = binaryPriority1();
+            auto binaryEx = new BinaryOperation();
+            binaryEx->lhs = result;
+            binaryEx->rhs = binaryPriority1();
 
-						if			(token.value == "&&") binaryEx->type = BinaryOperation::And;
-						else if (token.value == "||") binaryEx->type = BinaryOperation::Or;
-				
-						if (!binaryEx->rhs) {
-							push("Syntax Error: Unexcepted symbol. Excepted expression to binary operation");
-							return nullptr;
-						}
+            if (token.value == "&&")
+              binaryEx->type = BinaryOperation::And;
+            else if (token.value == "||")
+              binaryEx->type = BinaryOperation::Or;
 
-						result = binaryEx;
-					} else 
-						break;
-				}
+            if (!binaryEx->rhs) {
+              push("Syntax Error: Unexcepted symbol. Excepted expression to "
+                   "binary operation");
+              return nullptr;
+            }
 
-				return result;
-			}
+            result = binaryEx;
+          } else
+            break;
+        }
 
-			Node* binaryPriority1() {
+        return result;
+      }
+
+      Node* binaryPriority1() {
         auto result = binaryPriority2();
 
-				if (!result)
-					return nullptr;
+        if (!result)
+          return nullptr;
 
-				while (true) {
-					auto token = get();
-					if (token.type == Token::Operator && (
-						token.value == ">"  ||
-						token.value == "<"  ||
-						token.value == "==" ||
-						token.value == "!=" ||
-						token.value == ">=" ||
-						token.value == "<="
-					)) {
+        while (true) {
+          auto token = get();
+          if (token.type == Token::Operator &&
+              (token.value == ">" || token.value == "<" ||
+               token.value == "==" || token.value == "!=" ||
+               token.value == ">=" || token.value == "<=")) {
             shift();
 
-						auto binaryEx = new BinaryOperation();
-						binaryEx->lhs = result;
-						binaryEx->rhs = binaryPriority2();
+            auto binaryEx = new BinaryOperation();
+            binaryEx->lhs = result;
+            binaryEx->rhs = binaryPriority2();
 
-						if			(token.value == ">") binaryEx->type = BinaryOperation::Greater;
-						else if (token.value == "<") binaryEx->type = BinaryOperation::Less;
-						else if (token.value == "==") binaryEx->type = BinaryOperation::Equal;
-						else if (token.value == "!=") binaryEx->type = BinaryOperation::NotEqual;
-						else if (token.value == ">=") binaryEx->type = BinaryOperation::GreaterOrEqual;
-						else if (token.value == "<=") binaryEx->type = BinaryOperation::LessOrEqual;
-				
-						if (!binaryEx->rhs) {
-							push("Syntax Error: Unexcepted symbol. Excepted expression to binary operation");
-							return nullptr;
-						}
+            if (token.value == ">")
+              binaryEx->type = BinaryOperation::Greater;
+            else if (token.value == "<")
+              binaryEx->type = BinaryOperation::Less;
+            else if (token.value == "==")
+              binaryEx->type = BinaryOperation::Equal;
+            else if (token.value == "!=")
+              binaryEx->type = BinaryOperation::NotEqual;
+            else if (token.value == ">=")
+              binaryEx->type = BinaryOperation::GreaterOrEqual;
+            else if (token.value == "<=")
+              binaryEx->type = BinaryOperation::LessOrEqual;
 
-						result = binaryEx;
-					} else 
-						break;
-				}
+            if (!binaryEx->rhs) {
+              push("Syntax Error: Unexcepted symbol. Excepted expression to "
+                   "binary operation");
+              return nullptr;
+            }
 
-				return result;
-			}
+            result = binaryEx;
+          } else
+            break;
+        }
 
-			Node* binaryPriority2() {
+        return result;
+      }
+
+      Node* binaryPriority2() {
         auto result = binaryPriority3();
 
-				if (!result)
-					return nullptr;
+        if (!result)
+          return nullptr;
 
-				while (true) {
-					auto token = get();
-					if (token.type == Token::Operator && (
-						token.value == "+" ||
-						token.value == "-"
-					)) {
+        while (true) {
+          auto token = get();
+          if (token.type == Token::Operator &&
+              (token.value == "+" || token.value == "-")) {
             shift();
 
-						auto binaryEx = new BinaryOperation();
-						binaryEx->lhs = result;
-						binaryEx->rhs = binaryPriority3();
+            auto binaryEx = new BinaryOperation();
+            binaryEx->lhs = result;
+            binaryEx->rhs = binaryPriority3();
 
-						if			(token.value == "+") binaryEx->type = BinaryOperation::Add;
-						else if (token.value == "-") binaryEx->type = BinaryOperation::Sub;
-				
-						if (!binaryEx->rhs) {
-							push("Syntax Error: Unexcepted symbol. Excepted expression to binary operation");
-							return nullptr;
-						}
+            if (token.value == "+")
+              binaryEx->type = BinaryOperation::Add;
+            else if (token.value == "-")
+              binaryEx->type = BinaryOperation::Sub;
 
-						result = binaryEx;
-					} else 
-						break;
-				}
+            if (!binaryEx->rhs) {
+              push("Syntax Error: Unexcepted symbol. Excepted expression to "
+                   "binary operation");
+              return nullptr;
+            }
 
-				return result;
-			}
+            result = binaryEx;
+          } else
+            break;
+        }
 
-			Node* binaryPriority3() {
+        return result;
+      }
+
+      Node* binaryPriority3() {
         auto result = parentheses();
 
-				if (!result)
-					return nullptr;
+        if (!result)
+          return nullptr;
 
-				while (true) {
-					auto token = get();
-					if (token.type == Token::Operator && (
-						token.value == "*" ||
-						token.value == "/"
-					)) {
-						shift();
+        while (true) {
+          auto token = get();
+          if (token.type == Token::Operator &&
+              (token.value == "*" || token.value == "/")) {
+            shift();
 
-						auto binaryEx = new BinaryOperation();
-						binaryEx->lhs = result;
+            auto binaryEx = new BinaryOperation();
+            binaryEx->lhs = result;
             binaryEx->rhs = parentheses();
 
-						if			(token.value == "*") binaryEx->type = BinaryOperation::Mul;
-						else if (token.value == "/") binaryEx->type = BinaryOperation::Div;
+            if (token.value == "*")
+              binaryEx->type = BinaryOperation::Mul;
+            else if (token.value == "/")
+              binaryEx->type = BinaryOperation::Div;
 
-						if (!binaryEx->rhs) {
-							push("Syntax Error: Unexcepted symbol. Excepted expression to binary operation");
-							return nullptr;
-						}
+            if (!binaryEx->rhs) {
+              push("Syntax Error: Unexcepted symbol. Excepted expression to "
+                   "binary operation");
+              return nullptr;
+            }
 
-						result = binaryEx;
-					} else
-						break;
-				}
+            result = binaryEx;
+          } else
+            break;
+        }
 
-				return result;
-			}
+        return result;
+      }
 
-			Node* parentheses() { 
-				if (isEqual(Token::Operator, "(")) {
+      Node* parentheses() {
+        if (isEqual(Token::Operator, "(")) {
           auto result = expression();
-					if (!isEqual(Token::Operator, ")")) {
+          if (!isEqual(Token::Operator, ")")) {
             shift();
-            push("Syntax Error: Unmatched opening parenthesis '(' detected. Ensure every '(' has a corresponding ')' before the end of the expression.)");
-						return nullptr;
-					}
+            push("Syntax Error: Unmatched opening parenthesis '(' detected. "
+                 "Ensure every '(' has a corresponding ')' before the end of "
+                 "the expression.)");
+            return nullptr;
+          }
 
-					return result;
-				}
+          return result;
+        }
 
-				return unary();
-			}
+        return unary();
+      }
 
-			Node* unary() { 
-				if (isEqual(Token::Operator, "-")) {
+      Node* unary() {
+        if (isEqual(Token::Operator, "-")) {
           auto unaryEx = new UnaryOperation();
-					unaryEx->type = UnaryOperation::NEGATE;
+          unaryEx->type = UnaryOperation::NEGATE;
           unaryEx->operand = expression();
 
-					if (unaryEx->operand)
-						return unaryEx;
-					
-					push("Syntax Error: Unexcepted symbol. Excepted expression to negate");
-					delete unaryEx;
-					return nullptr;
-				}
+          if (unaryEx->operand)
+            return unaryEx;
 
-				return identifier();
-			}
+          push("Syntax Error: Unexcepted symbol. Excepted expression to negate"
+          );
+          delete unaryEx;
+          return nullptr;
+        }
 
-			Node* identifier() {
-				if (isType(Token::Word))
+        return identifier();
+      }
+
+      Node* identifier() {
+        if (isType(Token::Word))
           return new Identifier(std::move(get(-1).value));
-				
-				return value();
-			}
 
-			Node* value() { 
-				auto value = new Value();
+        return value();
+      }
+
+      Node* value() {
+        auto value = new Value();
         value->value = get(0).value;
 
-				if (isType(Token::Number)) {
-					value->type = Value::Number;
-					return value;
-				}
+        if (isType(Token::Number)) {
+          value->type = Value::Number;
+          return value;
+        }
 
-				if (isType(Token::Char)) {
-					value->type = Value::Char;
-					return value;
-				}
+        if (isType(Token::Char)) {
+          value->type = Value::Char;
+          return value;
+        }
 
-				if (isType(Token::String)) {
-					value->type = Value::String;
-					return value;
-				}
+        if (isType(Token::String)) {
+          value->type = Value::String;
+          return value;
+        }
 
-				shift(1);
-				push("Syntax Error: Unknown value type");
-				return nullptr;
-			}
-		}; 
-	}
+        shift(1);
+        push("Syntax Error: Unknown value type");
+        return nullptr;
+      }
+    };
+  } // namespace wdlang
 
-	class LangImpl {
-	public:
+  class LangImpl {
+  public:
     virtual void compile(wdlang::Value*) = 0;
     virtual void compile(wdlang::Identifier*) = 0;
     virtual void compile(wdlang::UnaryOperation*) = 0;
@@ -712,12 +704,12 @@ namespace wind {
     virtual void compile(wdlang::FunctionArgumentStatement*) = 0;
     virtual void compile(wdlang::FunctionStatement*) = 0;
     virtual void compile(wdlang::ReturnStatement*) = 0;
-	};
+  };
 
-	namespace wdlang {
+  namespace wdlang {
     template <typename Derived>
     void NodeCRTP<Derived>::execute(LangImpl* executor) {
-			executor->compile(static_cast<Derived*>(this));
+      executor->compile(static_cast<Derived*>(this));
     }
-	}
-}
+  } // namespace wdlang
+} // namespace wind

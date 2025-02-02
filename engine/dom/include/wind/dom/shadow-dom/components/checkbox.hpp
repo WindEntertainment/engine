@@ -25,7 +25,7 @@ namespace wind::dom::shadow {
 
     unsigned int id;
 
-    bool operator==(Checkbox& element) {
+    bool operator==(const Checkbox& element) {
       return attributes == element.attributes;
     };
 

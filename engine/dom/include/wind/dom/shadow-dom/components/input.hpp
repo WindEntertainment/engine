@@ -25,7 +25,7 @@ namespace wind::dom::shadow {
 
     unsigned int id;
 
-    bool operator==(Input& element) {
+    bool operator==(const Input& element) {
       return attributes == element.attributes;
     };
 
