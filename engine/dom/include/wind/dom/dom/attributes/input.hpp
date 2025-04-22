@@ -3,21 +3,20 @@
 #include "wind/renderer/command-buffer.hpp"
 
 namespace wind::dom {
-  class Div;
+  class Input;
 };
 
 namespace wind::dom::attributes {
-
-  struct Div {
+  struct Input {
+    std::optional<std::function<void(std::shared_ptr<::wind::dom::Input>)>>
+      onHover;
     std::optional<glm::vec4> backgroundColor;
     std::optional<std::shared_ptr<Texture>> texture;
     std::optional<float> angle;
     std::optional<float> borderRadius;
     std::optional<float> borderWidth;
     std::optional<glm::vec4> borderColor;
-    std::optional<std::function<void(std::shared_ptr<::wind::dom::Div>)>>
-      onHover;
-    std::optional<std::function<void(std::shared_ptr<::wind::dom::Div>)>>
+    std::optional<std::function<void(std::shared_ptr<::wind::dom::Input>)>>
       onClick;
     std::optional<glm::vec2> position;
     std::optional<glm::vec2> size;
@@ -48,7 +47,7 @@ namespace wind::dom::attributes {
       );
     }
 
-    bool operator==(const attributes::Div& element) {
+    bool operator==(const attributes::Input& element) {
       auto a = asTuple();
       auto b = element.asTuple();
 
@@ -56,9 +55,10 @@ namespace wind::dom::attributes {
     };
   };
 
-  static auto getDefaultDivAttributes = []() {
-    auto attrs = attributes::Div();
+  static auto getDefaultInputAttributes = []() {
+    auto attrs = attributes::Input();
     attrs.position = {0, 0};
+    attrs.size = {0, 0};
     return attrs;
   };
 } // namespace wind::dom::attributes

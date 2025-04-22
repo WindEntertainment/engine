@@ -1,12 +1,9 @@
 #pragma once
 #include "wind/dom/utils/index.hpp"
 #include "wind/renderer/command-buffer.hpp"
+#include "wind/dom/dom/attributes/root.hpp"
 
-namespace wind::dom {
-  class Root;
-};
-
-namespace wind::dom::attributes {
+namespace wind::dom::shadow::attributes {
   struct Root {
     std::optional<glm::vec4> backgroundColor;
     std::optional<std::shared_ptr<Texture>> texture;
@@ -18,10 +15,12 @@ namespace wind::dom::attributes {
       onHover;
     std::optional<std::function<void(std::shared_ptr<::wind::dom::Root>)>>
       onClick;
-    std::optional<glm::vec2> position;
-    std::optional<glm::vec2> size;
+    std::optional<ValueWithUnits> x;
+    std::optional<ValueWithUnits> y;
+    std::optional<ValueWithUnits> width;
+    std::optional<ValueWithUnits> height;
 
-    auto asTuple() const {
+    [[nodiscard]] auto asTuple() const {
       return std::tie(
         backgroundColor,
         texture,
@@ -29,12 +28,14 @@ namespace wind::dom::attributes {
         borderRadius,
         borderWidth,
         borderColor,
-        position,
-        size
+        x,
+        y,
+        width,
+        height
       );
     }
 
-    auto asMutableTuple() {
+    [[nodiscard]] auto asMutableTuple() {
       return std::tie(
         backgroundColor,
         texture,
@@ -42,12 +43,14 @@ namespace wind::dom::attributes {
         borderRadius,
         borderWidth,
         borderColor,
-        position,
-        size
+        x,
+        y,
+        width,
+        height
       );
     }
 
-    bool operator==(const attributes::Root& element) {
+    bool operator==(const shadow::attributes::Root& element) const {
       auto a = asTuple();
       auto b = element.asTuple();
 
@@ -56,8 +59,11 @@ namespace wind::dom::attributes {
   };
 
   static auto getDefaultRootAttributes = []() {
-    auto attrs = attributes::Root();
-    attrs.position = {0, 0};
+    auto attrs = shadow::attributes::Root();
+    attrs.x = {.value = 0, .units = Units::pixel};
+    attrs.y = {.value = 0, .units = Units::pixel};
+    attrs.width = {.value = 0, .units = Units::pixel};
+    attrs.height = {.value = 0, .units = Units::pixel};
     return attrs;
   };
-} // namespace wind::dom::attributes
+} // namespace wind::dom::shadow::attributes

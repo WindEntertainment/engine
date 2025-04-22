@@ -32,19 +32,20 @@ namespace wind::dom::shadow {
     Elements children = Elements(3);
     std::optional<Element> parent = std::nullopt;
 
-    attributes::Div attributes = attributes::getDefaultDivAttributes();
-    attributes::Div hoverAttributes = {};
-    attributes::Div clickAttributes = {};
+    shadow::attributes::Div attributes =
+      shadow::attributes::getDefaultDivAttributes();
+    shadow::attributes::Div hoverAttributes = {};
+    shadow::attributes::Div clickAttributes = {};
   };
 
-  // constexpr std::array<std::pair<bool Div::*, const attributes::Div Div::*>,
-  // 4>
+  // constexpr std::array<std::pair<bool Div::*, const shadow::attributes::Div
+  // Div::*>, 4>
   //   defaultPriority =
   //     {&Div::clickAttributes, &Div::hoverAttributes, &Div::attributes};
 
   // Highest priority at the top
-  // constexpr std::array<std::pair<bool Div::*, const attributes::Div Div::*>,
-  // 4>
+  // constexpr std::array<std::pair<bool Div::*, const shadow::attributes::Div
+  // Div::*>, 4>
   //   defaultPriority = {
   //     std::make_pair(&Div::isClicked, &Div::clickAttributes),
   //     std::make_pair(&Div::isHovered, &Div::hoverAttributes),
@@ -234,28 +235,29 @@ namespace wind::dom::shadow {
   //   return mergeTuples(tuples..., std::make_index_sequence<tupleSize>{});
   // }
 
-  template <typename T = int>
-  void mergeAttributes2(std::shared_ptr<Div> shadow) {
-    // std::tuple<std::tuple<int, double>, std::tuple<char, float, bool>>
-    // myTuple(
-    //   std::make_tuple(1, 3.14), std::make_tuple('a', 2.71f, true)
-    // );
+  // template <typename T = int>
+  // void mergeAttributes2(std::shared_ptr<Div> shadow) {
+  //   // std::tuple<std::tuple<int, double>, std::tuple<char, float, bool>>
+  //   // myTuple(
+  //   //   std::make_tuple(1, 3.14), std::make_tuple('a', 2.71f, true)
+  //   // );
 
-    // // Call the function with an index sequence for the outer tuple
-    // printTupleOfTuplesWithIndex(
-    //   myTuple,
-    //   std::make_index_sequence<std::tuple_size<decltype(myTuple)>::value>{}
-    // );
+  //   // // Call the function with an index sequence for the outer tuple
+  //   // printTupleOfTuplesWithIndex(
+  //   //   myTuple,
+  //   // std::make_index_sequence<std::tuple_size<decltype(myTuple)>::value>{}
+  //   // );
 
-    // std::tuple<int, int, int> tuple1 = {1, 2, 3};
-    // std::tuple<int, int, int> tuple2 = {4, 5, 6};
-    // std::tuple<int, int, int> tuple3 = {7, 8, 9};
-    glm::vec2 a;
-    spdlog::info(a.x);
-    // Call logTuples with any number of tuples
-    // a(shadow->attributes, shadow->hoverAttributes, shadow->clickAttributes);
-    // logTuples(tuple1, tuple2, tuple3);
-  }
+  //   // std::tuple<int, int, int> tuple1 = {1, 2, 3};
+  //   // std::tuple<int, int, int> tuple2 = {4, 5, 6};
+  //   // std::tuple<int, int, int> tuple3 = {7, 8, 9};
+  //   glm::vec2 a;
+  //   spdlog::info(a.x);
+  //   // Call logTuples with any number of tuples
+  //   // a(shadow->attributes, shadow->hoverAttributes,
+  //   shadow->clickAttributes);
+  //   // logTuples(tuple1, tuple2, tuple3);
+  // }
 
   // // Define the Attributes struct
   // struct Attributes {
@@ -344,8 +346,8 @@ namespace wind::dom::shadow {
 
   // Main function to merge attributes
   // template <typename T>
-  // attributes::Div mergeAttributes2(std::shared_ptr<Div> shadow) {
-  //   attributes::Div result = shadow->attributes;
+  // shadow::attributes::Div mergeAttributes2(std::shared_ptr<Div> shadow) {
+  //   shadow::attributes::Div result = shadow->attributes;
 
   //   // auto baseTuple = shadow->attributes.asTuple();
   //   auto hoverTuple = shadow->hoverAttributes.asTuple();
@@ -375,15 +377,15 @@ namespace wind::dom::shadow {
   //   return result;
   // }
 
-  // attributes::Div
+  // shadow::attributes::Div
   // resolveAttributes(std::shared_ptr<Div> component
-  //                   // const attributes::Div& baseAttributes,
+  //                   // const shadow::attributes::Div& baseAttributes,
   //                   // const std::optional<
   //                   //   std::array<std::pair<bool Div::*, const
-  //                   attributes::Div
+  //                   shadow::attributes::Div
   //                   //   Div::*>, 4>>& customPriority = std::nullopt
   // ) {
-  //   attributes::Div resolved = component->attributes;
+  //   shadow::attributes::Div resolved = component->attributes;
 
   //   resolved.angle = component->hoverAttributes.angle
   //                      ? component->hoverAttributes.angle

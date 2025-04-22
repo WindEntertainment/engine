@@ -17,12 +17,12 @@ namespace wind::dom::shadow {
 
   void removeChild(unsigned int childId, const Element& parent);
 
-  attributes::Root mergeAttributes(std::shared_ptr<Root> shadow);
-  attributes::Div mergeAttributes(std::shared_ptr<Div> shadow);
-  attributes::Text mergeAttributes(std::shared_ptr<Text> shadow);
-  attributes::Input mergeAttributes(std::shared_ptr<Input> shadow);
-  attributes::Checkbox mergeAttributes(std::shared_ptr<Checkbox> shadow);
-  attributes::Select mergeAttributes(std::shared_ptr<Select> shadow);
+  dom::attributes::Root mergeAttributes(std::shared_ptr<Root> shadow);
+  dom::attributes::Div mergeAttributes(std::shared_ptr<Div> shadow);
+  dom::attributes::Text mergeAttributes(std::shared_ptr<Text> shadow);
+  dom::attributes::Input mergeAttributes(std::shared_ptr<Input> shadow);
+  dom::attributes::Checkbox mergeAttributes(std::shared_ptr<Checkbox> shadow);
+  dom::attributes::Select mergeAttributes(std::shared_ptr<Select> shadow);
 
   std::shared_ptr<dom::Root> toReal(std::shared_ptr<Root> shadow);
   std::shared_ptr<dom::Div> toReal(std::shared_ptr<Div> shadow);

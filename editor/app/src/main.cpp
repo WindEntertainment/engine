@@ -81,12 +81,16 @@ namespace editor {
 
       if (isButtonsVisible) {
         auto button2 = createElement<Div>();
-        button2->attributes.position = {100, 100};
-        button2->attributes.size = {100, 100};
+        button2->attributes.x.value = 100;
+        button2->attributes.y.value = 100;
+        button2->attributes.width = 100;
+        button2->attributes.height = 100;
 
         auto button3 = createElement<Div>();
-        button3->attributes.position = {200, 200};
-        button3->attributes.size = {100, 100};
+        button3->attributes.x.value = 200;
+        button3->attributes.y.value = 200;
+        button3->attributes.width = 100;
+        button3->attributes.height = 100;
 
         auto text = createElement<Text>();
         text->attributes.value = "CHIKI BRIKI";
@@ -109,8 +113,12 @@ namespace editor {
       destroy(prevShadowRoot);
       prevShadowRoot = shadowRoot;
       shadowRoot = std::make_shared<Root>(shadowRoot->id);
-      shadowRoot->attributes.size = root->attributes.size;
-      shadowRoot->attributes.position = root->attributes.position;
+      // shadowRoot->attributes.size = root->attributes.size;
+      // shadowRoot->attributes.position = root->attributes.position;
+      shadowRoot->attributes.x = prevShadowRoot->attributes.x;
+      shadowRoot->attributes.y = prevShadowRoot->attributes.y;
+      shadowRoot->attributes.width = prevShadowRoot->attributes.width;
+      shadowRoot->attributes.height = prevShadowRoot->attributes.height;
     };
 
     void quit() override {

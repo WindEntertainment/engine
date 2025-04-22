@@ -59,6 +59,7 @@ namespace wind::dom::attributes {
   static auto getDefaultCheckboxAttributes = []() {
     auto attrs = attributes::Checkbox();
     attrs.position = {0, 0};
+    attrs.size = {0, 0};
     return attrs;
   };
 } // namespace wind::dom::attributes

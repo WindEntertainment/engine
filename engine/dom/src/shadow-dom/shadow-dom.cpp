@@ -67,125 +67,138 @@ namespace wind::dom::shadow {
     );
   };
 
-  attributes::Root mergeAttributes(std::shared_ptr<Root> shadow) {
+  dom::attributes::Root mergeAttributes(std::shared_ptr<Root> shadow) {
+    dom::attributes::Root domAttrs = {};
     auto attrs = shadow->attributes;
-    auto attrsTuple = attrs.asMutableTuple();
+    auto a = attrs.asMutableTuple();
     auto b = shadow->clickAttributes.asMutableTuple();
     auto c = shadow->hoverAttributes.asMutableTuple();
 
-    utils::replaceTuples(attrsTuple, b, c);
+    utils::replaceTuples(a, b, c);
+
+    // if (shadow->parent.has_value()) {
+    //   std::visit(
+    //     [&](const auto& parent) {
+    //       auto parentAttributes = parent->attributes;
+    //       if (parentAttributes.position.has_value() &&
+    //           attrs.position.has_value()) {
+    //         auto parentPosition = parentAttributes.position.value();
+    //         auto position = attrs.position.value();
+    //         attrs.position = {
+    //           parentPosition.x + position.x, parentPosition.y + position.y
+    //         };
+    //       }
+    //     },
+    //     shadow->parent.value()
+    //   );
+    // }
+
+    return domAttrs;
+  };
+
+  dom::attributes::Div mergeAttributes(std::shared_ptr<Div> shadow) {
+    dom::attributes::Div domAttrs = {};
+    auto attrs = shadow->attributes;
+    auto a = attrs.asMutableTuple();
+    auto b = shadow->clickAttributes.asMutableTuple();
+    auto c = shadow->hoverAttributes.asMutableTuple();
+
+    utils::replaceTuples(a, b, c);
 
     if (shadow->parent.has_value()) {
       std::visit(
         [&](const auto& parent) {
+          // spdlog::info(
+          //   "{}:{} {}:{}",
+          //   attrs.position.value().x,
+          //   attrs.position.value().y,
+          //   parent->attributes.position.value().x,
+          //   parent->attributes.position.value().y
+          // );
           auto parentAttributes = parent->attributes;
-          if (parentAttributes.position.has_value() &&
-              attrs.position.has_value()) {
-            auto parentPosition = parentAttributes.position.value();
-            auto position = attrs.position.value();
-            attrs.position = {
-              parentPosition.x + position.x, parentPosition.y + position.y
-            };
+          if (parentAttributes.x.has_value() &&
+              parentAttributes.y.has_value() && attrs.x.has_value() &&
+              attrs.y.has_value()) {
+            // auto parentX = parentAttributes.x.value().value;
+            // auto x = attrs.x.value().value;
+
+            // auto parentY = parentAttributes.y.value().value;
+            // auto y = attrs.y.value().value;
+            // attrs.x = {parentX + x, parentY + y};
+            // attrs.y = {parentX + x, parentY + y};
+
+            // TODO: will it even work?
+            auto x = attrs.x.value().value += parentAttributes.x.value().value;
+            auto y = attrs.y.value().value += parentAttributes.y.value().value;
           }
         },
         shadow->parent.value()
       );
     }
 
-    return attrs;
+    return domAttrs;
   };
 
-  attributes::Div mergeAttributes(std::shared_ptr<Div> shadow) {
+  dom::attributes::Text mergeAttributes(std::shared_ptr<Text> shadow) {
+    dom::attributes::Text domAttrs = {};
     auto attrs = shadow->attributes;
-    auto attrsTuple = attrs.asMutableTuple();
+    auto a = attrs.asMutableTuple();
     auto b = shadow->clickAttributes.asMutableTuple();
     auto c = shadow->hoverAttributes.asMutableTuple();
 
-    utils::replaceTuples(attrsTuple, b, c);
+    utils::replaceTuples(a, b, c);
 
-    if (shadow->parent.has_value()) {
-      std::visit(
-        [&](const auto& parent) {
-          spdlog::info(
-            "{}:{} {}:{}",
-            attrs.position.value().x,
-            attrs.position.value().y,
-            parent->attributes.position.value().x,
-            parent->attributes.position.value().y
-          );
-          auto parentAttributes = parent->attributes;
-          if (parentAttributes.position.has_value() &&
-              attrs.position.has_value()) {
-            auto parentPosition = parentAttributes.position.value();
-            auto position = attrs.position.value();
-            attrs.position = {
-              parentPosition.x + position.x, parentPosition.y + position.y
-            };
-          }
-        },
-        shadow->parent.value()
-      );
-    }
+    // if (shadow->parent.has_value()) {
+    //   std::visit(
+    //     [&](const auto& parent) {
+    //       auto parentAttributes = parent->attributes;
+    //       if (parentAttributes.position.has_value() &&
+    //           attrs.position.has_value()) {
+    //         auto parentPosition = parentAttributes.position.value();
+    //         auto position = attrs.position.value();
+    //         attrs.position = {
+    //           parentPosition.x + position.x, parentPosition.y + position.y
+    //         };
+    //       }
+    //     },
+    //     shadow->parent.value()
+    //   );
+    // }
 
-    return attrs;
+    return domAttrs;
   };
 
-  attributes::Text mergeAttributes(std::shared_ptr<Text> shadow) {
+  dom::attributes::Input mergeAttributes(std::shared_ptr<Input> shadow) {
+    dom::attributes::Input domAttrs = {};
     auto attrs = shadow->attributes;
-    auto attrsTuple = attrs.asMutableTuple();
+    auto a = attrs.asMutableTuple();
     auto b = shadow->clickAttributes.asMutableTuple();
     auto c = shadow->hoverAttributes.asMutableTuple();
 
-    utils::replaceTuples(attrsTuple, b, c);
-
-    if (shadow->parent.has_value()) {
-      std::visit(
-        [&](const auto& parent) {
-          auto parentAttributes = parent->attributes;
-          if (parentAttributes.position.has_value() &&
-              attrs.position.has_value()) {
-            auto parentPosition = parentAttributes.position.value();
-            auto position = attrs.position.value();
-            attrs.position = {
-              parentPosition.x + position.x, parentPosition.y + position.y
-            };
-          }
-        },
-        shadow->parent.value()
-      );
-    }
-
-    return attrs;
+    utils::replaceTuples(a, b, c);
+    return domAttrs;
   };
 
-  attributes::Input mergeAttributes(std::shared_ptr<Input> shadow) {
+  dom::attributes::Checkbox mergeAttributes(std::shared_ptr<Checkbox> shadow) {
+    dom::attributes::Checkbox domAttrs = {};
     auto attrs = shadow->attributes;
-    auto attrsTuple = attrs.asMutableTuple();
+    auto a = attrs.asMutableTuple();
     auto b = shadow->clickAttributes.asMutableTuple();
     auto c = shadow->hoverAttributes.asMutableTuple();
 
-    utils::replaceTuples(attrsTuple, b, c);
-    return attrs;
+    utils::replaceTuples(a, b, c);
+    return domAttrs;
   };
 
-  attributes::Checkbox mergeAttributes(std::shared_ptr<Checkbox> shadow) {
+  dom::attributes::Select mergeAttributes(std::shared_ptr<Select> shadow) {
+    dom::attributes::Select domAttrs = {};
     auto attrs = shadow->attributes;
-    auto attrsTuple = attrs.asMutableTuple();
+    auto a = attrs.asMutableTuple();
     auto b = shadow->clickAttributes.asMutableTuple();
     auto c = shadow->hoverAttributes.asMutableTuple();
 
-    utils::replaceTuples(attrsTuple, b, c);
-    return attrs;
-  };
-
-  attributes::Select mergeAttributes(std::shared_ptr<Select> shadow) {
-    auto attrs = shadow->attributes;
-    auto attrsTuple = attrs.asMutableTuple();
-    auto b = shadow->clickAttributes.asMutableTuple();
-    auto c = shadow->hoverAttributes.asMutableTuple();
-
-    utils::replaceTuples(attrsTuple, b, c);
-    return attrs;
+    utils::replaceTuples(a, b, c);
+    return domAttrs;
   };
 
   std::shared_ptr<dom::Root> toReal(std::shared_ptr<Root> shadow) {
@@ -220,7 +233,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = attributes::getDefaultRootAttributes();
+    shadow->attributes = shadow::attributes::getDefaultRootAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     // PoolManager::releaseFromPool(shadow);
@@ -234,7 +247,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = attributes::getDefaultDivAttributes();
+    shadow->attributes = shadow::attributes::getDefaultDivAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     PoolManager::releaseFromPool(shadow);
@@ -248,7 +261,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = attributes::getDefaultTextAttributes();
+    shadow->attributes = shadow::attributes::getDefaultTextAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     PoolManager::releaseFromPool(shadow);
@@ -262,7 +275,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = attributes::getDefaultInputAttributes();
+    shadow->attributes = shadow::attributes::getDefaultInputAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     PoolManager::releaseFromPool(shadow);
@@ -276,7 +289,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = attributes::getDefaultCheckboxAttributes();
+    shadow->attributes = shadow::attributes::getDefaultCheckboxAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     PoolManager::releaseFromPool(shadow);
@@ -290,7 +303,7 @@ namespace wind::dom::shadow {
     }
     shadow->children.clear();
     shadow->children.reserve(3);
-    shadow->attributes = attributes::getDefaultSelectAttributes();
+    shadow->attributes = shadow::attributes::getDefaultSelectAttributes();
     shadow->clickAttributes = {};
     shadow->hoverAttributes = {};
     PoolManager::releaseFromPool(shadow);
@@ -335,8 +348,27 @@ namespace wind::dom::shadow {
     PoolManager::registerPool<Select>(20);
 
     auto root = std::make_shared<Root>(1);
-    root->attributes.size = realRoot->attributes.size;
-    root->attributes.position = realRoot->attributes.position;
+
+    if (!realRoot->attributes.size.has_value() ||
+        !realRoot->attributes.position.has_value()) {
+      return root;
+    }
+
+    auto size = realRoot->attributes.size.value();
+    auto position = realRoot->attributes.position.value();
+
+    root->attributes.x = {
+      .value = position.x, .units = attributes::Units::pixel
+    };
+    root->attributes.y = {
+      .value = position.y, .units = attributes::Units::pixel
+    };
+    root->attributes.width = {
+      .value = size.x, .units = attributes::Units::pixel
+    };
+    root->attributes.height = {
+      .value = size.y, .units = attributes::Units::pixel
+    };
 
     return root;
   }

@@ -1,13 +1,21 @@
 project(wind-dom)
 
 set(HEADERS
-    ./include/wind/dom/attributes/div.hpp
-    ./include/wind/dom/attributes/checkbox.hpp
-    ./include/wind/dom/attributes/input.hpp
-    ./include/wind/dom/attributes/root.hpp
-    ./include/wind/dom/attributes/select.hpp
-    ./include/wind/dom/attributes/text.hpp
-    ./include/wind/dom/attributes/index.hpp
+    ./include/wind/dom/dom/attributes/div.hpp
+    ./include/wind/dom/dom/attributes/checkbox.hpp
+    ./include/wind/dom/dom/attributes/input.hpp
+    ./include/wind/dom/dom/attributes/root.hpp
+    ./include/wind/dom/dom/attributes/select.hpp
+    ./include/wind/dom/dom/attributes/text.hpp
+    ./include/wind/dom/dom/attributes/index.hpp
+
+    ./include/wind/dom/shadow-dom/attributes/div.hpp
+    ./include/wind/dom/shadow-dom/attributes/checkbox.hpp
+    ./include/wind/dom/shadow-dom/attributes/input.hpp
+    ./include/wind/dom/shadow-dom/attributes/root.hpp
+    ./include/wind/dom/shadow-dom/attributes/select.hpp
+    ./include/wind/dom/shadow-dom/attributes/text.hpp
+    ./include/wind/dom/shadow-dom/attributes/index.hpp
 
     ./include/wind/dom/dom/dom.hpp
     ./include/wind/dom/dom/shared.hpp

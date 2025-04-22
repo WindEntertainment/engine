@@ -1,12 +1,9 @@
 #pragma once
 #include "wind/dom/utils/index.hpp"
+#include "wind/dom/dom/attributes/text.hpp"
 #include "wind/renderer/command-buffer.hpp"
 
-namespace wind::dom {
-  class Text;
-};
-
-namespace wind::dom::attributes {
+namespace wind::dom::shadow::attributes {
   struct Text {
     std::optional<std::shared_ptr<Font>> font;
     std::optional<int> letterSpacing;
@@ -19,10 +16,12 @@ namespace wind::dom::attributes {
       onHover;
     std::optional<std::function<void(std::shared_ptr<::wind::dom::Text>)>>
       onClick;
-    std::optional<glm::vec2> position;
-    std::optional<glm::vec2> size;
+    std::optional<ValueWithUnits> x;
+    std::optional<ValueWithUnits> y;
+    std::optional<ValueWithUnits> width;
+    std::optional<ValueWithUnits> height;
 
-    auto asTuple() const {
+    [[nodiscard]] auto asTuple() const {
       return std::tie(
         font,
         letterSpacing,
@@ -31,12 +30,14 @@ namespace wind::dom::attributes {
         value,
         scale,
         color,
-        position,
-        size
+        x,
+        y,
+        width,
+        height
       );
     }
 
-    auto asMutableTuple() {
+    [[nodiscard]] auto asMutableTuple() {
       return std::tie(
         font,
         letterSpacing,
@@ -45,12 +46,14 @@ namespace wind::dom::attributes {
         value,
         scale,
         color,
-        position,
-        size
+        x,
+        y,
+        width,
+        height
       );
     }
 
-    bool operator==(const attributes::Text& element) {
+    bool operator==(const shadow::attributes::Text& element) const {
       auto a = asTuple();
       auto b = element.asTuple();
 
@@ -59,11 +62,14 @@ namespace wind::dom::attributes {
   };
 
   static auto getDefaultTextAttributes = []() {
-    auto attrs = attributes::Text();
-    attrs.position = {0, 0};
+    auto attrs = shadow::attributes::Text();
+    attrs.x = {.value = 0, .units = Units::pixel};
+    attrs.y = {.value = 0, .units = Units::pixel};
+    attrs.width = {.value = 0, .units = Units::pixel};
+    attrs.height = {.value = 0, .units = Units::pixel};
     attrs.letterSpacing = 0;
     attrs.lineSpacing = 12;
     attrs.lineWidth = 250;
     return attrs;
   };
-} // namespace wind::dom::attributes
+} // namespace wind::dom::shadow::attributes

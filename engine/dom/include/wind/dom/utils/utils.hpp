@@ -82,3 +82,73 @@ namespace wind::dom::utils {
   }
 
 } // namespace wind::dom::utils
+
+namespace wind::dom::attributes {
+  namespace options {
+    enum class Display : std::int8_t { relative, flex, absolute };
+    enum class Direction : std::int8_t { row, column };
+    enum class Wrap : std::int8_t { wrap, noWrap };
+    enum class JustifyContent : std::int8_t {
+      start,
+      end,
+      center,
+      spaceBetween,
+      spaceAround
+    };
+    enum class AlignItems : std::int8_t {
+      start,
+      end,
+      center,
+    };
+    enum class AlignContent : std::int8_t {
+      start,
+      end,
+      center,
+    };
+  } // namespace options
+  enum class Units : std::int8_t { percentage, pixel };
+
+  struct ValueWithUnits {
+    float value;
+    Units units;
+
+    bool operator==(const ValueWithUnits& item) const {
+      return item.units == units && item.value == item.value;
+    };
+  };
+} // namespace wind::dom::attributes
+
+namespace wind::dom::shadow::attributes {
+  namespace options {
+    enum class Display : std::int8_t { relative, flex, absolute };
+    enum class Direction : std::int8_t { row, column };
+    enum class Wrap : std::int8_t { wrap, noWrap };
+    enum class JustifyContent : std::int8_t {
+      start,
+      end,
+      center,
+      spaceBetween,
+      spaceAround
+    };
+    enum class AlignItems : std::int8_t {
+      start,
+      end,
+      center,
+    };
+    enum class AlignContent : std::int8_t {
+      start,
+      end,
+      center,
+    };
+  } // namespace options
+  enum class Units : std::int8_t { percentage, pixel };
+
+  struct ValueWithUnits {
+    float value;
+    Units units;
+
+    bool operator==(const ValueWithUnits& item) const {
+      return item.units == units && item.value == item.value;
+    };
+  };
+} // namespace wind::dom::shadow::attributes
