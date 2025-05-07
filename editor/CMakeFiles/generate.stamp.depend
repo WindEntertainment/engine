@@ -1,0 +1,19 @@
+# CMake generation dependency list for this directory.
+C:/Dev/ideal-engine/build/generators/cmakedeps_macros.cmake
+C:/Dev/ideal-engine/build/generators/fmt-Target-debug.cmake
+C:/Dev/ideal-engine/build/generators/fmt-config-version.cmake
+C:/Dev/ideal-engine/build/generators/fmt-config.cmake
+C:/Dev/ideal-engine/build/generators/fmt-debug-x86_64-data.cmake
+C:/Dev/ideal-engine/build/generators/fmtTargets.cmake
+C:/Dev/ideal-engine/build/generators/imgui-Target-debug.cmake
+C:/Dev/ideal-engine/build/generators/imgui-config-version.cmake
+C:/Dev/ideal-engine/build/generators/imgui-config.cmake
+C:/Dev/ideal-engine/build/generators/imgui-debug-x86_64-data.cmake
+C:/Dev/ideal-engine/build/generators/imguiTargets.cmake
+C:/Dev/ideal-engine/build/generators/spdlog-Target-debug.cmake
+C:/Dev/ideal-engine/build/generators/spdlog-config-version.cmake
+C:/Dev/ideal-engine/build/generators/spdlog-config.cmake
+C:/Dev/ideal-engine/build/generators/spdlog-debug-x86_64-data.cmake
+C:/Dev/ideal-engine/build/generators/spdlogTargets.cmake
+C:/Dev/ideal-engine/editor/CMakeLists.txt
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake

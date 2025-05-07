@@ -152,7 +152,7 @@ namespace game {
         {0.4f, 0.4f},
         {1.f, 1.f, 1.f, 1.f}
       );
-
+      
       render.drawRect(
         {-300.f, 105.f},
         {100.f, 100.f},

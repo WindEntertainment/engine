@@ -1,0 +1,449 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4C8B4CEB-B20B-39F6-A57F-B9D45228DE69}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>editor</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Dev\ideal-engine\editor\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">editor.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">editor</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <LocalDebuggerEnvironment Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PATH=C:/Users/neutr/.conan2/p/b/sdl4444e2a4ff2d7/p/bin;C:/Users/neutr/.conan2/p/b/catchf4594708179f4/p/bin;C:/Users/neutr/.conan2/p/b/spdlo7bba487641ec8/p/bin;C:/Users/neutr/.conan2/p/b/freet823a7cfc64164/p/bin;C:/Users/neutr/.conan2/p/b/libpnd16aae890403c/p/bin;C:/Users/neutr/.conan2/p/b/bzip234ec1fb30cc94/p/bin;C:/Users/neutr/.conan2/p/b/brotleaa00e3e1c486/p/bin;C:/Users/neutr/.conan2/p/b/pugix369d1b4d7b808/p/bin;C:/Users/neutr/.conan2/p/b/yaml-bf59a9ccc715f/p/bin;C:/Users/neutr/.conan2/p/b/zlib730ed43a10211/p/bin;C:/Users/neutr/.conan2/p/b/gladaee1a5cd67cf2/p/bin;C:/Users/neutr/.conan2/p/b/imguif7561da560243/p/bin;%PATH%</LocalDebuggerEnvironment>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Dev\ideal-engine\editor\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">editor.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">editor</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <LocalDebuggerEnvironment Condition="'$(Configuration)|$(Platform)'=='Release|x64'">PATH=;%PATH%</LocalDebuggerEnvironment>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Dev\ideal-engine\editor\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">editor.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">editor</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <LocalDebuggerEnvironment Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">PATH=;%PATH%</LocalDebuggerEnvironment>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Dev\ideal-engine\editor\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">editor.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">editor</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+    <LocalDebuggerEnvironment Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">PATH=;%PATH%</LocalDebuggerEnvironment>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Dev/ideal-engine/editor/./app/include" /external:I "C:/Dev/ideal-engine/engine/utils/./include" /external:I "C:/Users/neutr/.conan2/p/b/spdlo7bba487641ec8/p/include" /external:I "C:/Users/neutr/.conan2/p/fmtfe38de257773a/p/include" /external:I "C:/Users/neutr/.conan2/p/glmdf97922a12435/p/include" /external:I "C:/Users/neutr/.conan2/p/b/sdl4444e2a4ff2d7/p/include" /external:I "C:/Users/neutr/.conan2/p/b/sdl4444e2a4ff2d7/p/include/SDL2" /external:I "C:/Users/neutr/.conan2/p/b/freet823a7cfc64164/p/include" /external:I "C:/Users/neutr/.conan2/p/b/freet823a7cfc64164/p/include/freetype2" /external:I "C:/Users/neutr/.conan2/p/b/zlib730ed43a10211/p/include" /external:I "C:/Dev/ideal-engine/engine/dom/./include" /external:I "C:/Dev/ideal-engine/engine/window/./include" /external:I "C:/Dev/ideal-engine/engine/asset-pipeline/./include" /external:I "C:/Users/neutr/.conan2/p/b/pugix369d1b4d7b808/p/include" /external:I "C:/Users/neutr/.conan2/p/stb7d71a865f695c/p/include" /external:I "C:/Users/neutr/.conan2/p/b/yaml-bf59a9ccc715f/p/include" /external:I "C:/Users/neutr/.conan2/p/b/gladaee1a5cd67cf2/p/include" /external:I "C:/Dev/ideal-engine/engine/input-system/./include" /external:I "C:/Dev/ideal-engine/engine/event-manager/./include" /external:I "C:/Users/neutr/.conan2/p/b/imguif7561da560243/p/include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ProcessorNumber>12</ProcessorNumber>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;SPDLOG_FMT_EXTERNAL;SPDLOG_COMPILED_LIB;FMT_UNICODE=0;FMT_HEADER_ONLY=1;STB_TEXTEDIT_KEYTYPE=unsigned;_NOEXCEPT=noexcept;YAML_CPP_STATIC_DEFINE;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;SPDLOG_FMT_EXTERNAL;SPDLOG_COMPILED_LIB;FMT_UNICODE=0;FMT_HEADER_ONLY=1;STB_TEXTEDIT_KEYTYPE=unsigned;_NOEXCEPT=noexcept;YAML_CPP_STATIC_DEFINE;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;C:\Dev\ideal-engine\editor\.\app\include;C:\Dev\ideal-engine\engine\utils\.\include;C:\Users\neutr\.conan2\p\b\spdlo7bba487641ec8\p\include;C:\Users\neutr\.conan2\p\fmtfe38de257773a\p\include;C:\Users\neutr\.conan2\p\glmdf97922a12435\p\include;C:\Users\neutr\.conan2\p\b\sdl4444e2a4ff2d7\p\include;C:\Users\neutr\.conan2\p\b\sdl4444e2a4ff2d7\p\include\SDL2;C:\Users\neutr\.conan2\p\b\freet823a7cfc64164\p\include;C:\Users\neutr\.conan2\p\b\freet823a7cfc64164\p\include\freetype2;C:\Users\neutr\.conan2\p\b\zlib730ed43a10211\p\include;C:\Dev\ideal-engine\engine\dom\.\include;C:\Dev\ideal-engine\engine\window\.\include;C:\Dev\ideal-engine\engine\asset-pipeline\.\include;C:\Users\neutr\.conan2\p\b\pugix369d1b4d7b808\p\include;C:\Users\neutr\.conan2\p\stb7d71a865f695c\p\include;C:\Users\neutr\.conan2\p\b\yaml-bf59a9ccc715f\p\include;C:\Users\neutr\.conan2\p\b\gladaee1a5cd67cf2\p\include;C:\Dev\ideal-engine\engine\input-system\.\include;C:\Dev\ideal-engine\engine\event-manager\.\include;C:\Users\neutr\.conan2\p\b\imguif7561da560243\p\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;C:\Dev\ideal-engine\editor\.\app\include;C:\Dev\ideal-engine\engine\utils\.\include;C:\Users\neutr\.conan2\p\b\spdlo7bba487641ec8\p\include;C:\Users\neutr\.conan2\p\fmtfe38de257773a\p\include;C:\Users\neutr\.conan2\p\glmdf97922a12435\p\include;C:\Users\neutr\.conan2\p\b\sdl4444e2a4ff2d7\p\include;C:\Users\neutr\.conan2\p\b\sdl4444e2a4ff2d7\p\include\SDL2;C:\Users\neutr\.conan2\p\b\freet823a7cfc64164\p\include;C:\Users\neutr\.conan2\p\b\freet823a7cfc64164\p\include\freetype2;C:\Users\neutr\.conan2\p\b\zlib730ed43a10211\p\include;C:\Dev\ideal-engine\engine\dom\.\include;C:\Dev\ideal-engine\engine\window\.\include;C:\Dev\ideal-engine\engine\asset-pipeline\.\include;C:\Users\neutr\.conan2\p\b\pugix369d1b4d7b808\p\include;C:\Users\neutr\.conan2\p\stb7d71a865f695c\p\include;C:\Users\neutr\.conan2\p\b\yaml-bf59a9ccc715f\p\include;C:\Users\neutr\.conan2\p\b\gladaee1a5cd67cf2\p\include;C:\Dev\ideal-engine\engine\input-system\.\include;C:\Dev\ideal-engine\engine\event-manager\.\include;C:\Users\neutr\.conan2\p\b\imguif7561da560243\p\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\engine\Debug\wind.lib;..\engine\Debug\wind.lib;ImGuiFileDialog.lib;..\engine\dom\Debug\wind-dom.lib;..\engine\entry\Debug\wind-entry.lib;..\engine\renderer\Debug\wind-renderer.lib;C:\Users\neutr\.conan2\p\b\gladaee1a5cd67cf2\p\lib\glad.lib;..\engine\input-system\Debug\wind-input-system.lib;..\engine\window\Debug\wind-window.lib;C:\Users\neutr\.conan2\p\b\spdlo7bba487641ec8\p\lib\spdlogd.lib;C:\Users\neutr\.conan2\p\b\sdl4444e2a4ff2d7\p\lib\SDL2maind.lib;C:\Users\neutr\.conan2\p\b\sdl4444e2a4ff2d7\p\lib\SDL2-staticd.lib;C:\Users\neutr\.conan2\p\b\yaml-bf59a9ccc715f\p\lib\yaml-cppd.lib;C:\Users\neutr\.conan2\p\b\sdl4444e2a4ff2d7\p\lib\SDL2-staticd.lib;..\engine\asset-pipeline\Debug\wind-asset-pipeline.lib;C:\Users\neutr\.conan2\p\b\pugix369d1b4d7b808\p\lib\pugixml.lib;C:\Users\neutr\.conan2\p\b\zlib730ed43a10211\p\lib\zlib.lib;C:\Users\neutr\.conan2\p\b\yaml-bf59a9ccc715f\p\lib\yaml-cppd.lib;C:\Users\neutr\.conan2\p\b\spdlo7bba487641ec8\p\lib\spdlogd.lib;..\engine\event-manager\Debug\wind-event-manager.lib;..\engine\language\Debug\wind-language.lib;..\engine\utils\Debug\wind-utils.lib;C:\Users\neutr\.conan2\p\b\spdlo7bba487641ec8\p\lib\spdlogd.lib;C:\Users\neutr\.conan2\p\b\sdl4444e2a4ff2d7\p\lib\SDL2-staticd.lib;user32.lib;gdi32.lib;winmm.lib;ole32.lib;oleaut32.lib;version.lib;uuid.lib;advapi32.lib;setupapi.lib;shell32.lib;C:\Users\neutr\.conan2\p\b\freet823a7cfc64164\p\lib\freetype.lib;C:\Users\neutr\.conan2\p\b\libpnd16aae890403c\p\lib\libpng16_staticd.lib;C:\Users\neutr\.conan2\p\b\bzip234ec1fb30cc94\p\lib\bz2.lib;C:\Users\neutr\.conan2\p\b\brotleaa00e3e1c486\p\lib\brotlienc.lib;C:\Users\neutr\.conan2\p\b\brotleaa00e3e1c486\p\lib\brotlidec.lib;C:\Users\neutr\.conan2\p\b\brotleaa00e3e1c486\p\lib\brotlicommon.lib;C:\Users\neutr\.conan2\p\b\zlib730ed43a10211\p\lib\zlib.lib;C:\Users\neutr\.conan2\p\b\imguif7561da560243\p\lib\imgui.lib;imm32.lib;C:\Users\neutr\.conan2\p\b\spdlo7bba487641ec8\p\lib\spdlogd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Users/neutr/.conan2/p/b/spdlo7bba487641ec8/p/lib;C:/Users/neutr/.conan2/p/b/spdlo7bba487641ec8/p/lib/$(Configuration);C:/Users/neutr/.conan2/p/b/sdl4444e2a4ff2d7/p/lib;C:/Users/neutr/.conan2/p/b/sdl4444e2a4ff2d7/p/lib/$(Configuration);C:/Users/neutr/.conan2/p/b/freet823a7cfc64164/p/lib;C:/Users/neutr/.conan2/p/b/freet823a7cfc64164/p/lib/$(Configuration);C:/Users/neutr/.conan2/p/b/libpnd16aae890403c/p/lib;C:/Users/neutr/.conan2/p/b/libpnd16aae890403c/p/lib/$(Configuration);C:/Users/neutr/.conan2/p/b/zlib730ed43a10211/p/lib;C:/Users/neutr/.conan2/p/b/zlib730ed43a10211/p/lib/$(Configuration);C:/Users/neutr/.conan2/p/b/bzip234ec1fb30cc94/p/lib;C:/Users/neutr/.conan2/p/b/bzip234ec1fb30cc94/p/lib/$(Configuration);C:/Users/neutr/.conan2/p/b/brotleaa00e3e1c486/p/lib;C:/Users/neutr/.conan2/p/b/brotleaa00e3e1c486/p/lib/$(Configuration);C:/Users/neutr/.conan2/p/b/pugix369d1b4d7b808/p/lib;C:/Users/neutr/.conan2/p/b/pugix369d1b4d7b808/p/lib/$(Configuration);C:/Users/neutr/.conan2/p/b/yaml-bf59a9ccc715f/p/lib;C:/Users/neutr/.conan2/p/b/yaml-bf59a9ccc715f/p/lib/$(Configuration);C:/Users/neutr/.conan2/p/b/gladaee1a5cd67cf2/p/lib;C:/Users/neutr/.conan2/p/b/gladaee1a5cd67cf2/p/lib/$(Configuration);C:/Users/neutr/.conan2/p/b/imguif7561da560243/p/lib;C:/Users/neutr/.conan2/p/b/imguif7561da560243/p/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Dev/ideal-engine/editor/Debug/editor.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Dev/ideal-engine/editor/Debug/editor.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Dev/ideal-engine/editor/./app/include" /external:I "C:/Dev/ideal-engine/engine/utils/./include" /external:I "C:/Dev/ideal-engine/engine/dom/./include" /external:I "C:/Dev/ideal-engine/engine/window/./include" /external:I "C:/Dev/ideal-engine/engine/asset-pipeline/./include" /external:I "C:/Dev/ideal-engine/engine/input-system/./include" /external:I "C:/Dev/ideal-engine/engine/event-manager/./include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ProcessorNumber>12</ProcessorNumber>
+      <RuntimeLibrary></RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;C:\Dev\ideal-engine\editor\.\app\include;C:\Dev\ideal-engine\engine\utils\.\include;C:\Dev\ideal-engine\engine\dom\.\include;C:\Dev\ideal-engine\engine\window\.\include;C:\Dev\ideal-engine\engine\asset-pipeline\.\include;C:\Dev\ideal-engine\engine\input-system\.\include;C:\Dev\ideal-engine\engine\event-manager\.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;C:\Dev\ideal-engine\editor\.\app\include;C:\Dev\ideal-engine\engine\utils\.\include;C:\Dev\ideal-engine\engine\dom\.\include;C:\Dev\ideal-engine\engine\window\.\include;C:\Dev\ideal-engine\engine\asset-pipeline\.\include;C:\Dev\ideal-engine\engine\input-system\.\include;C:\Dev\ideal-engine\engine\event-manager\.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\engine\Release\wind.lib;..\engine\Release\wind.lib;ImGuiFileDialog.lib;..\engine\dom\Release\wind-dom.lib;..\engine\entry\Release\wind-entry.lib;..\engine\renderer\Release\wind-renderer.lib;..\engine\input-system\Release\wind-input-system.lib;..\engine\window\Release\wind-window.lib;..\engine\asset-pipeline\Release\wind-asset-pipeline.lib;..\engine\event-manager\Release\wind-event-manager.lib;..\engine\language\Release\wind-language.lib;..\engine\utils\Release\wind-utils.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Dev/ideal-engine/editor/Release/editor.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Dev/ideal-engine/editor/Release/editor.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Dev/ideal-engine/editor/./app/include" /external:I "C:/Dev/ideal-engine/engine/utils/./include" /external:I "C:/Dev/ideal-engine/engine/dom/./include" /external:I "C:/Dev/ideal-engine/engine/window/./include" /external:I "C:/Dev/ideal-engine/engine/asset-pipeline/./include" /external:I "C:/Dev/ideal-engine/engine/input-system/./include" /external:I "C:/Dev/ideal-engine/engine/event-manager/./include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ProcessorNumber>12</ProcessorNumber>
+      <RuntimeLibrary></RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;C:\Dev\ideal-engine\editor\.\app\include;C:\Dev\ideal-engine\engine\utils\.\include;C:\Dev\ideal-engine\engine\dom\.\include;C:\Dev\ideal-engine\engine\window\.\include;C:\Dev\ideal-engine\engine\asset-pipeline\.\include;C:\Dev\ideal-engine\engine\input-system\.\include;C:\Dev\ideal-engine\engine\event-manager\.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;C:\Dev\ideal-engine\editor\.\app\include;C:\Dev\ideal-engine\engine\utils\.\include;C:\Dev\ideal-engine\engine\dom\.\include;C:\Dev\ideal-engine\engine\window\.\include;C:\Dev\ideal-engine\engine\asset-pipeline\.\include;C:\Dev\ideal-engine\engine\input-system\.\include;C:\Dev\ideal-engine\engine\event-manager\.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\engine\MinSizeRel\wind.lib;..\engine\MinSizeRel\wind.lib;ImGuiFileDialog.lib;..\engine\dom\MinSizeRel\wind-dom.lib;..\engine\entry\MinSizeRel\wind-entry.lib;..\engine\renderer\MinSizeRel\wind-renderer.lib;..\engine\input-system\MinSizeRel\wind-input-system.lib;..\engine\window\MinSizeRel\wind-window.lib;..\engine\asset-pipeline\MinSizeRel\wind-asset-pipeline.lib;..\engine\event-manager\MinSizeRel\wind-event-manager.lib;..\engine\language\MinSizeRel\wind-language.lib;..\engine\utils\MinSizeRel\wind-utils.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Dev/ideal-engine/editor/MinSizeRel/editor.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Dev/ideal-engine/editor/MinSizeRel/editor.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Dev/ideal-engine/editor/./app/include" /external:I "C:/Dev/ideal-engine/engine/utils/./include" /external:I "C:/Dev/ideal-engine/engine/dom/./include" /external:I "C:/Dev/ideal-engine/engine/window/./include" /external:I "C:/Dev/ideal-engine/engine/asset-pipeline/./include" /external:I "C:/Dev/ideal-engine/engine/input-system/./include" /external:I "C:/Dev/ideal-engine/engine/event-manager/./include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ProcessorNumber>12</ProcessorNumber>
+      <RuntimeLibrary></RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;C:\Dev\ideal-engine\editor\.\app\include;C:\Dev\ideal-engine\engine\utils\.\include;C:\Dev\ideal-engine\engine\dom\.\include;C:\Dev\ideal-engine\engine\window\.\include;C:\Dev\ideal-engine\engine\asset-pipeline\.\include;C:\Dev\ideal-engine\engine\input-system\.\include;C:\Dev\ideal-engine\engine\event-manager\.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Dev\ideal-engine\engine\renderer\.\include;C:\Dev\ideal-engine\engine\entry\.\include;C:\Dev\ideal-engine\engine\language\.\include;C:\Dev\ideal-engine\editor\.\app\include;C:\Dev\ideal-engine\engine\utils\.\include;C:\Dev\ideal-engine\engine\dom\.\include;C:\Dev\ideal-engine\engine\window\.\include;C:\Dev\ideal-engine\engine\asset-pipeline\.\include;C:\Dev\ideal-engine\engine\input-system\.\include;C:\Dev\ideal-engine\engine\event-manager\.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\engine\RelWithDebInfo\wind.lib;..\engine\RelWithDebInfo\wind.lib;ImGuiFileDialog.lib;..\engine\dom\RelWithDebInfo\wind-dom.lib;..\engine\entry\RelWithDebInfo\wind-entry.lib;..\engine\renderer\RelWithDebInfo\wind-renderer.lib;..\engine\input-system\RelWithDebInfo\wind-input-system.lib;..\engine\window\RelWithDebInfo\wind-window.lib;..\engine\asset-pipeline\RelWithDebInfo\wind-asset-pipeline.lib;..\engine\event-manager\RelWithDebInfo\wind-event-manager.lib;..\engine\language\RelWithDebInfo\wind-language.lib;..\engine\utils\RelWithDebInfo\wind-utils.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Dev/ideal-engine/editor/RelWithDebInfo/editor.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Dev/ideal-engine/editor/RelWithDebInfo/editor.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Dev\ideal-engine\editor\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Dev/ideal-engine/editor/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Dev/ideal-engine -BC:/Dev/ideal-engine --check-stamp-file C:/Dev/ideal-engine/editor/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Dev\ideal-engine\build\generators\cmakedeps_macros.cmake;C:\Dev\ideal-engine\build\generators\fmt-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\fmt-config-version.cmake;C:\Dev\ideal-engine\build\generators\fmt-config.cmake;C:\Dev\ideal-engine\build\generators\fmt-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\fmtTargets.cmake;C:\Dev\ideal-engine\build\generators\imgui-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\imgui-config-version.cmake;C:\Dev\ideal-engine\build\generators\imgui-config.cmake;C:\Dev\ideal-engine\build\generators\imgui-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\imguiTargets.cmake;C:\Dev\ideal-engine\build\generators\spdlog-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\spdlog-config-version.cmake;C:\Dev\ideal-engine\build\generators\spdlog-config.cmake;C:\Dev\ideal-engine\build\generators\spdlog-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\spdlogTargets.cmake;C:\Program Files\CMake\share\cmake-3.30\Modules\CMakeFindDependencyMacro.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Dev\ideal-engine\editor\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Dev/ideal-engine/editor/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Dev/ideal-engine -BC:/Dev/ideal-engine --check-stamp-file C:/Dev/ideal-engine/editor/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Dev\ideal-engine\build\generators\cmakedeps_macros.cmake;C:\Dev\ideal-engine\build\generators\fmt-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\fmt-config-version.cmake;C:\Dev\ideal-engine\build\generators\fmt-config.cmake;C:\Dev\ideal-engine\build\generators\fmt-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\fmtTargets.cmake;C:\Dev\ideal-engine\build\generators\imgui-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\imgui-config-version.cmake;C:\Dev\ideal-engine\build\generators\imgui-config.cmake;C:\Dev\ideal-engine\build\generators\imgui-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\imguiTargets.cmake;C:\Dev\ideal-engine\build\generators\spdlog-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\spdlog-config-version.cmake;C:\Dev\ideal-engine\build\generators\spdlog-config.cmake;C:\Dev\ideal-engine\build\generators\spdlog-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\spdlogTargets.cmake;C:\Program Files\CMake\share\cmake-3.30\Modules\CMakeFindDependencyMacro.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Dev\ideal-engine\editor\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Dev/ideal-engine/editor/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Dev/ideal-engine -BC:/Dev/ideal-engine --check-stamp-file C:/Dev/ideal-engine/editor/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Dev\ideal-engine\build\generators\cmakedeps_macros.cmake;C:\Dev\ideal-engine\build\generators\fmt-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\fmt-config-version.cmake;C:\Dev\ideal-engine\build\generators\fmt-config.cmake;C:\Dev\ideal-engine\build\generators\fmt-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\fmtTargets.cmake;C:\Dev\ideal-engine\build\generators\imgui-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\imgui-config-version.cmake;C:\Dev\ideal-engine\build\generators\imgui-config.cmake;C:\Dev\ideal-engine\build\generators\imgui-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\imguiTargets.cmake;C:\Dev\ideal-engine\build\generators\spdlog-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\spdlog-config-version.cmake;C:\Dev\ideal-engine\build\generators\spdlog-config.cmake;C:\Dev\ideal-engine\build\generators\spdlog-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\spdlogTargets.cmake;C:\Program Files\CMake\share\cmake-3.30\Modules\CMakeFindDependencyMacro.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Dev\ideal-engine\editor\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Dev/ideal-engine/editor/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Dev/ideal-engine -BC:/Dev/ideal-engine --check-stamp-file C:/Dev/ideal-engine/editor/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Dev\ideal-engine\build\generators\cmakedeps_macros.cmake;C:\Dev\ideal-engine\build\generators\fmt-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\fmt-config-version.cmake;C:\Dev\ideal-engine\build\generators\fmt-config.cmake;C:\Dev\ideal-engine\build\generators\fmt-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\fmtTargets.cmake;C:\Dev\ideal-engine\build\generators\imgui-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\imgui-config-version.cmake;C:\Dev\ideal-engine\build\generators\imgui-config.cmake;C:\Dev\ideal-engine\build\generators\imgui-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\imguiTargets.cmake;C:\Dev\ideal-engine\build\generators\spdlog-Target-debug.cmake;C:\Dev\ideal-engine\build\generators\spdlog-config-version.cmake;C:\Dev\ideal-engine\build\generators\spdlog-config.cmake;C:\Dev\ideal-engine\build\generators\spdlog-debug-x86_64-data.cmake;C:\Dev\ideal-engine\build\generators\spdlogTargets.cmake;C:\Program Files\CMake\share\cmake-3.30\Modules\CMakeFindDependencyMacro.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Dev\ideal-engine\editor\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\editor.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\main.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\shared\file-picker.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\shared\menu\menu-item.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\shared\menu\menu-bar.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\shared\menu\menu.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\shared\popup.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\shared\tab-bar\tab.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\shared\tab-bar\tab-bar.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\shared\image.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\shared\window.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\sprite-sheet\cell.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\sprite-sheet\cells-manager.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\sprite-sheet\events.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\sprite-sheet\file.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\sprite-sheet\behavior.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\sprite-sheet\files-manager.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\sprite-sheet\sprite-sheet-manager.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\project-manager\project-manager.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\bundle-manager\bundle-manager.hpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\editor\components.hpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\main.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\shared\file-picker.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\shared\menu\menu-item.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\shared\menu\menu-bar.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\shared\menu\menu.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\shared\popup.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\shared\tab-bar\tab.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\shared\tab-bar\tab-bar.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\shared\image.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\shared\window.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\sprite-sheet\cell.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\sprite-sheet\cells-manager.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\sprite-sheet\events.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\sprite-sheet\file.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\sprite-sheet\files-manager.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\sprite-sheet\sprite-sheet-manager.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\project-manager\project-manager.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\src\bundle-manager\bundle-manager.cpp" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\include\bindings\imgui_impl_sdl2.cpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\bindings\imgui_impl_sdl2.h" />
+    <ClCompile Include="C:\Dev\ideal-engine\editor\app\include\bindings\imgui_impl_opengl3.cpp" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\bindings\imgui_impl_opengl3.h" />
+    <ClInclude Include="C:\Dev\ideal-engine\editor\app\include\bindings\imgui_impl_opengl3_loader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Dev\ideal-engine\ZERO_CHECK.vcxproj">
+      <Project>{ACD002FF-EAEC-336F-9C62-5EE8791A8ABF}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Dev\ideal-engine\editor\editor_bundles.vcxproj">
+      <Project>{EBAA4AE1-B523-3E3A-AE52-F9D178DD61E3}</Project>
+      <Name>editor_bundles</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Dev\ideal-engine\engine\wind.vcxproj">
+      <Project>{C1C4FA5A-F6A0-366A-B001-3F4B9E26AD95}</Project>
+      <Name>wind</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Dev\ideal-engine\engine\asset-pipeline\wind-asset-pipeline.vcxproj">
+      <Project>{11D8798D-1639-3BF1-821E-B0A70F3FC0E8}</Project>
+      <Name>wind-asset-pipeline</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Dev\ideal-engine\engine\dom\wind-dom.vcxproj">
+      <Project>{E45BCEB4-9AA1-33A3-9D2C-D3DA67CFEE82}</Project>
+      <Name>wind-dom</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Dev\ideal-engine\engine\entry\wind-entry.vcxproj">
+      <Project>{C64B2EDD-C1EB-3FF2-AE16-0A4871291431}</Project>
+      <Name>wind-entry</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Dev\ideal-engine\engine\event-manager\wind-event-manager.vcxproj">
+      <Project>{EDA9BF7E-CD03-3864-93DE-65AE0492733D}</Project>
+      <Name>wind-event-manager</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Dev\ideal-engine\engine\input-system\wind-input-system.vcxproj">
+      <Project>{A63803A8-5CE5-3751-A3A9-5FEE11B0866D}</Project>
+      <Name>wind-input-system</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Dev\ideal-engine\engine\language\wind-language.vcxproj">
+      <Project>{D8A31AFF-BBE0-3B71-B967-073D118131B8}</Project>
+      <Name>wind-language</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Dev\ideal-engine\engine\renderer\wind-renderer.vcxproj">
+      <Project>{5B54963D-0EC8-3DCF-BF01-C6BE7C6B5DC6}</Project>
+      <Name>wind-renderer</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Dev\ideal-engine\engine\utils\wind-utils.vcxproj">
+      <Project>{EE6FAA58-6440-381F-B145-1C14D0BA637F}</Project>
+      <Name>wind-utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Dev\ideal-engine\engine\window\wind-window.vcxproj">
+      <Project>{5CD362C1-3A39-3315-9823-7D1200344572}</Project>
+      <Name>wind-window</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

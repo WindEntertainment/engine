@@ -25,10 +25,6 @@ add_subdirectory(./editor/)
 add_subdirectory(./asset-bundler/)
 add_subdirectory(./wdlang/)
 
-add_subdirectory(./ImGuiFileDialog/)
-find_package(imgui REQUIRED)
-target_link_libraries(ImGuiFileDialog imgui::imgui)
-
 ###===================================================================================##
 
 import(compiler ON)

@@ -87,6 +87,8 @@ namespace wind {
 int main() {
   wind::wdlang::Tokenizer t(
     R"(
+      import WindEngine.Render;
+
       class Player extends Container implements A, B {
       public:
         let mut x: i32 = 3
