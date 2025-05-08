@@ -10,9 +10,9 @@ namespace wind::wdlang {
   std::vector<Node*> AST::getRoot() const { return ast; }
 
   void AST::parse() {
+    currentScope = Scope::Imports;
     while (get(0).type != Token::T_EOF) {
-      currentScope = Scope::Global;
-      ast.emplace_back(statement());
+      ast.emplace_back(imports());
     }
   }
 

@@ -40,6 +40,11 @@ set(SOURCES
     ./src/ast/expression/identifier.cpp
     ./src/ast/expression/value.cpp
     ./src/ast/utils.cpp
+        src/ast/imports.cpp
+        include/wind/language/nodes/ImportStatement.hpp
+        src/ast/expression/invoke.cpp
+        include/wind/language/nodes/InvokeExpression.hpp
+        src/ast/ifStatement.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC

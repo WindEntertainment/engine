@@ -6,6 +6,9 @@
 #include "nodes/ClassStatement.hpp"
 #include "nodes/FunctionStatement.hpp"
 #include "nodes/Identifier.hpp"
+#include "nodes/IfStatement.hpp"
+#include "nodes/ImportStatement.hpp"
+#include "nodes/InvokeExpression.hpp"
 #include "nodes/ReturnStatement.hpp"
 #include "nodes/UnaryOperation.hpp"
 #include "nodes/Value.hpp"
@@ -26,6 +29,9 @@ namespace wind {
     virtual void compile(wdlang::FunctionArgumentStatement*) = 0;
     virtual void compile(wdlang::FunctionStatement*) = 0;
     virtual void compile(wdlang::ReturnStatement*) = 0;
+    virtual void compile(wdlang::ImportStatement*) = 0;
+    virtual void compile(wdlang::InvokeExpression*) = 0;
+    virtual void compile(wdlang::IfStatement*) = 0;
   };
 } // namespace wind
 

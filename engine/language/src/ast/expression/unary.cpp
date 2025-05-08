@@ -16,6 +16,6 @@ namespace wind::wdlang {
       return nullptr;
     }
 
-    return identifier();
+    return invoke(false);
   }
 } // namespace wind::wdlang

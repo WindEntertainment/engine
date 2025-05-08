@@ -2,9 +2,25 @@
 #include "wind/language/nodes/Identifier.hpp"
 
 namespace wind::wdlang {
-  Node* AST::identifier() {
-    if (isType(Token::Word))
-      return new Identifier(std::move(get(-1).value));
+  Node* AST::identifier(const bool& asIdentifier) {
+    std::list<std::string> namePath = {};
+    do {
+      if (!isType(Token::Word))
+        break;
+
+      auto name = get(-1).value;
+      namePath.emplace_back(name);
+
+    } while (isEqual(Token::Operator, "."));
+
+    if (!namePath.empty()) {
+      auto* name = new Identifier();
+      name->path = namePath;
+      return name;
+    }
+
+    if (asIdentifier)
+      return nullptr;
 
     return value();
   }

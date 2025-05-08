@@ -4,8 +4,7 @@
 #include <string>
 
 namespace wind::wdlang {
-  struct AssignStatement : public NodeCRTP<AssignStatement> {
-    Node* name;
-    Node* value;
+  struct ImportStatement : public NodeCRTP<ImportStatement> {
+    Node* path;
   };
 } // namespace wind::wdlang

@@ -3,8 +3,11 @@
 
 namespace wind::wdlang {
   Node* AST::assign() {
-    if (isType(Token::Word) && isEqual(Token::Operator, "=")) {
-      const auto name = get(-2).value;
+    Node* name = nullptr;
+    if (get(0).type == Token::Word)
+      name = identifier(true);
+
+    if (name && isEqual(Token::Operator, "=")) {
       auto* value = expression();
 
       auto* statement = new AssignStatement();
@@ -14,8 +17,6 @@ namespace wind::wdlang {
       return statement;
     }
 
-    shift();
-    push("Syntax error: Unexpected symbol");
-    return nullptr;
+    return invoke(true, name);
   }
 } // namespace wind::wdlang

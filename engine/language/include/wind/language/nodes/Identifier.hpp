@@ -5,8 +5,6 @@
 
 namespace wind::wdlang {
   struct Identifier : public Expression<Identifier> {
-    std::string name;
-
-    Identifier(std::string&& name) : name(name) {}
+    std::list<std::string> path;
   };
 } // namespace wind::wdlang

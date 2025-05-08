@@ -29,7 +29,9 @@ namespace wind::wdlang {
 
     int currentPosition = 0;
 
-    enum class Scope { Global, InNamespace, InClass, InFunction };
+    enum class Scope {
+      Imports, Global, InNamespace, InClass, InFunction
+    };
 
     Scope currentScope;
 
@@ -54,12 +56,15 @@ namespace wind::wdlang {
 
     void parse();
     Node* statement();
+    Node* imports();
     Node* classes();
     Node* variable();
     Node* function();
     Node* returnStatements();
+    Node* invoke(const bool& asStatement, Node* passedName=nullptr);
     FunctionArgumentStatement* functionArguments(bool& requireDefaultParam);
     Node* assign();
+    Node* ifStatement();
     Node* expression();
     Node* binaryPriority0();
     Node* binaryPriority1();
@@ -67,7 +72,7 @@ namespace wind::wdlang {
     Node* binaryPriority3();
     Node* parentheses();
     Node* unary();
-    Node* identifier();
+    Node* identifier(const bool& asIdentifier);
     Node* value();
   };
 } // namespace wind::wdlang

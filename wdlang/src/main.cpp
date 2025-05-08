@@ -1,5 +1,6 @@
 #include "wind/language/language.hpp"
 #include "wind/language/lang_impl.hpp"
+#include "wind/language/nodes/ImportStatement.hpp"
 
 #undef main
 
@@ -23,7 +24,10 @@ namespace wind {
       }
 
       void compile(Identifier* expression) override {
-        spdlog::info("identifier: {}", expression->name);
+        std::string fullName;
+        for (auto name : expression->path)
+          fullName += "." + name;
+        spdlog::info("identifier: {}", fullName);
       }
 
       void compile(UnaryOperation* expression) override {
@@ -38,7 +42,8 @@ namespace wind {
       }
 
       void compile(AssignStatement* statement) override {
-        spdlog::info("assign-statement: {}", statement->name);
+        spdlog::info("assign-statement");
+        statement->name->execute(this);
         statement->value->execute(this);
       }
 
@@ -81,6 +86,30 @@ namespace wind {
         if (statement->value)
           statement->value->execute(this);
       }
+
+      void compile(ImportStatement* statement) override {
+        spdlog::info("import-statement");
+        statement->path->execute(this);
+      }
+
+      void compile(wdlang::InvokeExpression* statement) override {
+        spdlog::info("invoke-expression");
+        statement->name->execute(this);
+        for (auto arg : statement->arguments)
+          arg->execute(this);
+      }
+
+      void compile(wdlang::IfStatement* statement) override {
+        spdlog::info("if-statement");
+
+        statement->condition->execute(this);
+
+        for (auto child : statement->body)
+          child->execute(this);
+
+        for (auto child : statement->else_body)
+          child->execute(this);
+      }
     };
   }
 }
@@ -88,7 +117,7 @@ namespace wind {
 int main() {
   wind::wdlang::Tokenizer t(
     R"(
-      import WindEngine.Render;
+      import WindEngine.Render
 
       class Player extends Container implements A, B {
       public:
@@ -101,6 +130,15 @@ int main() {
           let z: f32 = 100
 
           x = x * (y - z) / -(100 + x)
+
+          add(y, 32 + x - sin(2 * pi()))
+          player.damage(player.maxHealth / 2)
+
+          if false {
+            x = x + 1
+          } else {
+            x = x - 1
+          }
         }
       private:
         let canMove: bool = false

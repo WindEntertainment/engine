@@ -14,6 +14,6 @@ namespace wind::wdlang {
       return statement;
     }
 
-    return assign();
+    return ifStatement();
   }
 } // namespace wind::wdlang
