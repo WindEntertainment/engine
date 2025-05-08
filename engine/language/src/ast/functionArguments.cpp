@@ -1,7 +1,7 @@
 #include "wind/language/language.hpp"
 
 namespace wind::wdlang {
-  inline FunctionArgumentStatement* AST::functionArguments(bool& requireDefaultParam) {
+  FunctionArgumentStatement* AST::functionArguments(bool& requireDefaultParam) {
     if (isType(Token::Word)) {
       const auto name = get(-1).value;
       except(Token::Operator, ":");

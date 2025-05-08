@@ -1,25 +1,26 @@
 #include "wind/language/language.hpp"
+#include "wind/language/nodes/BinaryOperation.hpp"
 
 namespace wind::wdlang {
-  inline Node* AST::binaryPriority3() {
-    auto* result = parentheses();
+  Node* AST::binaryPriority2() {
+    auto* result = binaryPriority3();
 
     if (result == nullptr)
       return nullptr;
 
     while (true) {
       if (auto [type, value] = get();
-          type == Token::Operator && (value == "*" || value == "/")) {
+          type == Token::Operator && (value == "+" || value == "-")) {
         shift();
 
         auto* binaryEx = new BinaryOperation();
         binaryEx->lhs = result;
-        binaryEx->rhs = parentheses();
+        binaryEx->rhs = binaryPriority3();
 
-        if (value == "*")
-          binaryEx->type = BinaryOperation::Mul;
-        else if (value == "/")
-          binaryEx->type = BinaryOperation::Div;
+        if (value == "+")
+          binaryEx->type = BinaryOperation::Add;
+        else if (value == "-")
+          binaryEx->type = BinaryOperation::Sub;
 
         if (binaryEx->rhs == nullptr) {
           push(
@@ -30,8 +31,8 @@ namespace wind::wdlang {
         }
 
         result = binaryEx;
-          } else
-            break;
+      } else
+        break;
     }
 
     return result;

@@ -1,4 +1,5 @@
 #include "wind/language/language.hpp"
+#include "wind/language/lang_impl.hpp"
 
 #undef main
 

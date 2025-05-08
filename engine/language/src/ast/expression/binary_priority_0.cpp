@@ -1,7 +1,8 @@
 #include "wind/language/language.hpp"
+#include "wind/language/nodes/BinaryOperation.hpp"
 
 namespace wind::wdlang {
-  inline Node* AST::binaryPriority0() {
+  Node* AST::binaryPriority0() {
     auto* result = binaryPriority1();
 
     if (result == nullptr)

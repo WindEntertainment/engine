@@ -1,7 +1,7 @@
 #include "wind/language/language.hpp"
 
 namespace wind::wdlang {
-  inline Node* AST::parentheses() {
+  Node* AST::parentheses() {
     if (isEqual(Token::Operator, "(")) {
       auto* result = expression();
       if (!isEqual(Token::Operator, ")")) {

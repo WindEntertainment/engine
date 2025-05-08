@@ -1,7 +1,8 @@
 #include "wind/language/language.hpp"
+#include "wind/language/nodes/Identifier.hpp"
 
 namespace wind::wdlang {
-  inline Node* AST::identifier() {
+  Node* AST::identifier() {
     if (isType(Token::Word))
       return new Identifier(std::move(get(-1).value));
 

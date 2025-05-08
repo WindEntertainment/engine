@@ -1,7 +1,8 @@
 #include "wind/language/language.hpp"
+#include "wind/language/nodes/AssignStatement.hpp"
 
 namespace wind::wdlang {
-  inline Node* AST::assign() {
+  Node* AST::assign() {
     if (isType(Token::Word) && isEqual(Token::Operator, "=")) {
       const auto name = get(-2).value;
       auto* value = expression();

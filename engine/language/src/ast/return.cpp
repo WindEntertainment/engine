@@ -1,7 +1,8 @@
 #include "wind/language/language.hpp"
+#include "wind/language/nodes/ReturnStatement.hpp"
 
 namespace wind::wdlang {
-  inline Node* AST::returnStatements() {
+  Node* AST::returnStatements() {
     if (isEqual(Token::Word, "return")) {
       Node* result = nullptr;
       if (!isEqual(Token::Operator, ";"))

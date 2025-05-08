@@ -1,7 +1,8 @@
 #include "wind/language/language.hpp"
+#include "wind/language/nodes/VariableStatement.hpp"
 
 namespace wind::wdlang {
-  inline Node* AST::variable() {
+   Node* AST::variable() {
     if (isEqual(Token::Word, "let")) {
       const auto isMutable = isEqual(Token::Word, "mut");
 

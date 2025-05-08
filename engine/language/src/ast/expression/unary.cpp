@@ -1,7 +1,8 @@
 #include "wind/language/language.hpp"
+#include "wind/language/nodes/UnaryOperation.hpp"
 
 namespace wind::wdlang {
-  inline Node* AST::unary() {
+  Node* AST::unary() {
     if (isEqual(Token::Operator, "-")) {
       auto* unaryEx = new UnaryOperation();
       unaryEx->type = UnaryOperation::NEGATE;

@@ -3,7 +3,7 @@ project(wind-language)
 set(HEADERS
     ./include/wind/language/language.hpp
     ./include/wind/language/tokenizer.hpp
-    ./include/wind/language/LangImpl.hpp
+    ./include/wind/language/lang_impl_def.hpp
     ./include/wind/language/nodes/Node.hpp
     ./include/wind/language/nodes/NodeCRTP.hpp
     ./include/wind/language/nodes/Expression.hpp
@@ -23,7 +23,6 @@ set(HEADERS
 
 set(SOURCES
     ./src/language.cpp
-    ./src/ast/utils.cpp
     ./src/ast/statement.cpp
     ./src/ast/classes.cpp
     ./src/ast/variable.cpp
@@ -32,14 +31,15 @@ set(SOURCES
     ./src/ast/functionArguments.cpp
     ./src/ast/assign.cpp
     ./src/ast/expression/expression.cpp
-    ./src/ast/expression/binaryPriority0.cpp
-    ./src/ast/expression/binaryPriority1.cpp
-    ./src/ast/expression/binaryPriority2.cpp
-    ./src/ast/expression/binaryPriority3.cpp
+    ./src/ast/expression/binary_priority_0.cpp
+    ./src/ast/expression/binary_priority_1.cpp
+    ./src/ast/expression/binary_priority_2.cpp
+    ./src/ast/expression/binary_priority_3.cpp
     ./src/ast/expression/parentheses.cpp
     ./src/ast/expression/unary.cpp
     ./src/ast/expression/identifier.cpp
     ./src/ast/expression/value.cpp
+    ./src/ast/utils.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC

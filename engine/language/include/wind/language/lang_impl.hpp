@@ -15,7 +15,7 @@ namespace wind {
   class LangImpl {
   public:
     virtual ~LangImpl() = default;
-    virtual void compile(wind::wdlang::Value*) = 0;
+    virtual void compile(wdlang::Value*) = 0;
     virtual void compile(wdlang::Identifier*) = 0;
     virtual void compile(wdlang::UnaryOperation*) = 0;
     virtual void compile(wdlang::BinaryOperation*) = 0;
@@ -27,4 +27,11 @@ namespace wind {
     virtual void compile(wdlang::FunctionStatement*) = 0;
     virtual void compile(wdlang::ReturnStatement*) = 0;
   };
-}
+} // namespace wind
+
+namespace wind::wdlang {
+  template <typename Derived>
+  void NodeCRTP<Derived>::execute(LangImpl* executor) {
+    executor->compile(static_cast<Derived*>(this));
+  }
+} // namespace wind::wdlang

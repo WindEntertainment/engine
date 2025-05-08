@@ -1,7 +1,8 @@
 #include "wind/language/language.hpp"
+#include "wind/language/nodes/Value.hpp"
 
 namespace wind::wdlang {
-  inline Node* AST::value() {
+  Node* AST::value() {
     auto* value = new Value();
     value->value = get(0).value;
 

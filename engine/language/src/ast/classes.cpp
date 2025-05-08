@@ -1,7 +1,8 @@
 #include "wind/language/language.hpp"
+#include "wind/language/nodes/ClassStatement.hpp"
 
 namespace wind::wdlang {
-  inline Node* AST::classes() {
+  Node* AST::classes() {
     if (isEqual(Token::Word, "class")) {
       except(Token::Word);
       auto name = get(-1).value;
@@ -16,8 +17,7 @@ namespace wind::wdlang {
       if (isEqual(Token::Word, "implements")) {
         if (get().type != Token::Word) {
           push(
-            "Syntax Error: Excepted interface to implements. Unexcepted "
-            "symbol. "
+            "Syntax Error: Excepted interface to implements. Unexpected symbol. "
           );
           return nullptr;
         }
@@ -77,8 +77,7 @@ namespace wind::wdlang {
 
     shift();
     push(
-      "Syntax Error: In global scope may be only class defination "
-      "statements"
+      "Syntax Error: In global scope may be only class definition statements"
     );
     return nullptr;
   }

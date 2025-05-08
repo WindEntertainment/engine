@@ -1,7 +1,9 @@
 #include "wind/language/language.hpp"
+#include "wind/language/nodes/FunctionStatement.hpp"
+#include "wind/language/nodes/ReturnStatement.hpp"
 
 namespace wind::wdlang {
-  inline Node* AST::function() {
+  Node* AST::function() {
     if (get(0).type == Token::Word && get(1).type == Token::Word &&
         get(2).type == Token::Operator && get(2).value == "(") {
 

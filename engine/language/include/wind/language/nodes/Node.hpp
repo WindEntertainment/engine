@@ -1,5 +1,5 @@
 #pragma once
-#include "../LangImpl.hpp"
+#include "../lang_impl_def.hpp"
 
 namespace wind::wdlang {
   struct Node {

@@ -1,7 +1,22 @@
 #include "wind/language/language.hpp"
 
 namespace wind::wdlang {
-  inline AST::Token& AST::get(const unsigned int relativePosition) {
+
+  AST::AST(Tokenizer::TokenStream& tokenStream) : tokenStream(tokenStream) {
+    parse();
+  }
+
+  std::queue<AST::Error> AST::getErrors() const { return errorStack; }
+  std::vector<Node*> AST::getRoot() const { return ast; }
+
+  void AST::parse() {
+    while (get(0).type != Token::T_EOF) {
+      currentScope = Scope::Global;
+      ast.emplace_back(statement());
+    }
+  }
+
+  AST::Token& AST::get(const unsigned int relativePosition) {
     const int pos = currentPosition + relativePosition;
 
     while (tokens.size() <= pos) {
@@ -22,17 +37,17 @@ namespace wind::wdlang {
     return tokens[pos];
   }
 
-  inline AST::Token& AST::shift(unsigned int step) {
+  AST::Token& AST::shift(unsigned int step) {
     currentPosition += step;
     return get(0);
   }
 
-  inline AST::Token& AST::consume() {
+  AST::Token& AST::consume() {
     shift();
     return get(-1);
   }
 
-  inline bool AST::isType(Token::TokenType type, int relativePosition) {
+  bool AST::isType(Token::TokenType type, int relativePosition) {
     auto res = get(relativePosition).type == type;
 
     if (res)
@@ -41,7 +56,7 @@ namespace wind::wdlang {
     return res;
   }
 
-  inline bool AST::isEqual(
+  bool AST::isEqual(
     Token::TokenType type,
     std::string&& value,
     int relativePosition
@@ -55,21 +70,21 @@ namespace wind::wdlang {
     return res;
   }
 
-  inline void AST::except(Token::TokenType type, std::string&& value) {
+  void AST::except(Token::TokenType type, std::string&& value) {
     if (isEqual(type, std::move(value)))
       return;
 
     push(fmt::format("Syntax Error: Except '{}'. Unexpected symbol.", value));
   }
 
-  inline void AST::except(Token::TokenType type) {
+  void AST::except(Token::TokenType type) {
     if (isType(type))
       return;
 
     push("Syntax Error: Unexpected symbol");
   }
 
-  inline void AST::push(const std::string&& message) {
+  void AST::push(const std::string&& message) {
     errorStack.push(
       Error{
         .position = tokenStream.position,

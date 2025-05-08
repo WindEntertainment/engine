@@ -1,9 +1,5 @@
 #pragma once
-#include "lang_impl.hpp"
-
-#include "nodes/FunctionArgumentStatement.hpp"
-#include "nodes/Node.hpp"
-
+#include "wind/language/lang_impl.hpp"
 #include "wind/language/tokenizer.hpp"
 
 #include <queue>
@@ -19,13 +15,10 @@ namespace wind::wdlang {
       Tokenizer::Token token;
     };
 
-    AST(Tokenizer::TokenStream& tokenStream) : tokenStream(tokenStream) {
-      parse();
-    };
+    AST(Tokenizer::TokenStream& tokenStream);
 
-    [[nodiscard]] std::queue<Error> getErrors() const { return errorStack; }
-
-    [[nodiscard]] std::vector<Node*> getRoot() const { return ast; }
+    [[nodiscard]] std::queue<Error> getErrors() const;
+    [[nodiscard]] std::vector<Node*> getRoot() const;
 
   private:
     std::queue<Error> errorStack;
@@ -77,11 +70,4 @@ namespace wind::wdlang {
     Node* identifier();
     Node* value();
   };
-} // namespace wind::wdlang
-
-namespace wind::wdlang {
-  template <typename Derived>
-  void NodeCRTP<Derived>::execute(LangImpl* executor) {
-    executor->compile(static_cast<Derived*>(this));
-  }
 } // namespace wind::wdlang
