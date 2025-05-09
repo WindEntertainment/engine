@@ -8,7 +8,7 @@ namespace wind::wdlang {
 
       auto* condition = expression();
       std::list<Node*> body = {};
-      std::list<Node*> else_body = {};
+      std::list<Node*> elseBody = {};
 
       except(Token::Operator, "{");
       while (!isEqual(Token::Operator, "}")) {
@@ -38,18 +38,18 @@ namespace wind::wdlang {
           if (part == nullptr)
             continue;
 
-          else_body.emplace_back(part);
+          elseBody.emplace_back(part);
         }
       }
 
       auto* statement = new IfStatement();
       statement->condition = condition;
       statement->body = body;
-      statement->else_body = else_body;
+      statement->else_body = elseBody;
 
       return statement;
     }
 
-    return assign();
+    return forStatement();
   }
-}
+} // namespace wind::wdlang

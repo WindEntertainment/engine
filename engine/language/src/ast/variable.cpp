@@ -2,7 +2,7 @@
 #include "wind/language/nodes/VariableStatement.hpp"
 
 namespace wind::wdlang {
-   Node* AST::variable() {
+   Node* AST::variable(const bool& asExpression) {
     if (isEqual(Token::Word, "let")) {
       const auto isMutable = isEqual(Token::Word, "mut");
 
@@ -26,6 +26,6 @@ namespace wind::wdlang {
       return statement;
     }
 
-    return function();
+    return asExpression ? expression() : function();
   }
 } // namespace wind::wdlang

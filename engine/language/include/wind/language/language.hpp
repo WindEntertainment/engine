@@ -58,13 +58,14 @@ namespace wind::wdlang {
     Node* statement();
     Node* imports();
     Node* classes();
-    Node* variable();
+    Node* variable(const bool& asExpression);
     Node* function();
     Node* returnStatements();
     Node* invoke(const bool& asStatement, Node* passedName=nullptr);
     FunctionArgumentStatement* functionArguments(bool& requireDefaultParam);
-    Node* assign();
+    Node* assign(const bool& asExpression);
     Node* ifStatement();
+    Node* forStatement();
     Node* expression();
     Node* binaryPriority0();
     Node* binaryPriority1();

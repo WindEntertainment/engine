@@ -44,7 +44,9 @@ set(SOURCES
         include/wind/language/nodes/ImportStatement.hpp
         src/ast/expression/invoke.cpp
         include/wind/language/nodes/InvokeExpression.hpp
-        src/ast/ifStatement.cpp
+        src/ast/if_statement.cpp
+        include/wind/language/nodes/ForStatement.hpp
+        src/ast/for_statement.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC

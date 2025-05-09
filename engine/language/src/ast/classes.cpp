@@ -72,7 +72,7 @@ namespace wind::wdlang {
     }
 
     if (currentScope == Scope::InClass || currentScope == Scope::InFunction) {
-      return variable();
+      return variable(false);
     }
 
     shift();

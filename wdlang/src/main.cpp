@@ -110,6 +110,13 @@ namespace wind {
         for (auto child : statement->else_body)
           child->execute(this);
       }
+
+      void compile(wdlang::ForStatement* statement) override {
+        spdlog::info("for-statement");
+        statement->prefix->execute(this);
+        statement->midline->execute(this);
+        statement->postfix->execute(this);
+      }
     };
   }
 }
@@ -138,6 +145,10 @@ int main() {
             x = x + 1
           } else {
             x = x - 1
+          }
+
+          for (let mut i: i8 = 0; i < 10; i = i + 1) {
+            player.damage(1)
           }
         }
       private:

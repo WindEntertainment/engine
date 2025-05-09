@@ -4,6 +4,7 @@
 #include "nodes/BinaryOperation.hpp"
 #include "nodes/ClassMember.hpp"
 #include "nodes/ClassStatement.hpp"
+#include "nodes/ForStatement.hpp"
 #include "nodes/FunctionStatement.hpp"
 #include "nodes/Identifier.hpp"
 #include "nodes/IfStatement.hpp"
@@ -32,6 +33,7 @@ namespace wind {
     virtual void compile(wdlang::ImportStatement*) = 0;
     virtual void compile(wdlang::InvokeExpression*) = 0;
     virtual void compile(wdlang::IfStatement*) = 0;
+    virtual void compile(wdlang::ForStatement*) = 0;
   };
 } // namespace wind
 

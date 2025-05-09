@@ -4,10 +4,10 @@
 namespace wind::wdlang {
   Node* AST::invoke(const bool& asStatement, Node* passedName) {
     Node* name = passedName;
-    if (!name && get(0).type == Token::Word)
+    if (name == nullptr && get(0).type == Token::Word)
       name = identifier(true);
 
-    if (name && isEqual(Token::Operator, "(")) {
+    if (name != nullptr && isEqual(Token::Operator, "(")) {
       std::list<Node*> arguments = {};
 
       while (!isEqual(Token::Operator, ")")) {
@@ -25,7 +25,7 @@ namespace wind::wdlang {
     }
 
     if (!asStatement)
-      return name ? name : identifier(false);
+      return name != nullptr ? name : identifier(false);
 
     shift();
     push("Syntax error: Unexpected symbol");
